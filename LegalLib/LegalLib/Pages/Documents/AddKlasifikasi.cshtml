@@ -1,0 +1,44 @@
+﻿@page
+@model LegalLib.AddKlasifikasiModel
+
+@{
+    ViewData["Title"] = "AddKlasifikasi";
+}
+
+<h1>AddKlasifikasi</h1>
+
+<form method="post">
+            <table class="table">
+                <tr>
+                    <th>Pilihan</th>
+                    <th>Klasifikasi</th>
+                   
+                </tr>
+                @foreach (var item in Model.KlasifikasiSL)
+                {
+            <tr>
+                <td>
+                    <input type="checkbox" name="AreChecked" value="@Model.KlasifikasiSL" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KlasifikasiID) - @Html.DisplayFor(modelItem => item.Klasifikasi)
+                </td>
+                
+            </tr>
+                }
+            </table>
+    
+    <input type="submit" value="Pilih" class="btn btn-primary" />
+</form>
+
+Pilihan 
+@foreach (var item in Model.AreChecked)
+{
+    @Html.DisplayFor(modelItem => item.KlasifikasiID)
+    <br />
+    @Html.DisplayFor(modelItem => item.Klasifikasi)
+    <br />
+}
+
+<a asp-page="./Edit" asp-route-id="KlasifikasiID">Add</a> |
+

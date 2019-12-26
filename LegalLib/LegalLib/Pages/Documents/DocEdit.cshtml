@@ -1,0 +1,168 @@
+﻿@page
+@model LegalLib.DocEditModel
+
+@{
+    ViewData["Title"] = "DocEdit";
+}
+
+<h1>DocEdit</h1>
+
+<h4>tblLegalDocument</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="tblLegalDocument.DocumentID" />
+            <input type="hidden" asp-for="tblLegalDocument.ApproveStatus" />
+            <input type="hidden" asp-for="tblLegalDocument.TglUpload" />
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.Nomor" class="control-label"></label>
+                <input asp-for="tblLegalDocument.Nomor" class="form-control" />
+                <span asp-validation-for="tblLegalDocument.Nomor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.NamaDocument" class="control-label"></label>
+                <input asp-for="tblLegalDocument.NamaDocument" class="form-control" />
+                <span asp-validation-for="tblLegalDocument.NamaDocument" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.Status" class="control-label"></label>
+                <input asp-for="tblLegalDocument.Status" class="form-control" />
+                <span asp-validation-for="tblLegalDocument.Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.Perihal" class="control-label"></label>
+                <input asp-for="tblLegalDocument.Perihal" class="form-control" />
+                <span asp-validation-for="tblLegalDocument.Perihal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.Regulation" class="control-label"></label>
+                <input asp-for="tblLegalDocument.Regulation" class="form-control" />
+                <span asp-validation-for="tblLegalDocument.Regulation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.Chapter" class="control-label"></label>
+                <input asp-for="tblLegalDocument.Chapter" class="form-control" />
+                <span asp-validation-for="tblLegalDocument.Chapter" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.Requirement" class="control-label"></label>
+                <input asp-for="tblLegalDocument.Requirement" class="form-control" />
+                <span asp-validation-for="tblLegalDocument.Requirement" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.LegalRisk" class="control-label"></label>
+                <input asp-for="tblLegalDocument.LegalRisk" class="form-control" />
+                <span asp-validation-for="tblLegalDocument.LegalRisk" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.BusinessRisk" class="control-label"></label>
+                <input asp-for="tblLegalDocument.BusinessRisk" class="form-control" />
+                <span asp-validation-for="tblLegalDocument.BusinessRisk" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.PeopleRisk" class="control-label"></label>
+                <input asp-for="tblLegalDocument.PeopleRisk" class="form-control" />
+                <span asp-validation-for="tblLegalDocument.PeopleRisk" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.EnvironmentRisk" class="control-label"></label>
+                <input asp-for="tblLegalDocument.EnvironmentRisk" class="form-control" />
+                <span asp-validation-for="tblLegalDocument.EnvironmentRisk" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.Methods" class="control-label"></label>
+                <input asp-for="tblLegalDocument.Methods" class="form-control" />
+                <span asp-validation-for="tblLegalDocument.Methods" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.Authority" class="control-label"></label>
+                <input asp-for="tblLegalDocument.Authority" class="form-control" />
+                <span asp-validation-for="tblLegalDocument.Authority" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.TglMulai" class="control-label"></label>
+                <input asp-for="tblLegalDocument.TglMulai" class="form-control" />
+                <span asp-validation-for="tblLegalDocument.TglMulai" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.TglAkhir" class="control-label"></label>
+                <input asp-for="tblLegalDocument.TglAkhir" class="form-control" />
+                <span asp-validation-for="tblLegalDocument.TglAkhir" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.Revisi" class="control-label"></label>
+                <input asp-for="tblLegalDocument.Revisi" class="form-control" />
+                <span asp-validation-for="tblLegalDocument.Revisi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.RevDocument" class="control-label"></label>
+                <select asp-for="tblLegalDocument.RevDocument" class="form-control" asp-items="@Model.RevDocumentSL">
+                    <option value="0">--Select--</option>
+                </select>
+                <span asp-validation-for="tblLegalDocument.RevDocument" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.Permit" class="control-label"></label>
+                <input asp-for="tblLegalDocument.Permit" class="form-control" />
+                <span asp-validation-for="tblLegalDocument.Permit" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.PermitDueDate" class="control-label"></label>
+                <input asp-for="tblLegalDocument.PermitDueDate" class="form-control" />
+                <span asp-validation-for="tblLegalDocument.PermitDueDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.ReportDueDate" class="control-label"></label>
+                <input asp-for="tblLegalDocument.ReportDueDate" class="form-control" />
+                <span asp-validation-for="tblLegalDocument.ReportDueDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.Catatan" class="control-label"></label>
+                <input asp-for="tblLegalDocument.Catatan" class="form-control" />
+                <span asp-validation-for="tblLegalDocument.Catatan" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.UploaderID" class="control-label"></label>
+                <input asp-for="tblLegalDocument.UploaderID" class="form-control" />
+                <span asp-validation-for="tblLegalDocument.UploaderID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.UploaderName" class="control-label"></label>
+                <input asp-for="tblLegalDocument.UploaderName" class="form-control" />
+                <span asp-validation-for="tblLegalDocument.UploaderName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.UploaderEmail" class="control-label"></label>
+                <input asp-for="tblLegalDocument.UploaderEmail" class="form-control" />
+                <span asp-validation-for="tblLegalDocument.UploaderEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.CriteriaID" class="control-label"></label>
+                <select asp-for="tblLegalDocument.CriteriaID" class="form-control" asp-items="@Model.CriteriaSL">
+                    <option value="0">--Select--</option>
+                </select>
+                <span asp-validation-for="tblLegalDocument.CriteriaID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tblLegalDocument.CategoryID" class="control-label"></label>
+                <select asp-for="tblLegalDocument.CategoryID" class="form-control" asp-items="@Model.CategorySL">
+                    <option value="0">--Select--</option>
+                </select>
+                <span asp-validation-for="tblLegalDocument.CategoryID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

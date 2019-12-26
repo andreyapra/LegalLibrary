@@ -1,0 +1,75 @@
+﻿@page
+@model LegalLib.ApproveIndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Approval Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ApprovalList[0].Nomor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model =>model.ApprovalList[0].NamaDocument)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApprovalList[0].Perihal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].Revisi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].Catatan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApprovalList[0].UploaderName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApprovalList[0].CriteriaID)
+            </th>
+            <th>Klasifikasi</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.ApprovalList) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nomor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NamaDocument)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Perihal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Revisi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Catatan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UploaderName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CriteriaID)
+            </td>
+            <td>
+                Klasifikasi
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.DocumentID">Approve</a> |
+                <a asp-page="./Details" asp-route-id="@item.DocumentID">Reject</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,198 @@
+﻿@page
+@model LegalLib.DocListModel
+
+@{
+    ViewData["Title"] = "DocList";
+}
+
+<h1>DocList</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].Nomor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].NamaDocument)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].Perihal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].Regulation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].Chapter)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].Requirement)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].LegalRisk)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].BusinessRisk)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].PeopleRisk)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].EnvironmentRisk)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].Methods)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].Authority)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].TglMulai)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].TglAkhir)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].Revisi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].RevDocument)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].Permit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].PermitDueDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].ReportDueDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].Catatan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].ApproveStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].UploaderID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].UploaderName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].UploaderEmail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].TglUpload)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].CriteriaID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].CategoryID)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.tblLegalDocument) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nomor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NamaDocument)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Perihal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Regulation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Chapter)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Requirement)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LegalRisk)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BusinessRisk)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PeopleRisk)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnvironmentRisk)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Methods)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Authority)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TglMulai)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TglAkhir)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Revisi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RevDocument)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Permit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PermitDueDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReportDueDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Catatan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApproveStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UploaderID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UploaderName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UploaderEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TglUpload)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CriteriaID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryID)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.DocumentID">Edit</a> |
+                <a asp-page="./DocDetails" asp-route-id="@item.DocumentID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.DocumentID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

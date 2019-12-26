@@ -1,0 +1,35 @@
+﻿@page
+@model LegalLib.KlasifikasiIndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index Klasifikasi</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.tblKlasifikasi[0].Klasifikasi)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.tblKlasifikasi) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Klasifikasi)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.KlasifikasiID">Edit</a> |
+                <a asp-page="./Delete" asp-route-id="@item.KlasifikasiID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
