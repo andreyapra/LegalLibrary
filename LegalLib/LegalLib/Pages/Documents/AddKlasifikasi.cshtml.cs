@@ -20,10 +20,15 @@ namespace LegalLib
             _context = context;
         }
 
-
+        public class cAreChecked
+        {
+            int KlasifikasiID { get; set; }
+            string Klasifikasi { get; set; }
+            bool IsChecked { get; set; }
+        }
         public List<tblKlasifikasi> KlasifikasiSL { get; set; }
         [BindProperty]
-        public List<tblKlasifikasi> AreChecked { get; set; } = new List<tblKlasifikasi>();
+        public List<cAreChecked> AreChecked { get; set; }
 
         public void PopulateKlasifikasi()
         {
@@ -43,7 +48,8 @@ namespace LegalLib
         
         public IActionResult OnPost()
         {
-            PopulateKlasifikasi();
+            
+
             return Page();
         }
         

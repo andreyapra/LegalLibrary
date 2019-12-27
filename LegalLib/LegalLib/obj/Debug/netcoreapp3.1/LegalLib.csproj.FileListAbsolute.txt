@@ -170,3 +170,5 @@ C:\Users\ANDREYAPRADINATA\source\repos\LegalLib\LegalLib\obj\Debug\netcoreapp3.1
 C:\Users\ANDREYAPRADINATA\source\repos\LegalLib\LegalLib\obj\Debug\netcoreapp3.1\Razor\Pages\Login\Logout.cshtml.g.cs
 C:\Users\ANDREYAPRADINATA\source\repos\LegalLib\LegalLib\obj\Debug\netcoreapp3.1\Razor\Pages\Documents\DocEdit.cshtml.g.cs
 C:\Users\ANDREYAPRADINATA\source\repos\LegalLib\LegalLib\obj\Debug\netcoreapp3.1\Razor\Pages\Approval\Index.cshtml.g.cs
+C:\Users\ANDREYAPRADINATA\source\repos\LegalLib\LegalLib\obj\Debug\netcoreapp3.1\Razor\Pages\Approval\Approve.cshtml.g.cs
+C:\Users\ANDREYAPRADINATA\source\repos\LegalLib\LegalLib\obj\Debug\netcoreapp3.1\Razor\Pages\Approval\Reject.cshtml.g.cs

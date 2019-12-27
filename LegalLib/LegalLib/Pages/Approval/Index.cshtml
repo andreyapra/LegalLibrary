@@ -7,9 +7,6 @@
 
 <h1>Approval Index</h1>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -23,10 +20,10 @@
                 @Html.DisplayNameFor(model => model.ApprovalList[0].Perihal)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.tblLegalDocument[0].Revisi)
+                @Html.DisplayNameFor(model => model.ApprovalList[0].Revisi)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.tblLegalDocument[0].Catatan)
+                @Html.DisplayNameFor(model => model.ApprovalList[0].Catatan)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ApprovalList[0].UploaderName)
@@ -60,14 +57,15 @@
                 @Html.DisplayFor(modelItem => item.UploaderName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CriteriaID)
+                @Html.DisplayFor(modelItem => item.CriteriaID) - 
+                @Model.GetCriteria(item.CriteriaID)
             </td>
             <td>
                 Klasifikasi
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.DocumentID">Approve</a> |
-                <a asp-page="./Details" asp-route-id="@item.DocumentID">Reject</a>
+                <a asp-page="./Approve" asp-route-id="@item.DocumentID">Approve</a> |
+                <a asp-page="./Reject" asp-route-id="@item.DocumentID">Reject</a>
             </td>
         </tr>
 }

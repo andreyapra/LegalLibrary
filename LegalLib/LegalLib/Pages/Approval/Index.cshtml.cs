@@ -19,6 +19,7 @@ namespace LegalLib
             _context = context;
         }
 
+        public List<tblCriteria> CriteriaList { get; set; }
         public IList<tblLegalDocument> tblLegalDocument { get;set; }
         
         public List<tblLegalDocument> ApprovalList { get; set; }
@@ -32,12 +33,30 @@ namespace LegalLib
             ApprovalList = new List<tblLegalDocument>(DocQuery);
 
         }
-        public async Task OnGetAsync()
+
+        public string GetCriteria(int id)
+        {
+            var DocQuery = from d in _context.tblCriteria
+                           where d.CriteriaID == id
+                           select d;
+
+            CriteriaList = new List<tblCriteria>(DocQuery);
+            
+            string strCriteria = CriteriaList[0].Criteria;
+
+            return strCriteria;  
+        }
+        public async Task<IActionResult> OnGetAsync()
         {
             tblLegalDocument = await _context.tblLegalDocument.ToListAsync();
 
-            GetApprovalList();
+            if (tblLegalDocument == null)
+            {
+                return NotFound();
+            }
 
+            GetApprovalList();
+            return Page();
         }
     }
 }
