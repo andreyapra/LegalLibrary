@@ -7,37 +7,53 @@
 <h1>Search Page</h1>
 
 <form method="post">
-    <table>
-        <tr>
-            <td>Nomor  Peraturan </td>
-            <td><input type="text" /></td>
+    <div class="form-group">
+        <label class="control-label">Nomor Dokumen</label>
+        <input asp-for="SearchNomor" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label class="control-label">Criteria</label>
+        <select asp-for="SearchCriteriaID" class="form-control" asp-items="Model.CriteriaSL">
+            <option value="0">--Select--</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label class="control-label">Perihal</label>
+        <input asp-for="SearchPerihal" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label class="control-label">Tanggal Berlaku</label>
+        <input type="date" asp-for="SearchTglStart" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label class="control-label">Klasifikasi</label>
+        <select asp-for="SearchKlasifikasiID" class="form-control" asp-items="Model.KlasifikasiSL">
+            <option value="0">--Select--</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Search" class="btn btn-primary" />
+    </div>
 
-        </tr>
-        <tr>
-            <td>Criteria</td>
-            <td><input type="text" /></td>
-        </tr>
-        <tr>
-            <td>Perihal</td>
-            <td><input type="text" /></td>
-        </tr>
-        <tr>
-            <td>Tanggal Berlaku</td>
-            <td><input type="text" /></td>
-        </tr>
-        <tr>
-            <td>Klasifikasi</td>
-            <td><input type="text" /></td>
-        </tr>
-        <tr>
-            <td>
-                <input type="submit" value="Search" class="btn btn-primary" />
-            </td>
-            <td></td>
-        </tr>
-    </table>
-                    
+</form>
 
-    </form>
+Search Parameter
+<br />
+@Model.Search
+<br />
+@Model.SearchNomor
+<br />
+@Model.SearchCriteriaID
+<br />
+@Model.SearchKlasifikasiID
+<br />
+@Model.SearchPerihal
+<br />
+@Model.SearchTglStart
+
+
+
+
+
 
 

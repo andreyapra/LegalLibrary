@@ -34,6 +34,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.tblLegalDocument[0].CategoryID)
             </th>
+            <th>Klasifikasi</th>
             <th></th>
         </tr>
     </thead>
@@ -53,17 +54,33 @@
                 @Html.DisplayFor(modelItem => item.TglMulai)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Revisi)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Catatan)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CriteriaID)
+                @Model.GetCriteria(item.CriteriaID)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CategoryID)
+                @Model.GetCategory(item.CategoryID)
             </td>
             <td>
-                <a asp-area="Documents" asp-page="DocDetails" asp-route-id="@item.DocumentID">Details</a> |
-                <a asp-area="Comments" asp-page="Index" asp-route-id="@item.DocumentID">Comments</a> |
+                @foreach (var kk in Model.tblDocK)
+                {
+                    if (kk.DocumentID == item.DocumentID)
+                    {
+                        @Html.DisplayFor(modelItem => kk.KlasifikasiID)
+                        @Model.GetKlasifikasi(kk.KlasifikasiID) <br />
+                    }
+                }
+
+            </td>
+            <td>
+                <a asp-page="Documents/DocDetails" asp-route-id="@item.DocumentID">Details</a> |
+                <a asp-page="Comments/Index" asp-route-id="@item.DocumentID">Comments</a> |
             </td>
         </tr>
 }

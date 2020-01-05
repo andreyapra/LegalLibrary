@@ -21,12 +21,14 @@ namespace LegalLib
         }
 
         [BindProperty]
-        public IList<tblDocKlasifikasi> tblDocKlasifikasi { get;set; }
+        public IList<tblDK> tblDocKlasifikasi { get;set; }
         [BindProperty]
-        public tblDocKlasifikasi tblAddDK { get; set; }
-
+        public tblDK tblAddDK { get; set; }
+        public string Klasifikasi { get; set; }
+        [BindProperty]
         public int DocumentID { get; set; }
         [BindProperty]
+        public int KlasifikasiID { get; set; }
         public SelectList KlasifikasiSL { get; set; }
 
         public void PopulateKlasifikasi()
@@ -36,7 +38,7 @@ namespace LegalLib
                            orderby d.KlasifikasiID
                            select d;
 
-            KlasifikasiSL = new SelectList(CatQuery,"KlasifikasiID", "Klasifikasi");
+            KlasifikasiSL = new SelectList(CatQuery, "KlasifikasiID", "Klasifikasi");
         }
 
 
@@ -49,9 +51,16 @@ namespace LegalLib
 
             DocumentID = id.Value;
             PopulateKlasifikasi();
-            tblDocKlasifikasi = await _context.tblDocKlasifikasi.Where(m => m.DocumentID == id).ToListAsync();
+            tblDocKlasifikasi = await _context.tblDK.Where(m => m.DocumentID == id).ToListAsync();
 
             return Page();
+        }
+
+        public string GetKlasifikasi(int id)
+        {
+            Klasifikasi = _context.tblKlasifikasi.FirstOrDefault(m => m.KlasifikasiID == id).Klasifikasi;
+
+            return Klasifikasi;
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -61,13 +70,13 @@ namespace LegalLib
                 return Page();
             }
 
+            tblAddDK.KlasifikasiID = KlasifikasiID;
             tblAddDK.DocumentID = DocumentID;
-            _context.tblDocKlasifikasi.Add(tblAddDK);
+            _context.tblDK.Add(tblAddDK);
             await _context.SaveChangesAsync();
 
-            PopulateKlasifikasi();
 
-            return Page();
+            return Redirect("DKList?id="+DocumentID);
         }
     }
 }

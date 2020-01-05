@@ -24,21 +24,43 @@ namespace LegalLib
         public List<tblLegalDocument> tblLegalDocument { get; set; }
         public string SUsername { get; set; }
 
+        public List<tblDK> tblDocK { get; set; }
+
         public void PopulateDocument()
         {
             var DocQuery = (from d in _context.tblLegalDocument
+                            where d.ApproveStatus == 1
+                            where d.Status != 2
+                            where d.TglAkhir > System.DateTime.Today
                            orderby d.TglMulai descending
                            select d).Take(10);
 
             tblLegalDocument = new List<tblLegalDocument>(DocQuery);
         }
 
+        public void PopulateDK()
+        {
+            var KQuery = from d in _context.tblDK
+                         select d;
+
+            tblDocK = new List<tblDK>(KQuery);
+
+        }
+
+        public string GetKlasifikasi(int id)
+        {
+            string Klasifikasi;
+            Klasifikasi = _context.tblKlasifikasi.Where(m => m.KlasifikasiID == id).FirstOrDefault().Klasifikasi;
+
+            return Klasifikasi;
+        }
         public async Task OnGetAsync()
         {
 
             tblCategory = await _context.tblCategory.Where(m => m.IsActive == true).ToListAsync();
 
             PopulateDocument();
+            PopulateDK();
             SUsername = HttpContext.Session.GetString("SUsername");
                         
         }

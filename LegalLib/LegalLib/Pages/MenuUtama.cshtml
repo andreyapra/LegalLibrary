@@ -81,7 +81,19 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.TglMulai)
                         </td>
-                        <td>Klasifikasi</td>
+                        <td>
+                            Klasifikasi
+                            <br />
+
+                            @foreach (var kk in Model.tblDocK)
+                            {
+                                if (kk.DocumentID == item.DocumentID)
+                                {
+                                    @Html.DisplayFor(modelItem => kk.KlasifikasiID)
+                                    @Model.GetKlasifikasi(kk.KlasifikasiID) <br />
+                                }
+                            }
+                        </td>
                     </tr>
                     }
                 </tbody>

@@ -20,7 +20,7 @@ namespace LegalLib
         }
 
         [BindProperty]
-        public tblDocKlasifikasi tblDocKlasifikasi { get; set; }
+        public tblDK tblDocKlasifikasi { get; set; }
 
         public int DokumentID { get; set; }
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -30,7 +30,7 @@ namespace LegalLib
                 return NotFound();
             }
 
-            tblDocKlasifikasi = await _context.tblDocKlasifikasi.FirstOrDefaultAsync(m => m.DKID == id);
+            tblDocKlasifikasi = await _context.tblDK.FirstOrDefaultAsync(m => m.DKID == id);
             DokumentID = tblDocKlasifikasi.DocumentID;
 
             if (tblDocKlasifikasi == null)
@@ -47,11 +47,11 @@ namespace LegalLib
                 return NotFound();
             }
 
-            tblDocKlasifikasi = await _context.tblDocKlasifikasi.FindAsync(id);
+            tblDocKlasifikasi = await _context.tblDK.FindAsync(id);
 
             if (tblDocKlasifikasi != null)
             {
-                _context.tblDocKlasifikasi.Remove(tblDocKlasifikasi);
+                _context.tblDK.Remove(tblDocKlasifikasi);
                 await _context.SaveChangesAsync();
             }
 

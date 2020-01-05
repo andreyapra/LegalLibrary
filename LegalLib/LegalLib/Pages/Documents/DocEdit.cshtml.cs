@@ -112,7 +112,7 @@ namespace LegalLib
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/");
         }
 
         private bool tblLegalDocumentExists(int id)

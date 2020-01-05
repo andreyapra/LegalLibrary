@@ -84,7 +84,7 @@ namespace LegalLib.Models
 
 
     }
-    public class tblDocKlasifikasi
+    public class tblDK
     {
         [Key]
         public int DKID { get; set; }
@@ -93,14 +93,7 @@ namespace LegalLib.Models
 
     }
 
-    public class tblRole
-    {
-        [Key]
-        public int RoleID { get; }
-        public string RoleName { get; }
-
-    }
-
+    
     public class tblFileAttach
     {
         [Key]

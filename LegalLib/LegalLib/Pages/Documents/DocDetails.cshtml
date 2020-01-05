@@ -217,8 +217,8 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.tblDocKlasifikasi[0].KlasifikasiID)
+
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -230,9 +230,7 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.KlasifikasiID)
-                </td>
-                <td>
-                    <a asp-page="./DKDelete" asp-route-id="@item.DKID">Delete</a>
+                    @Model.GetKlasifikasi(item.KlasifikasiID)
                 </td>
             </tr>
         }

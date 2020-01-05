@@ -19,23 +19,46 @@ namespace LegalLib
 
         public tblLegalDocument tblLegalDocument { get; set; }
         [BindProperty]
-        public IList<tblDocKlasifikasi> tblDocKlasifikasi { get; set; }
-        public List<tblDocKlasifikasi> tblDK { get; set; }
-
+        public IList<tblDK> tblDocKlasifikasi { get; set; }
+        public List<tblDK> tblDK { get; set; }
         public IList<tblFileAttach> tblFileAttach { get; set; }
 
+        public int DocumentID { get; set; }
+        public string Klasifikasi { get; set; }
+        public void PopulateDK()
+        {
+            var DKQuery = from d in _context.tblDK
+                          where d.DocumentID == DocumentID
+                          select d;
+
+            tblDocKlasifikasi = new List<tblDK>(DKQuery);
+        }
+        public void PopulateFileAttach()
+        {
+            var DKQuery = from d in _context.tblFileAttach
+                          where d.DocumentID == DocumentID
+                          select d;
+
+            tblFileAttach = new List<tblFileAttach>(DKQuery);
+        }
+
+        public string GetKlasifikasi(int id)
+        {
+            Klasifikasi = _context.tblKlasifikasi.FirstOrDefault(m => m.KlasifikasiID == id).Klasifikasi;
+
+            return Klasifikasi;
+        }
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
+            DocumentID = id.Value;
             tblLegalDocument = await _context.tblLegalDocument.FirstOrDefaultAsync(m => m.DocumentID == id);
-            tblDocKlasifikasi = await _context.tblDocKlasifikasi.ToListAsync();
-            tblFileAttach = await _context.tblFileAttach.ToListAsync();
-
-            
+            PopulateDK();
+            PopulateFileAttach();
+                       
 
             if (tblLegalDocument == null)
             {

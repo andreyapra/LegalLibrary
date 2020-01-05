@@ -189,10 +189,8 @@
                 @Html.DisplayFor(modelItem => item.CategoryID)
             </td>
             <td>
-                <a asp-page="./DocUpload" asp-route-id="@item.DocumentID">Upload</a> |
-                <a asp-page="./Edit" asp-route-id="@item.DocumentID">Edit</a> |
-                <a asp-page="./DocDetails" asp-route-id="@item.DocumentID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.DocumentID">Delete</a>
+                <a asp-page="DocEdit" asp-route-id="@item.DocumentID">Edit</a> |
+                <a asp-page="DocDetails" asp-route-id="@item.DocumentID">Details</a> |
             </td>
         </tr>
 }

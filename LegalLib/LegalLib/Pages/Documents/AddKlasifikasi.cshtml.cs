@@ -24,7 +24,7 @@ namespace LegalLib
         [BindProperty]
         public IList<tblKlasifikasi> KlasifikasiSL { get; set; }
         [BindProperty]
-        public List<tblDocKlasifikasi> tblDocKlasifikasi {get;set;}
+        public List<tblDK> tblDocKlasifikasi {get;set;}
 
         public void PopulateKlasifikasi()
         {
@@ -43,11 +43,11 @@ namespace LegalLib
             }
 
             DocumentID = id.Value;
-            var DocQuery = from d in _context.tblDocKlasifikasi
+            var DocQuery = from d in _context.tblDK
                            where d.DocumentID == DocumentID
                            select d;
 
-            tblDocKlasifikasi = new List<tblDocKlasifikasi>(DocQuery);
+            tblDocKlasifikasi = new List<tblDK>(DocQuery);
 
             return Page();
         }
