@@ -9,6 +9,7 @@ namespace LegalLib.Models
         public int CriteriaID { get; set; }
         public string Criteria { get; set; }
         public string Description { get; set; }
+        public bool IsActive { get; set; }
 
     }
 
@@ -18,6 +19,7 @@ namespace LegalLib.Models
         public int CategoryID { get; set; }
         public string Category { get; set; }
         public string Description { get; set; }
+        public bool IsActive { get; set; }
 
     }
 
@@ -26,6 +28,8 @@ namespace LegalLib.Models
         [Key]
         public int KlasifikasiID { get; set; }
         public string Klasifikasi { get; set; }
+        public bool IsActive { get; set; }
+
 
     }
 
@@ -85,7 +89,7 @@ namespace LegalLib.Models
         [Key]
         public int DKID { get; set; }
         public int DocumentID { get; set; }
-        public int KlasifkasiID { get; set; }
+        public int KlasifikasiID { get; set; }
 
     }
 
@@ -94,6 +98,28 @@ namespace LegalLib.Models
         [Key]
         public int RoleID { get; }
         public string RoleName { get; }
+
+    }
+
+    public class tblFileAttach
+    {
+        [Key]
+        public int FileID { get; set; }
+        public int DocumentID { get; set; }
+        public string Filename { get; set; }
+
+    }
+
+    public class tblComments
+    {
+        [Key]
+        public int CommentID { get; set; }
+        public int DocumentID { get; set; }
+        public string UserID { get; set; }
+        public string Username { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime CommentDate { get; set; }
+        public string Comment { get; set; }
 
     }
 }

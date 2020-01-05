@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace LegalLib
 {
@@ -16,6 +18,11 @@ namespace LegalLib
         }
 
         public tblLegalDocument tblLegalDocument { get; set; }
+        [BindProperty]
+        public IList<tblDocKlasifikasi> tblDocKlasifikasi { get; set; }
+        public List<tblDocKlasifikasi> tblDK { get; set; }
+
+        public IList<tblFileAttach> tblFileAttach { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -25,6 +32,10 @@ namespace LegalLib
             }
 
             tblLegalDocument = await _context.tblLegalDocument.FirstOrDefaultAsync(m => m.DocumentID == id);
+            tblDocKlasifikasi = await _context.tblDocKlasifikasi.ToListAsync();
+            tblFileAttach = await _context.tblFileAttach.ToListAsync();
+
+            
 
             if (tblLegalDocument == null)
             {

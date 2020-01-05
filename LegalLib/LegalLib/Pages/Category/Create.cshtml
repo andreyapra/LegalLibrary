@@ -24,6 +24,11 @@
                 <span asp-validation-for="tblCategory.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="tblCategory.IsActive" class="control-label"></label>
+                <input asp-for="tblCategory.IsActive" class="form-control" />
+                <span asp-validation-for="tblCategory.IsActive" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>

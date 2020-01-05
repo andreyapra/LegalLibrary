@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace LegalLib.Pages
@@ -12,9 +13,12 @@ namespace LegalLib.Pages
             _logger = logger;
         }
 
+        public string SUsername { get; set; }
         public void OnGet()
         {
-            Response.Redirect("Menu");
+            SUsername = HttpContext.Session.GetString("SUsername");
+
+            Page();
         }
     }
 }

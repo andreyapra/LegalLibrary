@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using System;
 
 namespace LegalLib
 {
@@ -49,6 +50,7 @@ namespace LegalLib
         public void PopulateCategory()
         {
             var CatQuery = from d in _context.tblCategory
+                           where d.IsActive == true
                            orderby d.CategoryID
                            select d;
 
@@ -59,6 +61,7 @@ namespace LegalLib
         public void PopulateCriteria()
         {
             var CriQuery = from d in _context.tblCriteria
+                           where d.IsActive == true
                            orderby d.CriteriaID
                            select d;
 
@@ -69,20 +72,6 @@ namespace LegalLib
 
         public int DocumentID { get; set; }
 
-        public IActionResult AddKlasifikasi()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            _context.tblLegalDocument.Add(tblLegalDocument);
-            _context.SaveChanges();
-
-            DocumentID = tblLegalDocument.DocumentID;
-
-            return Redirect("/");
-        }
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
@@ -98,7 +87,7 @@ namespace LegalLib
             DocumentID = tblLegalDocument.DocumentID;
             HttpContext.Session.SetInt32("SDocumentID", DocumentID);
 
-            return Page();
+            return Redirect("DocEdit?id="+DocumentID);
         }
     }
 }

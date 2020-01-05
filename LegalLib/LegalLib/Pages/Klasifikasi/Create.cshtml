@@ -19,6 +19,11 @@
                 <span asp-validation-for="tblKlasifikasi.Klasifikasi" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="tblKlasifikasi.IsActive" class="control-label"></label>
+                <input asp-for="tblKlasifikasi.IsActive" class="form-control" />
+                <span asp-validation-for="tblKlasifikasi.IsActive" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>

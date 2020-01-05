@@ -20,15 +20,11 @@ namespace LegalLib
             _context = context;
         }
 
-        public class cAreChecked
-        {
-            int KlasifikasiID { get; set; }
-            string Klasifikasi { get; set; }
-            bool IsChecked { get; set; }
-        }
-        public List<tblKlasifikasi> KlasifikasiSL { get; set; }
+        public int DocumentID { get; set; }
         [BindProperty]
-        public List<cAreChecked> AreChecked { get; set; }
+        public IList<tblKlasifikasi> KlasifikasiSL { get; set; }
+        [BindProperty]
+        public List<tblDocKlasifikasi> tblDocKlasifikasi {get;set;}
 
         public void PopulateKlasifikasi()
         {
@@ -39,19 +35,22 @@ namespace LegalLib
             KlasifikasiSL = new List<tblKlasifikasi>(DocQuery);
 
         }
-        public IActionResult OnGet()
+        public IActionResult OnGetAsync(int? id)
         {
-            PopulateKlasifikasi();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            DocumentID = id.Value;
+            var DocQuery = from d in _context.tblDocKlasifikasi
+                           where d.DocumentID == DocumentID
+                           select d;
+
+            tblDocKlasifikasi = new List<tblDocKlasifikasi>(DocQuery);
 
             return Page();
         }
-        
-        public IActionResult OnPost()
-        {
-            
 
-            return Page();
-        }
-        
     }
 }

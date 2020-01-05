@@ -14,15 +14,8 @@ namespace LegalLib
 
         public string Message { get; set; }
 
-        public void OnGet()
-        {
-            ViewData["Username"] = HttpContext.Session.GetString("SUsername");
-        }
-
         public IActionResult OnPost()
         {
-            HttpContext.Session.SetString("SUsername", Username);
-            Message = HttpContext.Session.GetString("SUsername");
 
             switch (Username) 
             {
@@ -30,25 +23,33 @@ namespace LegalLib
                     HttpContext.Session.SetInt32("SRole", 4);
                     HttpContext.Session.SetString("SNama", "Nama Public");
                     HttpContext.Session.SetString("SEmail", "public@email.com");
-                    return Page();
+                    HttpContext.Session.SetString("SUsername", Username);
+                    Message = HttpContext.Session.GetString("SUsername");
+                    return Redirect("/");
 
                 case "manager":
                     HttpContext.Session.SetInt32("SRole", 3);
                     HttpContext.Session.SetString("SNama", "Nama Manager");
                     HttpContext.Session.SetString("SEmail", "manager@email.com");
-                    return Page();
+                    HttpContext.Session.SetString("SUsername", Username);
+                    Message = HttpContext.Session.GetString("SUsername");
+                    return Redirect("/");
 
                 case "legal":
                     HttpContext.Session.SetInt32("SRole", 2);
                     HttpContext.Session.SetString("SNama", "Nama Legal");
                     HttpContext.Session.SetString("SEmail", "legal@email.com");
-                    return Page();
+                    HttpContext.Session.SetString("SUsername", Username);
+                    Message = HttpContext.Session.GetString("SUsername");
+                    return Redirect("/");
 
                 case "user":
                     HttpContext.Session.SetInt32("SRole", 1);
                     HttpContext.Session.SetString("SNama", "Nama User");
                     HttpContext.Session.SetString("SEmail", "user@email.com");
-                    return Page();
+                    HttpContext.Session.SetString("SUsername", Username);
+                    Message = HttpContext.Session.GetString("SUsername");
+                    return Redirect("/");
 
                 default:
                     Message = "Invalid username and password";

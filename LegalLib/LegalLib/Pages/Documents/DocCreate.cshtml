@@ -105,8 +105,6 @@
                 </select>
                 <span asp-validation-for="tblLegalDocument.RevDocument" class="text-danger"></span>
             </div>
-
-
             <div class="form-group">
                 <label asp-for="tblLegalDocument.Permit" class="control-label"></label>
                 <input asp-for="tblLegalDocument.Permit" class="form-control" />
@@ -143,7 +141,6 @@
                 <input asp-for="tblLegalDocument.UploaderEmail" class="form-control" value="@Model.SEmail" />
                 <span asp-validation-for="tblLegalDocument.UploaderEmail" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <label asp-for="tblLegalDocument.CriteriaID" class="control-label"></label>
                 <select asp-for="tblLegalDocument.CriteriaID" class="form-control" asp-items="@Model.CriteriaSL">
@@ -158,11 +155,6 @@
                 </select>
                 <span asp-validation-for="tblLegalDocument.CategoryID" class="text-danger"></span>
             </div>
-
-            <a asp-action="AddKlasifikasi">Klasifikasi</a>
-
-            <a asp-action="AddKlasifikasi">File Attachment</a>
-
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

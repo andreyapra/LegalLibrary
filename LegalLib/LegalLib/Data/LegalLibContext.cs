@@ -15,6 +15,9 @@ namespace LegalLib.Data
         public DbSet<LegalLib.Models.tblLegalDocument> tblLegalDocument { get; set; }
         public DbSet<LegalLib.Models.tblDocKlasifikasi> tblDocKlasifikasi { get; set; }
         public DbSet<LegalLib.Models.tblDocKlasifikasi> tblRole { get; set; }
+        public DbSet<LegalLib.Models.tblFileAttach> tblFileAttach { get; set; }
+        public DbSet<LegalLib.Models.tblComments> tblComments { get; set; }
+
 
     }
 }

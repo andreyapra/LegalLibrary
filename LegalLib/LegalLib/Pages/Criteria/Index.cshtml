@@ -19,6 +19,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.tblCriteria[0].Description)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblCriteria[0].IsActive)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -32,8 +35,10 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.CriteriaID">Edit</a> |
-                <a asp-page="./Delete" asp-route-id="@item.CriteriaID">Delete</a>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.CriteriaID">Edit</a>
             </td>
         </tr>
 }

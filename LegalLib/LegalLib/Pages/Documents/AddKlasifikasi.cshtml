@@ -7,35 +7,37 @@
 
 <h1>AddKlasifikasi</h1>
 
-<form method="post">
+<form>
     <table class="table">
-        <tr>
-            <th>Pilihan</th>
-            <th>Klasifikasi</th>
-
-        </tr>
-        @for (var i = 0; i <Model.KlasifikasiSL.Count; i++)
-        {
-
-
+        <thead>
             <tr>
-                <td>
-                    <input type="checkbox" asp-for="@Model.AreChecked.FirstOrDefault" />
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.KlasifikasiID) - @Html.DisplayFor(modelItem => item.Klasifikasi)
-                </td>
-
+                <th>
+                    @Html.DisplayNameFor(model => model.tblDocKlasifikasi[0].DocumentID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.tblDocKlasifikasi[0].KlasifikasiID)
+                </th>
             </tr>
-        }
+        </thead>
+        <tbody>
+            @foreach (var item in Model.tblDocKlasifikasi)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DocumentID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.KlasifikasiID)
+                    </td>
+                </tr>
+            }
+        </tbody>
     </table>
-    
+
     <input type="submit" value="Pilih" class="btn btn-primary" />
 </form>
 
-Pilihan
+<select multiple="multiple" asp-for="@Model.KlasifikasiSL"></select>
 
-
-
-<a asp-page="./Edit" asp-route-id="KlasifikasiID">Add</a> |
+<a asp-page="./DocEdit" asp-route-id="@Model.DocumentID">Add</a> |
 

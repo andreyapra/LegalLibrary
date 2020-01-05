@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using LegalLib.Data;
 using LegalLib.Models;
@@ -22,12 +23,14 @@ namespace LegalLib
 
         [BindProperty]
         public tblLegalDocument tblLegalDocument { get; set; }
-
+        [BindProperty]
+        public int SelectedCategory { get; set; }
         public SelectList CategorySL { get; set; }
         public SelectList CriteriaSL { get; set; }
 
         public SelectList RevDocumentSL { get; set; }
 
+        public int DocumentID { get; set; }
         public void PopulateRevDocument()
         {
             var DocQuery = from d in _context.tblLegalDocument
@@ -40,16 +43,18 @@ namespace LegalLib
         public void PopulateCategory()
         {
             var CatQuery = from d in _context.tblCategory
+                           where d.IsActive == true
                            orderby d.CategoryID
                            select d;
 
             CategorySL = new SelectList(CatQuery, "CategoryID", "Category");
-
+            SelectedCategory = tblLegalDocument.CategoryID;
         }
 
         public void PopulateCriteria()
         {
             var CriQuery = from d in _context.tblCriteria
+                           where d.IsActive == true
                            orderby d.CriteriaID
                            select d;
 
@@ -63,6 +68,7 @@ namespace LegalLib
                 return NotFound();
             }
 
+            DocumentID = id.Value;
             tblLegalDocument = await _context.tblLegalDocument.FirstOrDefaultAsync(m => m.DocumentID == id);
 
             if (tblLegalDocument == null)
@@ -73,7 +79,7 @@ namespace LegalLib
             PopulateCategory();
             PopulateCriteria();
             PopulateRevDocument();
-
+            HttpContext.Session.SetInt32("sDocumentID", id.GetValueOrDefault());
 
             return Page();
         }
@@ -87,6 +93,7 @@ namespace LegalLib
                 return Page();
             }
 
+            tblLegalDocument.ApproveStatus = 0;
             _context.Attach(tblLegalDocument).State = EntityState.Modified;
 
             try

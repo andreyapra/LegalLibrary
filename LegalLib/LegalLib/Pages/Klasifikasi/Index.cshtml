@@ -16,6 +16,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.tblKlasifikasi[0].Klasifikasi)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblKlasifikasi[0].IsActive)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -26,8 +29,10 @@
                 @Html.DisplayFor(modelItem => item.Klasifikasi)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.KlasifikasiID">Edit</a> |
-                <a asp-page="./Delete" asp-route-id="@item.KlasifikasiID">Delete</a>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.KlasifikasiID">Edit</a>
             </td>
         </tr>
 }

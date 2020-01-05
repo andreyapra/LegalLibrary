@@ -5,7 +5,7 @@
     ViewData["Title"] = "DocDetails";
 }
 
-<h1>DocDetails</h1>
+<h1>Document Details</h1>
 
 <div>
     <h4>tblLegalDocument</h4>
@@ -181,6 +181,66 @@
         </dd>
     </dl>
 </div>
+<strong>File Attachment</strong>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.tblFileAttach[0].DocumentID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblFileAttach[0].Filename)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.tblFileAttach)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DocumentID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Filename)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<strong>Klasifikasi</strong>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.tblDocKlasifikasi[0].DocumentID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblDocKlasifikasi[0].KlasifikasiID)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.tblDocKlasifikasi)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DocumentID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KlasifikasiID)
+                </td>
+                <td>
+                    <a asp-page="./DKDelete" asp-route-id="@item.DKID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.tblLegalDocument.DocumentID">Edit</a> |
     <a asp-page="./Index">Back to List</a>
