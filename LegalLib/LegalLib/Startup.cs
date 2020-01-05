@@ -28,7 +28,7 @@ namespace LegalLib
             services.AddSession();
             services.AddMemoryCache();
             services.AddRazorPages();
-
+            
             services.AddDbContext<LegalLibContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("LegalLibContext")));
         }
@@ -47,6 +47,7 @@ namespace LegalLib
                 app.UseHsts();
             }
 
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSession();

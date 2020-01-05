@@ -1,0 +1,20 @@
+﻿@page
+@model LegalLib.DocUploadModel
+@{
+    ViewData["Title"] = "DocUpload";
+}
+
+<h1>DocUpload</h1>
+
+<form method="post" enctype="multipart/form-data">
+    <input type="file" asp-for="Upload" />
+    <input type="submit" />
+    <input type="hidden" asp-for="DocumentID" />
+</form>
+
+<br />
+<a asp-page="DocFileList" asp-route-id="@Model.DocumentID">Attach File List</a>
+<br />
+
+@Model.Info
+

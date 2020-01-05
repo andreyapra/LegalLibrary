@@ -1,0 +1,96 @@
+﻿@page
+@model LegalLib.MenuModel
+
+@{
+    ViewData["Title"] = "Menu";
+}
+
+
+    @Model.SUsername
+    @{
+        if (Model.SUsername == null) { HttpContext.Response.Redirect("Login"); }
+    }
+    <br />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4">
+            Column 1
+            <br />
+            <strong>PERATURAN EXTERNAL</strong>
+            <ul>
+                @foreach (var item in Model.tblCategory)
+                {
+                    <li>
+                        <a asp-page="/Search/CatDisplay" asp-route-id="@item.CategoryID">
+                        @Html.DisplayFor(modelItem => item.Category)
+                        </a>
+                    </li>
+
+                }
+            </ul>
+
+            <strong>PERATURAN INTERNAL</strong>
+            <ul>
+                <li><a href="https://www.google.com">Portal STK</a></li>
+            </ul>
+
+            <strong>MASTER DATA</strong>
+            <ul>
+                <li><a asp-page="/Category/Index">MASTER CATEGORY</a></li>
+                <li><a asp-page="/Criteria/Index">MASTER CRITERIA</a></li>
+                <li><a asp-page="/Klasifikasi/Index">MASTER KLASIFIKASI</a></li>
+            </ul>
+            <strong><a asp-page="/Approval/Index">APPROVAL LIST</a></strong>
+            <br />
+            <strong><a asp-page="/Login/Logout">LOGOUT</a></strong>
+
+        </div>
+        <div class="col-8">
+            Column 2
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.tblLegalDocument[0].CategoryID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.tblLegalDocument[0].Nomor)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.tblLegalDocument[0].Perihal)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.tblLegalDocument[0].TglMulai)
+                        </th>
+                        <th>Klasifikasi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.tblLegalDocument)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CategoryID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nomor)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Perihal)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TglMulai)
+                        </td>
+                        <td>Klasifikasi</td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+

@@ -1,0 +1,51 @@
+﻿@page
+@model LegalLib.DKListModel
+
+@{
+    ViewData["Title"] = "DKList";
+}
+
+<h1>DKList</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="tblAddDK.KlasifikasiID" class="control-label"></label>
+        <select asp-for="tblAddDK.KlasifikasiID" class="form-control" asp-items="@Model.KlasifikasiSL">
+            <option value="0">--Select--</option>
+        </select>
+        <span asp-validation-for="tblAddDK.KlasifikasiID" class="text-danger"></span>
+    </div>
+    <input type="submit" value="Add" class="btn btn-primary" />
+
+</form>
+<p>
+    <a asp-page="DKAdd">Add Klasifikasi</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.tblDocKlasifikasi[0].DocumentID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblDocKlasifikasi[0].KlasifikasiID)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.tblDocKlasifikasi) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DocumentID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.KlasifikasiID)
+            </td>
+            <td>
+                <a asp-page="./DKDelete" asp-route-id="@item.DKID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

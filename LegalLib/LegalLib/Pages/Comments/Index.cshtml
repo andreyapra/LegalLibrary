@@ -1,0 +1,57 @@
+﻿@page
+@model LegalLib.CommentIndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.tblComments[0].DocumentID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblComments[0].UserID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblComments[0].Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblComments[0].CommentDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblComments[0].Comment)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.tblComments) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DocumentID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CommentDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

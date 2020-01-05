@@ -1,0 +1,71 @@
+﻿@page
+@model LegalLib.CatDisplayModel
+
+@{
+    ViewData["Title"] = "CatDisplay";
+}
+
+<h1>List View Display</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].Nomor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].NamaDocument)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].Perihal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].TglMulai)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].Revisi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].Catatan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].CriteriaID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblLegalDocument[0].CategoryID)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.tblLegalDocument) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nomor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NamaDocument)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Perihal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TglMulai)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Catatan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CriteriaID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryID)
+            </td>
+            <td>
+                <a asp-area="Documents" asp-page="DocDetails" asp-route-id="@item.DocumentID">Details</a> |
+                <a asp-area="Comments" asp-page="Index" asp-route-id="@item.DocumentID">Comments</a> |
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
