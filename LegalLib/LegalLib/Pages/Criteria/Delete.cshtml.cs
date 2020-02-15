@@ -1,6 +1,8 @@
 ﻿using LegalLib.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +18,9 @@ namespace LegalLib
         }
 
         [BindProperty]
-        public tblCriteria tblCriteria { get; set; }
+        public TblCriteria TblCriteria { get; set; }
+        public string SUsername { get; set; }
+        public int SRole { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -25,31 +29,52 @@ namespace LegalLib
                 return NotFound();
             }
 
-            tblCriteria = await _context.tblCriteria.FirstOrDefaultAsync(m => m.CriteriaID == id);
+            TblCriteria = await _context.TblCriteria.FirstOrDefaultAsync(m => m.CriteriaID == id);
 
-            if (tblCriteria == null)
+            if (TblCriteria == null)
             {
                 return NotFound();
             }
-            return Page();
-        }
+            SUsername = HttpContext.Session.GetString("SUsername");
+            SRole = HttpContext.Session.GetInt32("SRole").GetValueOrDefault();
 
-        public async Task<IActionResult> OnPostAsync(int? id)
-        {
-            if (id == null)
+            if (SUsername == null)
             {
-                return NotFound();
+                Response.Redirect("/Login/Index");
+            }
+            else if (SRole < 2)
+            {
+                Response.Redirect("/Denied");
             }
 
-            tblCriteria = await _context.tblCriteria.FindAsync(id);
+            TblCriteria.IsActive = false;
+            TblCriteria.ModifiedDate = System.DateTime.Now;
+            TblCriteria.ModifiedBy = HttpContext.Session.GetString("SUsername");
+            _context.Attach(TblCriteria).State = EntityState.Modified;
 
-            if (tblCriteria != null)
+            try
             {
-                _context.tblCriteria.Remove(tblCriteria);
                 await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!tblCriteriaExists(TblCriteria.CriteriaID))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
             }
 
             return RedirectToPage("./Index");
         }
+
+        private bool tblCriteriaExists(int id)
+        {
+            return _context.TblCriteria.Any(e => e.CriteriaID == id);
+        }
+
     }
 }

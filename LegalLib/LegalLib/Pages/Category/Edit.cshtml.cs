@@ -1,4 +1,5 @@
 ﻿using LegalLib.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Linq;
@@ -18,7 +19,9 @@ namespace LegalLib
         }
 
         [BindProperty]
-        public tblCategory tblCategory { get; set; }
+        public TblCategory TblCategory { get; set; }
+        public string SUsername { get; set; }
+        public int SRole { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -27,12 +30,24 @@ namespace LegalLib
                 return NotFound();
             }
 
-            tblCategory = await _context.tblCategory.FirstOrDefaultAsync(m => m.CategoryID == id);
+            TblCategory = await _context.TblCategory.FirstOrDefaultAsync(m => m.CategoryID == id);
 
-            if (tblCategory == null)
+            if (TblCategory == null)
             {
                 return NotFound();
             }
+            SUsername = HttpContext.Session.GetString("SUsername");
+            SRole = HttpContext.Session.GetInt32("SRole").GetValueOrDefault();
+
+            if (SUsername == null)
+            {
+                Response.Redirect("/Login/Index");
+            }
+            else if (SRole < 2)
+            {
+                Response.Redirect("/Denied");
+            }
+
             return Page();
         }
 
@@ -45,7 +60,9 @@ namespace LegalLib
                 return Page();
             }
 
-            _context.Attach(tblCategory).State = EntityState.Modified;
+            TblCategory.ModifiedDate = System.DateTime.Now;
+            TblCategory.ModifiedBy = HttpContext.Session.GetString("SUsername");
+            _context.Attach(TblCategory).State = EntityState.Modified;
 
             try
             {
@@ -53,7 +70,7 @@ namespace LegalLib
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!tblCategoryExists(tblCategory.CategoryID))
+                if (!tblCategoryExists(TblCategory.CategoryID))
                 {
                     return NotFound();
                 }
@@ -68,7 +85,7 @@ namespace LegalLib
 
         private bool tblCategoryExists(int id)
         {
-            return _context.tblCategory.Any(e => e.CategoryID == id);
+            return _context.TblCategory.Any(e => e.CategoryID == id);
         }
     }
 }

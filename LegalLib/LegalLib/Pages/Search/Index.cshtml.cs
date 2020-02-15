@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using LegalLib.Data;
+using LegalLib.Models;
 
 
 namespace LegalLib
@@ -19,6 +22,10 @@ namespace LegalLib
         }
 
         [BindProperty]
+        public IList<TblLegalDocument> TblDocSearch { get; set; }
+        public List<TblDK> TblDocK { get; set; }
+
+        [BindProperty]
         public string SearchNomor { get; set; }
         [BindProperty]
         public DateTime SearchTglStart { get; set; }
@@ -28,13 +35,13 @@ namespace LegalLib
         public string SearchPerihal { get; set; }
         [BindProperty]
         public int SearchKlasifikasiID { get; set; }
-
+        [BindProperty]
         public string Search { get; set; }
         public SelectList CriteriaSL { get; set; }
         public SelectList KlasifikasiSL { get; set; }   
         public void PopulateCriteria()
         {
-            var CriQuery = from d in _context.tblCriteria
+            var CriQuery = from d in _context.TblCriteria
                            where d.IsActive == true
                            orderby d.CriteriaID
                            select d;
@@ -43,12 +50,41 @@ namespace LegalLib
         }
         public void PopulateKlasifikasi()
         {
-            var CriQuery = from d in _context.tblKlasifikasi
+            var CriQuery = from d in _context.TblKlasifikasi
                            where d.IsActive == true
                            orderby d.KlasifikasiID
                            select d;
 
             KlasifikasiSL = new SelectList(CriQuery, "KlasifikasiID", "Klasifikasi");
+        }
+        public void PopulateDK()
+        {
+            var DKQuery = from d in _context.TblDK
+                          select d;
+
+            TblDocK = DKQuery.ToList();
+        }
+        public string GetKlasifikasi(int id)
+        {
+            string Klasifikasi;
+            Klasifikasi = _context.TblKlasifikasi.Where(m => m.KlasifikasiID == id).FirstOrDefault().Klasifikasi;
+
+            return Klasifikasi;
+        }
+
+        public string GetCriteria(int id)
+        {
+            string Criteria;
+            Criteria = _context.TblCriteria.Where(m => m.CriteriaID == id).FirstOrDefault().Criteria;
+
+            return Criteria;
+        }
+        public string GetCategory(int id)
+        {
+            string Category;
+            Category = _context.TblCategory.Where(m => m.CategoryID == id).FirstOrDefault().Category;
+
+            return Category;
         }
 
 
@@ -56,6 +92,8 @@ namespace LegalLib
         {
             PopulateCriteria();
             PopulateKlasifikasi();
+            PopulateDK();
+            TblDocSearch = _context.TblLegalDocument.ToList();
         }
 
         public IActionResult OnPost()
@@ -64,27 +102,29 @@ namespace LegalLib
 
             if (SearchCriteriaID != 0)
             {
-                Search = Search + "Criteria";
+                Search += "Criteria";
             }
             if (SearchKlasifikasiID != 0)
             {
-                Search = Search + "Klasifikasi";
+                Search += "Klasifikasi";
+                // cari di tbldk, terus cari tbllegaldoc
             }
             if (SearchNomor != null)
             {
-                Search = Search + "Nomor";
+                Search += "Nomor";
             }
             if (SearchPerihal != null)
             {
-                Search = Search + "Perihal";
+                Search += "Perihal";
             }
             if (SearchTglStart != DateTime.MinValue)
             {
-                Search = Search + "TglStart";
+                Search += "TglStart";
             }
 
             PopulateCriteria();
             PopulateKlasifikasi();
+            PopulateDK();
             return Page();
         }
     }

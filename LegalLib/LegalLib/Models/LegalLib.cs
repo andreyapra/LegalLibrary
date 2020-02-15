@@ -1,53 +1,66 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LegalLib.Models
 {
-    public class tblCriteria
+    public class TblCriteria
     {
         [Key]
         public int CriteriaID { get; set; }
         public string Criteria { get; set; }
         public string Description { get; set; }
         public bool IsActive { get; set; }
-
+        public string CreatedBy { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime CreatedDate { get; set; }
+        public string ModifiedBy { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime ModifiedDate { get; set; }
+        public ICollection<TblLegalDocument> TblLegalDocuments { get; set; }
     }
 
-    public class tblCategory
+    public class TblCategory
     {
         [Key]
         public int CategoryID { get; set; }
         public string Category { get; set; }
         public string Description { get; set; }
         public bool IsActive { get; set; }
-
+        public string CreatedBy { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime CreatedDate { get; set; }
+        public string ModifiedBy { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime ModifiedDate { get; set; }
+        public ICollection<TblLegalDocument> TblLegalDocuments { get; set; }
     }
 
-    public class tblKlasifikasi
+    public class TblKlasifikasi
     {
         [Key]
         public int KlasifikasiID { get; set; }
         public string Klasifikasi { get; set; }
+        public string Description { get; set; }
         public bool IsActive { get; set; }
-
-
+        public string CreatedBy { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime CreatedDate { get; set; }
+        public string ModifiedBy { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime ModifiedDate { get; set; }
+        public ICollection<TblDK> TblDKs { get; set; }
     }
 
-    public class tblLegalDocument
+    public class TblLegalDocument
     {
-        public tblLegalDocument()
-        {
-            ApproveStatus = 0;
-            TglUpload = System.DateTime.Today;
-            Revisi = 0;
-            RevDocument = 0;
-        }
-
-        [Key]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int DocumentID { get; set; }
         public string Nomor { get; set; }
+        [Display(Name ="Nama Document")]
         public string NamaDocument { get; set; }
-        public int Status { get; set; }
+        public string Status { get; set; }
         public string Perihal { get; set; }
         public string Regulation { get; set; }
         public string Chapter { get; set; }
@@ -59,12 +72,11 @@ namespace LegalLib.Models
         public string Methods { get; set; }
         public string Authority { get; set; }
         [DataType(DataType.Date)]
+        [Display(Name ="Tanggal Berlaku")]
         public DateTime TglMulai { get; set; }
         [DataType(DataType.Date)]
         public DateTime TglAkhir { get; set; }
-
         public int Revisi { get; set; }
-
         public int RevDocument { get; set; }
         public string Permit { get; set; }
         [DataType(DataType.Date)]
@@ -72,38 +84,62 @@ namespace LegalLib.Models
         [DataType(DataType.Date)]
         public DateTime ReportDueDate { get; set; }
         public string Catatan { get; set; }
-        public int ApproveStatus { get; set; }
+        public string ApproveStatus { get; set; }
         public string UploaderID { get; set; }
         public string UploaderName { get; set; }
         public string UploaderEmail { get; set; }
         [DataType(DataType.Date)]
         public DateTime TglUpload { get; set; }
-
-        public int CriteriaID { get; set; }
+        public string ModifiedBy { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime ModifiedDate { get; set; }
+        [Display(Name = "Category")]
         public int CategoryID { get; set; }
-
+        [Display(Name = "Criteria")]
+        public int CriteriaID { get; set; }
+        public TblCategory TblCategory { get; set; }
+        public TblCriteria TblCriteria { get; set; }
+        public ICollection<TblFileAttach> TblFileAttaches { get; set; }
+        public ICollection<TblDK> TblDKs { get; set; }
+        public ICollection<TblComment> TblComments { get; set; }
+        public bool IsActive { get; set; }
 
     }
-    public class tblDK
+    public class TblDK
     {
         [Key]
         public int DKID { get; set; }
+        public string CreatedBy { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime CreatedDate { get; set; }
+        public string ModifiedBy { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime ModifiedDate { get; set; }
         public int DocumentID { get; set; }
         public int KlasifikasiID { get; set; }
-
+        public TblLegalDocument TblLegalDocument { get; set; }
+        public TblKlasifikasi TblKlasifikasi { get; set; }
+        public bool IsActive { get; set; }
     }
 
-    
-    public class tblFileAttach
+    public class TblFileAttach
     {
         [Key]
         public int FileID { get; set; }
-        public int DocumentID { get; set; }
         public string Filename { get; set; }
+        public string CreatedBy { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime CreatedDate { get; set; }
+        public string ModifiedBy { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime ModifiedDate { get; set; }
+        public int DocumentID { get; set; }
+        public TblLegalDocument TblLegalDocument { get; set; }
+        public bool IsActive { get; set; }
 
     }
 
-    public class tblComments
+    public class TblComment
     {
         [Key]
         public int CommentID { get; set; }
@@ -113,6 +149,20 @@ namespace LegalLib.Models
         [DataType(DataType.Date)]
         public DateTime CommentDate { get; set; }
         public string Comment { get; set; }
+        public TblLegalDocument TblLegalDocument { get; set; }
+        public bool IsActive { get; set; }
 
     }
+    public class TblLogActivity
+    {
+        [Key]
+        public int LogID { get; set; }
+        public int UserID { get; set; }
+        public int TglLog { get; set; }
+        public int Modul { get; set; }
+        public int Action { get; set; }
+        public int AppName { get; set; }
+
+    }
+
 }

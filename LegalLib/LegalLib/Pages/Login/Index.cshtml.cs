@@ -19,14 +19,6 @@ namespace LegalLib
 
             switch (Username) 
             {
-                case "public":
-                    HttpContext.Session.SetInt32("SRole", 4);
-                    HttpContext.Session.SetString("SNama", "Nama Public");
-                    HttpContext.Session.SetString("SEmail", "public@email.com");
-                    HttpContext.Session.SetString("SUsername", Username);
-                    Message = HttpContext.Session.GetString("SUsername");
-                    return Redirect("/");
-
                 case "manager":
                     HttpContext.Session.SetInt32("SRole", 3);
                     HttpContext.Session.SetString("SNama", "Nama Manager");

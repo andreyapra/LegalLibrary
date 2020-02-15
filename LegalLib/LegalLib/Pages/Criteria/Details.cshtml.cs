@@ -15,7 +15,7 @@ namespace LegalLib
             _context = context;
         }
 
-        public tblCriteria tblCriteria { get; set; }
+        public TblCriteria TblCriteria { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -24,9 +24,9 @@ namespace LegalLib
                 return NotFound();
             }
 
-            tblCriteria = await _context.tblCriteria.FirstOrDefaultAsync(m => m.CriteriaID == id);
+            TblCriteria = await _context.TblCriteria.FirstOrDefaultAsync(m => m.CriteriaID == id);
 
-            if (tblCriteria == null)
+            if (TblCriteria == null)
             {
                 return NotFound();
             }

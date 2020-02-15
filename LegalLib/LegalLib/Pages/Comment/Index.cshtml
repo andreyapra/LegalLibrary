@@ -1,0 +1,69 @@
+﻿@page "{id:int}"
+@model LegalLib.CommentIndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Comments</h1>
+
+<h4>@Model.DocumentID</h4>
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="TblNewComment.Comment" class="control-label"></label>
+        <input asp-for="TblNewComment.Comment" class="form-control" />
+        <span asp-validation-for="TblNewComment.Comment" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Add" class="btn btn-primary" />
+    </div>
+</form>
+<br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TblComment[0].DocumentID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TblComment[0].UserID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TblComment[0].Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TblComment[0].CommentDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TblComment[0].Comment)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.TblComment) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DocumentID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CommentDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LegalLib
 {
@@ -15,11 +16,16 @@ namespace LegalLib
             _context = context;
         }
 
-        public IList<tblLegalDocument> tblLegalDocument { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string SearchString { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string SCriteria { get; set; }
+
+        public IList<TblLegalDocument> TblLegalDocument { get; set; }
 
         public async Task OnGetAsync()
         {
-            tblLegalDocument = await _context.tblLegalDocument.ToListAsync();
+            TblLegalDocument = await _context.TblLegalDocument.ToListAsync();
         }
     }
 }

@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="Default Web Site" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\ANDREYAPRADINATA\\source\\repos\\LegalLib\\LegalLib\\obj\\Release\\netcoreapp3\.1\\win-x64\\PubTmp\\Out\\$" />
+  </parameter>
+  <parameter name="LegalLib.Data.LegalLibContext" description="" value="Data Source=ANDREYAPRA\SQLEXPRESS;Initial Catalog=LegalLibrary;Integrated Security=True" tags="dbfullsql">
+    <parameterEntry kind="ProviderPath" scope="dbfullsql" match="^C:\\Users\\ANDREYAPRADINATA\\source\\repos\\LegalLib\\LegalLib\\obj\\Release\\netcoreapp3\.1\\win-x64\\PubTmp\\EFSQLScripts\\LegalLib\.Data\.LegalLibContext\.sql$" />
+  </parameter>
+</parameters>

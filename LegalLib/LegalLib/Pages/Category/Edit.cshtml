@@ -1,11 +1,11 @@
-﻿@page
+﻿@page "{id:int}"
 @model LegalLib.CategoryEditModel
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Edit Category</h1>
 
 <h4>tblCategory</h4>
 <hr />
@@ -13,21 +13,19 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="tblCategory.CategoryID" />
+            <input type="hidden" asp-for="TblCategory.CategoryID" />
+            <input type="hidden" asp-for="TblCategory.IsActive" />
+            <input type="hidden" asp-for="TblCategory.CreatedBy" />
+            <input type="hidden" asp-for="TblCategory.CreatedDate" />
             <div class="form-group">
-                <label asp-for="tblCategory.Category" class="control-label"></label>
-                <input asp-for="tblCategory.Category" class="form-control" />
-                <span asp-validation-for="tblCategory.Category" class="text-danger"></span>
+                <label asp-for="TblCategory.Category" class="control-label"></label>
+                <input asp-for="TblCategory.Category" class="form-control" />
+                <span asp-validation-for="TblCategory.Category" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="tblCategory.Description" class="control-label"></label>
-                <input asp-for="tblCategory.Description" class="form-control" />
-                <span asp-validation-for="tblCategory.Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="tblCategory.IsActive" class="control-label"></label>
-                <input asp-for="tblCategory.IsActive" class="form-control" />
-                <span asp-validation-for="tblCategory.IsActive" class="text-danger"></span>
+                <label asp-for="TblCategory.Description" class="control-label"></label>
+                <input asp-for="TblCategory.Description" class="form-control" />
+                <span asp-validation-for="TblCategory.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -37,7 +35,7 @@
 </div>
 
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Index">Back to Category List</a>
 </div>
 
 @section Scripts {

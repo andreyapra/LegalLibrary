@@ -4,16 +4,10 @@
     ViewData["Title"] = "Home page";
 }
 @{
-    if (Model.SUsername == null)
-    {
-        HttpContext.Response.Redirect("Login");
-    }
-    else
-    {
         HttpContext.Response.Redirect("MenuUtama");
-    }
-
 }
+
+
 
 <div class="container">
     <h1 class="display-4">Welcome</h1>

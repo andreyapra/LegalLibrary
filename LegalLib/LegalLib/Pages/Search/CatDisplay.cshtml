@@ -1,45 +1,68 @@
-﻿@page
+﻿@page "{id:int}"
 @model LegalLib.CatDisplayModel
 
 @{
     ViewData["Title"] = "CatDisplay";
 }
 
-<h1>List View Display</h1>
+<h1>List View Document By Category</h1>
+
+<h4>@Model.GetCategory(Model.CategoryID)</h4>
+
+<br />
+
+<div>
+    <form>
+        <select asp-for="SCriteria">
+            <option value="NOMOR">Nomor</option>
+            <option value="CRITERIA">Criteria</option>
+            <option value="PERIHAL">Perihal</option>
+            <option value="KLASIFIKASI">Klasifikasi</option>
+            <option value="TANGGAL">Tanggal Berlaku</option>
+        </select>
+        <input type="text" asp-for="SearchString" />
+        <input type="submit" value="Search" />
+    </form>
+</div>
+<br />
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.tblLegalDocument[0].Nomor)
+                @Html.DisplayNameFor(model => model.TblLegalDocument[0].Nomor)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.tblLegalDocument[0].NamaDocument)
+                @Html.DisplayNameFor(model => model.TblLegalDocument[0].NamaDocument)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.tblLegalDocument[0].Perihal)
+                @Html.DisplayNameFor(model => model.TblLegalDocument[0].Perihal)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.tblLegalDocument[0].TglMulai)
+                @Html.DisplayNameFor(model => model.TblLegalDocument[0].TglMulai)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.tblLegalDocument[0].Revisi)
+                @Html.DisplayNameFor(model => model.TblLegalDocument[0].Revisi)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.tblLegalDocument[0].Catatan)
+                @Html.DisplayNameFor(model => model.TblLegalDocument[0].Catatan)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.tblLegalDocument[0].CriteriaID)
+                @Html.DisplayNameFor(model => model.TblLegalDocument[0].CriteriaID)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.tblLegalDocument[0].CategoryID)
+                @Html.DisplayNameFor(model => model.TblLegalDocument[0].CategoryID)
             </th>
-            <th>Klasifikasi</th>
-            <th></th>
+            <th>
+                Klasifikasi
+            </th>
+            <th>
+                Action
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.tblLegalDocument) {
+@foreach (var item in Model.TblLegalDocument) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Nomor)
@@ -68,7 +91,7 @@
                 @Model.GetCategory(item.CategoryID)
             </td>
             <td>
-                @foreach (var kk in Model.tblDocK)
+                @foreach (var kk in Model.TblDocK)
                 {
                     if (kk.DocumentID == item.DocumentID)
                     {
@@ -79,8 +102,9 @@
 
             </td>
             <td>
-                <a asp-page="Documents/DocDetails" asp-route-id="@item.DocumentID">Details</a> |
-                <a asp-page="Comments/Index" asp-route-id="@item.DocumentID">Comments</a> |
+                <a asp-page="/Documents/DocEdit" asp-route-id="@item.DocumentID">Edit</a> |
+                <a asp-page="/Documents/DocDetails" asp-route-id="@item.DocumentID">Details</a> |
+                <a asp-page="/Comment/Index" asp-route-id="@item.DocumentID">Comment</a> |
             </td>
         </tr>
 }

@@ -1,4 +1,5 @@
 ﻿using LegalLib.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Linq;
@@ -17,7 +18,10 @@ namespace LegalLib
         }
 
         [BindProperty]
-        public tblCriteria tblCriteria { get; set; }
+        public TblCriteria TblCriteria { get; set; }
+        public string SUsername { get; set; }
+        public int SRole { get; set; }
+
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -26,12 +30,24 @@ namespace LegalLib
                 return NotFound();
             }
 
-            tblCriteria = await _context.tblCriteria.FirstOrDefaultAsync(m => m.CriteriaID == id);
+            TblCriteria = await _context.TblCriteria.FirstOrDefaultAsync(m => m.CriteriaID == id);
 
-            if (tblCriteria == null)
+            if (TblCriteria == null)
             {
                 return NotFound();
             }
+            SUsername = HttpContext.Session.GetString("SUsername");
+            SRole = HttpContext.Session.GetInt32("SRole").GetValueOrDefault();
+
+            if (SUsername == null)
+            {
+                Response.Redirect("/Login/Index");
+            }
+            else if (SRole < 2)
+            {
+                Response.Redirect("/Denied");
+            }
+
             return Page();
         }
 
@@ -43,8 +59,9 @@ namespace LegalLib
             {
                 return Page();
             }
-
-            _context.Attach(tblCriteria).State = EntityState.Modified;
+            TblCriteria.ModifiedDate = System.DateTime.Now;
+            TblCriteria.ModifiedBy = HttpContext.Session.GetString("SUsername");
+            _context.Attach(TblCriteria).State = EntityState.Modified;
 
             try
             {
@@ -52,7 +69,7 @@ namespace LegalLib
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!tblCriteriaExists(tblCriteria.CriteriaID))
+                if (!tblCriteriaExists(TblCriteria.CriteriaID))
                 {
                     return NotFound();
                 }
@@ -67,7 +84,7 @@ namespace LegalLib
 
         private bool tblCriteriaExists(int id)
         {
-            return _context.tblCriteria.Any(e => e.CriteriaID == id);
+            return _context.TblCriteria.Any(e => e.CriteriaID == id);
         }
     }
 }

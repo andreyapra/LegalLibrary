@@ -18,76 +18,62 @@ namespace LegalLib
             _context = context;
         }
 
-        public IActionResult OnGet()
+        public async Task<ActionResult> OnGet()
         {
-            PopulateCategory();
-            PopulateCriteria();
-            PopulateRevDocument();
             SUsername = HttpContext.Session.GetString("SUsername");
-            SNama = HttpContext.Session.GetString("SNama");
-            SEmail = HttpContext.Session.GetString("SEmail");
+            SRole = HttpContext.Session.GetInt32("SRole").GetValueOrDefault();
+
+            if (SUsername == null)
+            {
+                return Redirect("/Login");
+            }
+            if (SRole < 2)
+            {
+                return Redirect("/Denied");
+            }
+
+            int n = _context.TblLegalDocument.Count();
+            DocumentID = n + 1;
+
+            TblLegalDocument.DocumentID = n + 1;
+
+            TblLegalDocument.UploaderID = HttpContext.Session.GetString("SUsername");
+            TblLegalDocument.UploaderName = HttpContext.Session.GetString("SNama");
+            TblLegalDocument.UploaderEmail = HttpContext.Session.GetString("SEmail");
+            TblLegalDocument.TglUpload = System.DateTime.Now;
+            TblLegalDocument.ModifiedDate = System.DateTime.Now;
+
+            TblLegalDocument.TglMulai = System.DateTime.Today;
+            TblLegalDocument.TglAkhir = System.DateTime.Today.AddMonths(1);
+            TblLegalDocument.Revisi = 0;
+            TblLegalDocument.RevDocument = 0;
+            TblLegalDocument.PermitDueDate = System.DateTime.Today;
+            TblLegalDocument.ReportDueDate = System.DateTime.Today;
+            TblLegalDocument.CategoryID = 0;
+            TblLegalDocument.CriteriaID = 0;
+
+            TblLegalDocument.ApproveStatus = "0";
+            TblLegalDocument.Status = "BARU";
+            TblLegalDocument.IsActive = true;
+
+            if (SUsername != null && SRole > 1)
+            {
+                _context.TblLegalDocument.Add(TblLegalDocument);
+                await _context.SaveChangesAsync();
+                return Redirect("DocEdit/" + DocumentID);
+            }
 
             return Page();
+
         }
 
         public string SUsername { get; set; }
-        public string SNama { get; set; }
+        public int SRole { get; set; }
         public string SEmail { get; set; }
-        public SelectList CategorySL { get; set; }
-        public SelectList CriteriaSL { get; set; }
-
-        public SelectList RevDocumentSL { get; set; }
-
-        public void PopulateRevDocument()
-        {
-            var DocQuery = from d in _context.tblLegalDocument
-                           orderby d.DocumentID
-                           select d;
-
-            RevDocumentSL = new SelectList(DocQuery, "DocumentID", "NamaDocument");
-
-        }
-        public void PopulateCategory()
-        {
-            var CatQuery = from d in _context.tblCategory
-                           where d.IsActive == true
-                           orderby d.CategoryID
-                           select d;
-
-            CategorySL = new SelectList(CatQuery, "CategoryID", "Category");
-
-        }
-
-        public void PopulateCriteria()
-        {
-            var CriQuery = from d in _context.tblCriteria
-                           where d.IsActive == true
-                           orderby d.CriteriaID
-                           select d;
-
-            CriteriaSL = new SelectList(CriQuery, "CriteriaID", "Criteria");
-        }
-        [BindProperty]
-        public tblLegalDocument tblLegalDocument { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public TblLegalDocument TblLegalDocument { get; set; }
 
         public int DocumentID { get; set; }
 
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            _context.tblLegalDocument.Add(tblLegalDocument);
-            await _context.SaveChangesAsync();
-
-            DocumentID = tblLegalDocument.DocumentID;
-            HttpContext.Session.SetInt32("SDocumentID", DocumentID);
-
-            return Redirect("DocEdit?id="+DocumentID);
-        }
     }
 }

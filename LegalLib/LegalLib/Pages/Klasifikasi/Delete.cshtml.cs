@@ -1,6 +1,8 @@
 ﻿using LegalLib.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +18,9 @@ namespace LegalLib
         }
 
         [BindProperty]
-        public tblKlasifikasi tblKlasifikasi { get; set; }
+        public TblKlasifikasi TblKlasifikasi { get; set; }
+        public string SUsername { get; set; }
+        public int SRole { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -25,31 +29,50 @@ namespace LegalLib
                 return NotFound();
             }
 
-            tblKlasifikasi = await _context.tblKlasifikasi.FirstOrDefaultAsync(m => m.KlasifikasiID == id);
+            TblKlasifikasi = await _context.TblKlasifikasi.FirstOrDefaultAsync(m => m.KlasifikasiID == id);
 
-            if (tblKlasifikasi == null)
+            if (TblKlasifikasi == null)
             {
                 return NotFound();
             }
-            return Page();
-        }
+            SUsername = HttpContext.Session.GetString("SUsername");
+            SRole = HttpContext.Session.GetInt32("SRole").GetValueOrDefault();
 
-        public async Task<IActionResult> OnPostAsync(int? id)
-        {
-            if (id == null)
+            if (SUsername == null)
             {
-                return NotFound();
+                Response.Redirect("/Login/Index");
             }
-
-            tblKlasifikasi = await _context.tblKlasifikasi.FindAsync(id);
-
-            if (tblKlasifikasi != null)
+            else if (SRole < 2)
             {
-                _context.tblKlasifikasi.Remove(tblKlasifikasi);
+                Response.Redirect("/Denied");
+            }
+            TblKlasifikasi.IsActive = false;
+            TblKlasifikasi.ModifiedDate = System.DateTime.Now;
+            TblKlasifikasi.ModifiedBy = HttpContext.Session.GetString("SUsername");
+            _context.Attach(TblKlasifikasi).State = EntityState.Modified;
+
+            try
+            {
                 await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!tblKlasifikasiExists(TblKlasifikasi.KlasifikasiID))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
             }
 
             return RedirectToPage("./Index");
         }
+        private bool tblKlasifikasiExists(int id)
+        {
+            return _context.TblKlasifikasi.Any(e => e.KlasifikasiID == id);
+        }
+
     }
 }

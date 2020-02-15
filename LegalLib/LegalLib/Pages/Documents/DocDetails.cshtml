@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{id:int}"
 @model LegalLib.DocDetailsModel
 
 @{
@@ -12,234 +12,218 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.Nomor)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.Nomor)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.Nomor)
+            @Html.DisplayFor(model => model.TblLegalDocument.Nomor)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.NamaDocument)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.NamaDocument)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.NamaDocument)
+            @Html.DisplayFor(model => model.TblLegalDocument.NamaDocument)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.Status)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.Status)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.Status)
+            @Html.DisplayFor(model => model.TblLegalDocument.Status)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.Perihal)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.Perihal)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.Perihal)
+            @Html.DisplayFor(model => model.TblLegalDocument.Perihal)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.Regulation)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.Regulation)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.Regulation)
+            @Html.DisplayFor(model => model.TblLegalDocument.Regulation)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.Chapter)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.Chapter)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.Chapter)
+            @Html.DisplayFor(model => model.TblLegalDocument.Chapter)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.Requirement)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.Requirement)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.Requirement)
+            @Html.DisplayFor(model => model.TblLegalDocument.Requirement)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.LegalRisk)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.LegalRisk)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.LegalRisk)
+            @Html.DisplayFor(model => model.TblLegalDocument.LegalRisk)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.BusinessRisk)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.BusinessRisk)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.BusinessRisk)
+            @Html.DisplayFor(model => model.TblLegalDocument.BusinessRisk)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.PeopleRisk)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.PeopleRisk)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.PeopleRisk)
+            @Html.DisplayFor(model => model.TblLegalDocument.PeopleRisk)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.EnvironmentRisk)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.EnvironmentRisk)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.EnvironmentRisk)
+            @Html.DisplayFor(model => model.TblLegalDocument.EnvironmentRisk)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.Methods)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.Methods)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.Methods)
+            @Html.DisplayFor(model => model.TblLegalDocument.Methods)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.Authority)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.Authority)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.Authority)
+            @Html.DisplayFor(model => model.TblLegalDocument.Authority)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.TglMulai)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.TglMulai)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.TglMulai)
+            @Html.DisplayFor(model => model.TblLegalDocument.TglMulai)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.TglAkhir)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.TglAkhir)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.TglAkhir)
+            @Html.DisplayFor(model => model.TblLegalDocument.TglAkhir)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.Revisi)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.Revisi)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.Revisi)
+            @Html.DisplayFor(model => model.TblLegalDocument.Revisi)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.RevDocument)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.RevDocument)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.RevDocument)
+            @Html.DisplayFor(model => model.TblLegalDocument.RevDocument)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.Permit)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.Permit)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.Permit)
+            @Html.DisplayFor(model => model.TblLegalDocument.Permit)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.PermitDueDate)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.PermitDueDate)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.PermitDueDate)
+            @Html.DisplayFor(model => model.TblLegalDocument.PermitDueDate)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.ReportDueDate)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.ReportDueDate)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.ReportDueDate)
+            @Html.DisplayFor(model => model.TblLegalDocument.ReportDueDate)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.Catatan)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.Catatan)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.Catatan)
+            @Html.DisplayFor(model => model.TblLegalDocument.Catatan)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.ApproveStatus)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.ApproveStatus)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.ApproveStatus)
+            @Html.DisplayFor(model => model.TblLegalDocument.ApproveStatus)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.UploaderID)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.UploaderID)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.UploaderID)
+            @Html.DisplayFor(model => model.TblLegalDocument.UploaderID)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.UploaderName)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.UploaderName)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.UploaderName)
+            @Html.DisplayFor(model => model.TblLegalDocument.UploaderName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.UploaderEmail)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.UploaderEmail)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.UploaderEmail)
+            @Html.DisplayFor(model => model.TblLegalDocument.UploaderEmail)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.TglUpload)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.TglUpload)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.TglUpload)
+            @Html.DisplayFor(model => model.TblLegalDocument.TglUpload)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.CriteriaID)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.ModifiedBy)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.CriteriaID)
+            @Html.DisplayFor(model => model.TblLegalDocument.ModifiedBy)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.tblLegalDocument.CategoryID)
+            @Html.DisplayNameFor(model => model.TblLegalDocument.ModifiedDate)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.tblLegalDocument.CategoryID)
+            @Html.DisplayFor(model => model.TblLegalDocument.ModifiedDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TblLegalDocument.CategoryID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TblLegalDocument.CategoryID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TblLegalDocument.CriteriaID)            
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TblLegalDocument.CriteriaID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TblLegalDocument.IsActive)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TblLegalDocument.IsActive)
         </dd>
     </dl>
 </div>
-<strong>File Attachment</strong>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.tblFileAttach[0].DocumentID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.tblFileAttach[0].Filename)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.tblFileAttach)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DocumentID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Filename)
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
 
 <strong>Klasifikasi</strong>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.tblDocKlasifikasi[0].DocumentID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.tblDocKlasifikasi[0].KlasifikasiID)
+<br />
+<ul>
+    @foreach (var item in Model.TblDK)
+    {
+    <li>
+        @Html.DisplayFor(modelItem => item.KlasifikasiID)
+        @Model.GetKlasifikasi(item.KlasifikasiID) <br />
 
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.tblDocKlasifikasi)
+    </li>
+    }
+</ul>
+
+    <strong>File Attachment</strong>
+    <br />
+    <ul>
+        @foreach (var item in Model.TblFileAttach)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DocumentID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.KlasifikasiID)
-                    @Model.GetKlasifikasi(item.KlasifikasiID)
-                </td>
-            </tr>
+            <li>
+                @Html.DisplayFor(modelItem => item.Filename)
+            </li>
         }
-    </tbody>
-</table>
+    </ul>
 
-
-
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.tblLegalDocument.DocumentID">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
-</div>
+    <div>
+        <a onclick="history.go(-1); return false;" href="#">Back</a>
+    </div>

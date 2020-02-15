@@ -5,28 +5,31 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index Criteria</h1>
+<h1>Daftar Index Criteria</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create">Create New Criteria</a>
 </p>
+<form>
+    <p>
+        Search: <input type="text" asp-for="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.tblCriteria[0].Criteria)
+                @Html.DisplayNameFor(model => model.TblCriteria[0].Criteria)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.tblCriteria[0].Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.tblCriteria[0].IsActive)
+                @Html.DisplayNameFor(model => model.TblCriteria[0].Description)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.tblCriteria) {
+@foreach (var item in Model.TblCriteria) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Criteria)
@@ -35,10 +38,8 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
-            </td>
-            <td>
                 <a asp-page="./Edit" asp-route-id="@item.CriteriaID">Edit</a>
+                <a asp-page="./Delete" asp-route-id="@item.CriteriaID">Delete</a>
             </td>
         </tr>
 }

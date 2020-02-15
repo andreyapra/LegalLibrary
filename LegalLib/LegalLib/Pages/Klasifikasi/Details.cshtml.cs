@@ -15,7 +15,7 @@ namespace LegalLib
             _context = context;
         }
 
-        public tblKlasifikasi tblKlasifikasi { get; set; }
+        public TblKlasifikasi TblKlasifikasi { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -24,9 +24,9 @@ namespace LegalLib
                 return NotFound();
             }
 
-            tblKlasifikasi = await _context.tblKlasifikasi.FirstOrDefaultAsync(m => m.KlasifikasiID == id);
+            TblKlasifikasi = await _context.TblKlasifikasi.FirstOrDefaultAsync(m => m.KlasifikasiID == id);
 
-            if (tblKlasifikasi == null)
+            if (TblKlasifikasi == null)
             {
                 return NotFound();
             }

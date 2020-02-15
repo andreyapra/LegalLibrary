@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using LegalLib.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using LegalLib.Data;
-using LegalLib.Models;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LegalLib
 {
@@ -19,43 +18,34 @@ namespace LegalLib
             _context = context;
         }
 
-        public List<tblCriteria> CriteriaList { get; set; }
-        public IList<tblLegalDocument> tblLegalDocument { get;set; }
+        public string SUsername { get; set; }
+        public int SRole { get; set; }
+
+        public List<TblLegalDocument> TblLegalDocument { get;set; }
         
-        public List<tblLegalDocument> ApprovalList { get; set; }
+        public List<TblDK> TblDKs { get; set; }
 
-        public void GetApprovalList()
-        {
-            var DocQuery = from d in _context.tblLegalDocument
-                           where d.ApproveStatus == 0
-                           select d;
 
-            ApprovalList = new List<tblLegalDocument>(DocQuery);
-
-        }
-
-        public string GetCriteria(int id)
-        {
-            var DocQuery = from d in _context.tblCriteria
-                           where d.CriteriaID == id
-                           select d;
-
-            CriteriaList = new List<tblCriteria>(DocQuery);
-            
-            string strCriteria = CriteriaList[0].Criteria;
-
-            return strCriteria;  
-        }
         public async Task<IActionResult> OnGetAsync()
         {
-            tblLegalDocument = await _context.tblLegalDocument.ToListAsync();
+            TblLegalDocument = await _context.TblLegalDocument.Where(m => m.ApproveStatus == "0").ToListAsync();
 
-            if (tblLegalDocument == null)
+            if (TblLegalDocument == null)
             {
                 return NotFound();
             }
+            SUsername = HttpContext.Session.GetString("SUsername");
+            SRole = HttpContext.Session.GetInt32("SRole").GetValueOrDefault();
 
-            GetApprovalList();
+            if (SUsername == null)
+            {
+                Response.Redirect("Login");
+            }
+            else if (SRole < 3)
+            {
+                Response.Redirect("Denied");
+            }
+
             return Page();
         }
     }

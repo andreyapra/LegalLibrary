@@ -5,42 +5,44 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index Category</h1>
+<h1>Daftar Index Category</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create">Create New Category</a>
 </p>
+<form>
+    <p>
+        Search: <input type="text" asp-for="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.tblCategory[0].Category)
+                @Html.DisplayNameFor(model => model.TblCategory[0].Category)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.tblCategory[0].Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.tblCategory[0].IsActive)
+                @Html.DisplayNameFor(model => model.TblCategory[0].Description)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.tblCategory) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.CategoryID">Edit</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.TblCategory)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.CategoryID">Edit</a>
+                    <a asp-page="./Delete" asp-route-id="@item.CategoryID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

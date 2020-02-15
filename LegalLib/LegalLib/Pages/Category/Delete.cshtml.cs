@@ -1,8 +1,11 @@
 ﻿using LegalLib.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace LegalLib
 {
@@ -16,7 +19,9 @@ namespace LegalLib
         }
 
         [BindProperty]
-        public tblCategory tblCategory { get; set; }
+        public TblCategory TblCategory { get; set; }
+        public string SUsername { get; set; }
+        public int SRole { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -25,31 +30,52 @@ namespace LegalLib
                 return NotFound();
             }
 
-            tblCategory = await _context.tblCategory.FirstOrDefaultAsync(m => m.CategoryID == id);
+            TblCategory = await _context.TblCategory.FirstOrDefaultAsync(m => m.CategoryID == id);
 
-            if (tblCategory == null)
+            if (TblCategory == null)
             {
                 return NotFound();
             }
-            return Page();
-        }
+            SUsername = HttpContext.Session.GetString("SUsername");
+            SRole = HttpContext.Session.GetInt32("SRole").GetValueOrDefault();
 
-        public async Task<IActionResult> OnPostAsync(int? id)
-        {
-            if (id == null)
+            if (SUsername == null)
             {
-                return NotFound();
+                Response.Redirect("/Login/Index");
+            }
+            else if (SRole < 2)
+            {
+                Response.Redirect("/Denied");
             }
 
-            tblCategory = await _context.tblCategory.FindAsync(id);
+            TblCategory.IsActive = false;
+            TblCategory.ModifiedDate = System.DateTime.Now;
+            TblCategory.ModifiedBy = HttpContext.Session.GetString("SUsername");
+            _context.Attach(TblCategory).State = EntityState.Modified;
 
-            if (tblCategory != null)
+            try
             {
-                _context.tblCategory.Remove(tblCategory);
                 await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!tblCategoryExists(TblCategory.CategoryID))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
             }
 
             return RedirectToPage("./Index");
         }
+
+        private bool tblCategoryExists(int id)
+        {
+            return _context.TblCategory.Any(e => e.CategoryID == id);
+        }
+
     }
 }

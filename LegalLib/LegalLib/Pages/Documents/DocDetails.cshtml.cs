@@ -17,53 +17,34 @@ namespace LegalLib
             _context = context;
         }
 
-        public tblLegalDocument tblLegalDocument { get; set; }
-        [BindProperty]
-        public IList<tblDK> tblDocKlasifikasi { get; set; }
-        public List<tblDK> tblDK { get; set; }
-        public IList<tblFileAttach> tblFileAttach { get; set; }
-
-        public int DocumentID { get; set; }
-        public string Klasifikasi { get; set; }
-        public void PopulateDK()
-        {
-            var DKQuery = from d in _context.tblDK
-                          where d.DocumentID == DocumentID
-                          select d;
-
-            tblDocKlasifikasi = new List<tblDK>(DKQuery);
-        }
-        public void PopulateFileAttach()
-        {
-            var DKQuery = from d in _context.tblFileAttach
-                          where d.DocumentID == DocumentID
-                          select d;
-
-            tblFileAttach = new List<tblFileAttach>(DKQuery);
-        }
+        public TblLegalDocument TblLegalDocument { get; set; }
+        public List<TblDK> TblDK { get; set; }
+        public List<TblFileAttach> TblFileAttach { get; set; }
 
         public string GetKlasifikasi(int id)
         {
-            Klasifikasi = _context.tblKlasifikasi.FirstOrDefault(m => m.KlasifikasiID == id).Klasifikasi;
+            string Klasifikasi;
+            Klasifikasi = _context.TblKlasifikasi.Where(m => m.KlasifikasiID == id).FirstOrDefault().Klasifikasi;
 
             return Klasifikasi;
         }
-        public async Task<IActionResult> OnGetAsync(int? id)
+
+            public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            DocumentID = id.Value;
-            tblLegalDocument = await _context.tblLegalDocument.FirstOrDefaultAsync(m => m.DocumentID == id);
-            PopulateDK();
-            PopulateFileAttach();
-                       
 
-            if (tblLegalDocument == null)
+            TblLegalDocument = await _context.TblLegalDocument.FirstOrDefaultAsync(m => m.DocumentID == id);
+            TblDK = await _context.TblDK.Where(m => m.DocumentID == id).ToListAsync();
+            TblFileAttach = await _context.TblFileAttach.Where(m => m.DocumentID == id).ToListAsync();
+
+            if (TblLegalDocument == null)
             {
                 return NotFound();
             }
+
             return Page();
         }
     }

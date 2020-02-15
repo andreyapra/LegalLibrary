@@ -6,11 +6,20 @@
 }
 
 
-    @Model.SUsername
-    @{
-        if (Model.SUsername == null) { HttpContext.Response.Redirect("Login"); }
+@Model.SUsername
+<br />
+@{
+    if (Model.SUsername == null)
+    {
+        <strong><a asp-page="/Login/Index">LOGIN</a></strong>
     }
-    <br />
+    else
+    {
+        <strong><a asp-page="/Login/Logout">LOGOUT</a></strong>
+    }
+}
+
+<br />
 <div class="container-fluid">
     <div class="row">
         <div class="col-4">
@@ -18,83 +27,86 @@
             <br />
             <strong>PERATURAN EXTERNAL</strong>
             <ul>
-                @foreach (var item in Model.tblCategory)
+                @foreach (var item in Model.TblCategory)
                 {
                     <li>
                         <a asp-page="/Search/CatDisplay" asp-route-id="@item.CategoryID">
-                        @Html.DisplayFor(modelItem => item.Category)
+                            @Html.DisplayFor(modelItem => item.Category)
                         </a>
                     </li>
 
                 }
             </ul>
-
             <strong>PERATURAN INTERNAL</strong>
             <ul>
                 <li><a href="https://www.google.com">Portal STK</a></li>
             </ul>
-
+            <strong>MASTER DOCUMENTS</strong>
+            <ul>
+                <li><a asp-page="/Documents/DocCreate">CREATE DOCUMENT</a></li>
+                <li><a asp-page="/Documents/DocList">LIST DOCUMENT</a></li>
+                <li><a asp-page="/Approval/Index">APPROVE DOCUMENT</a></li>
+            </ul>
             <strong>MASTER DATA</strong>
             <ul>
                 <li><a asp-page="/Category/Index">MASTER CATEGORY</a></li>
                 <li><a asp-page="/Criteria/Index">MASTER CRITERIA</a></li>
                 <li><a asp-page="/Klasifikasi/Index">MASTER KLASIFIKASI</a></li>
             </ul>
-            <strong><a asp-page="/Approval/Index">APPROVAL LIST</a></strong>
-            <br />
-            <strong><a asp-page="/Login/Logout">LOGOUT</a></strong>
-
         </div>
+
         <div class="col-8">
             Column 2
-            <table border="1">
+
+            <table class="table">
                 <thead>
                     <tr>
                         <th>
-                            @Html.DisplayNameFor(model => model.tblLegalDocument[0].CategoryID)
+                            @Html.DisplayNameFor(model => model.TblLegalDocument[0].CategoryID)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.tblLegalDocument[0].Nomor)
+                            @Html.DisplayNameFor(model => model.TblLegalDocument[0].Nomor)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.tblLegalDocument[0].Perihal)
+                            @Html.DisplayNameFor(model => model.TblLegalDocument[0].Perihal)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.tblLegalDocument[0].TglMulai)
+                            @Html.DisplayNameFor(model => model.TblLegalDocument[0].TglMulai)
                         </th>
-                        <th>Klasifikasi</th>
+                        <th>
+                            Klasifikasi
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.tblLegalDocument)
+                    @foreach (var item in Model.TblLegalDocument)
                     {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CategoryID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Nomor)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Perihal)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TglMulai)
-                        </td>
-                        <td>
-                            Klasifikasi
-                            <br />
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CategoryID)
+                                @Model.GetCategory(item.CategoryID)
 
-                            @foreach (var kk in Model.tblDocK)
-                            {
-                                if (kk.DocumentID == item.DocumentID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Nomor)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Perihal)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TglMulai)
+                            </td>
+                            <td>
+                                @foreach (var kk in Model.TblDocK)
                                 {
-                                    @Html.DisplayFor(modelItem => kk.KlasifikasiID)
-                                    @Model.GetKlasifikasi(kk.KlasifikasiID) <br />
+                                    if (kk.DocumentID == item.DocumentID)
+                                    {
+                                        @Html.DisplayFor(modelItem => kk.KlasifikasiID)
+                                        @Model.GetKlasifikasi(kk.KlasifikasiID) <br />
+                                    }
                                 }
-                            }
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>

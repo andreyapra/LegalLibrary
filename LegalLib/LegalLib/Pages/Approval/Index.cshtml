@@ -5,38 +5,38 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Approval Index</h1>
+<h1>Daftar Approval Index</h1>
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ApprovalList[0].Nomor)
+                @Html.DisplayNameFor(model => model.TblLegalDocument[0].Nomor)
             </th>
             <th>
-                @Html.DisplayNameFor(model =>model.ApprovalList[0].NamaDocument)
+                @Html.DisplayNameFor(model =>model.TblLegalDocument[0].NamaDocument)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ApprovalList[0].Perihal)
+                @Html.DisplayNameFor(model => model.TblLegalDocument[0].Perihal)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ApprovalList[0].Revisi)
+                @Html.DisplayNameFor(model => model.TblLegalDocument[0].Revisi)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ApprovalList[0].Catatan)
+                @Html.DisplayNameFor(model => model.TblLegalDocument[0].Catatan)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ApprovalList[0].UploaderName)
+                @Html.DisplayNameFor(model => model.TblLegalDocument[0].UploaderName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ApprovalList[0].CriteriaID)
+                @Html.DisplayNameFor(model => model.TblLegalDocument[0].CriteriaID)
             </th>
             <th>Klasifikasi</th>
-            <th></th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.ApprovalList) {
+@foreach (var item in Model.TblLegalDocument) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Nomor)
@@ -57,8 +57,7 @@
                 @Html.DisplayFor(modelItem => item.UploaderName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CriteriaID) - 
-                @Model.GetCriteria(item.CriteriaID)
+                @Html.DisplayFor(modelItem => item.CriteriaID)
             </td>
             <td>
                 Klasifikasi

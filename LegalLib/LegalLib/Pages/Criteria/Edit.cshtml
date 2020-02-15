@@ -1,11 +1,11 @@
-﻿@page
+﻿@page "{id:int}"
 @model LegalLib.CriteriaEditModel
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Edit Criteria</h1>
 
 <h4>tblCriteria</h4>
 <hr />
@@ -13,21 +13,19 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="tblCriteria.CriteriaID" />
+            <input type="hidden" asp-for="TblCriteria.CriteriaID" />
+            <input type="hidden" asp-for="TblCriteria.IsActive" />
+            <input type="hidden" asp-for="TblCriteria.CreatedBy" />
+            <input type="hidden" asp-for="TblCriteria.CreatedDate" />
             <div class="form-group">
-                <label asp-for="tblCriteria.Criteria" class="control-label"></label>
-                <input asp-for="tblCriteria.Criteria" class="form-control" />
-                <span asp-validation-for="tblCriteria.Criteria" class="text-danger"></span>
+                <label asp-for="TblCriteria.Criteria" class="control-label"></label>
+                <input asp-for="TblCriteria.Criteria" class="form-control" />
+                <span asp-validation-for="TblCriteria.Criteria" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="tblCriteria.Description" class="control-label"></label>
-                <input asp-for="tblCriteria.Description" class="form-control" />
-                <span asp-validation-for="tblCriteria.Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="tblCriteria.IsActive" class="control-label"></label>
-                <input asp-for="tblCriteria.IsActive" class="form-control" />
-                <span asp-validation-for="tblCriteria.IsActive" class="text-danger"></span>
+                <label asp-for="TblCriteria.Description" class="control-label"></label>
+                <input asp-for="TblCriteria.Description" class="form-control" />
+                <span asp-validation-for="TblCriteria.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

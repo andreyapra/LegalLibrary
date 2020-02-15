@@ -19,45 +19,54 @@ namespace LegalLib
             _context = context;
         }
         [BindProperty]
-        public List<tblCategory> tblCategory { get; set; }
+        public List<TblCategory> TblCategory { get; set; }
         [BindProperty]
-        public List<tblLegalDocument> tblLegalDocument { get; set; }
+        public List<TblLegalDocument> TblLegalDocument { get; set; }
         public string SUsername { get; set; }
 
-        public List<tblDK> tblDocK { get; set; }
+        public List<TblDK> TblDocK { get; set; }
 
         public void PopulateDocument()
         {
-            var DocQuery = (from d in _context.tblLegalDocument
-                            where d.ApproveStatus == 1
-                            where d.Status != 2
+            var DocQuery = (from d in _context.TblLegalDocument
+                            where d.ApproveStatus == "APPROVE"
+                            where d.Status != "CABUT"
                             where d.TglAkhir > System.DateTime.Today
+                            where d.IsActive == true
                            orderby d.TglMulai descending
                            select d).Take(10);
 
-            tblLegalDocument = new List<tblLegalDocument>(DocQuery);
+            TblLegalDocument = DocQuery.ToList();
         }
 
         public void PopulateDK()
         {
-            var KQuery = from d in _context.tblDK
+            var KQuery = from d in _context.TblDK
                          select d;
 
-            tblDocK = new List<tblDK>(KQuery);
+            TblDocK = new List<TblDK>(KQuery);
 
         }
 
         public string GetKlasifikasi(int id)
         {
             string Klasifikasi;
-            Klasifikasi = _context.tblKlasifikasi.Where(m => m.KlasifikasiID == id).FirstOrDefault().Klasifikasi;
+            Klasifikasi = _context.TblKlasifikasi.Where(m => m.KlasifikasiID == id).FirstOrDefault().Klasifikasi;
 
             return Klasifikasi;
         }
+        public string GetCategory(int id)
+        {
+            string Category;
+            Category = _context.TblCategory.Where(m => m.CategoryID == id).FirstOrDefault().Category;
+
+            return Category;
+        }
+
         public async Task OnGetAsync()
         {
 
-            tblCategory = await _context.tblCategory.Where(m => m.IsActive == true).ToListAsync();
+            TblCategory = await _context.TblCategory.Where(m => m.IsActive == true).ToListAsync();
 
             PopulateDocument();
             PopulateDK();

@@ -15,7 +15,7 @@ namespace LegalLib
             _context = context;
         }
 
-        public tblCategory tblCategory { get; set; }
+        public TblCategory TblCategory { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -24,9 +24,9 @@ namespace LegalLib
                 return NotFound();
             }
 
-            tblCategory = await _context.tblCategory.FirstOrDefaultAsync(m => m.CategoryID == id);
+            TblCategory = await _context.TblCategory.FirstOrDefaultAsync(m => m.CategoryID == id);
 
-            if (tblCategory == null)
+            if (TblCategory == null)
             {
                 return NotFound();
             }

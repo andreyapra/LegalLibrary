@@ -51,6 +51,92 @@ Search Parameter
 <br />
 @Model.SearchTglStart
 
+Search Result
+<br />
+@if (Model.Search != null) {
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.TblDocSearch[0].Nomor)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TblDocSearch[0].NamaDocument)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TblDocSearch[0].Perihal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TblDocSearch[0].TglMulai)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TblDocSearch[0].Revisi)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TblDocSearch[0].Catatan)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TblDocSearch[0].CriteriaID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TblDocSearch[0].CategoryID)
+                </th>
+                <th>Klasifikasi</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.TblDocSearch)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nomor)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NamaDocument)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Perihal)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TglMulai)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Revisi)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Catatan)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CriteriaID)
+                        @Model.GetCriteria(item.CriteriaID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryID)
+                        @Model.GetCategory(item.CategoryID)
+                    </td>
+                    <td>
+                        @foreach (var kk in Model.TblDocK)
+                        {
+                            if (kk.DocumentID == item.DocumentID)
+                            {
+                                @Html.DisplayFor(modelItem => kk.KlasifikasiID)
+                                @Model.GetKlasifikasi(kk.KlasifikasiID) <br />
+                            }
+                        }
+
+                    </td>
+                    <td>
+                        <a href="Documents/DocDetails?id=@item.DocumentID">Details</a> |
+                        <a href="Comments/Index?id=@item.DocumentID">Comments</a> |
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+
 
 
 

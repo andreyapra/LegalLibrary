@@ -1,4 +1,5 @@
 ﻿using LegalLib.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Linq;
@@ -17,7 +18,9 @@ namespace LegalLib
         }
 
         [BindProperty]
-        public tblKlasifikasi tblKlasifikasi { get; set; }
+        public TblKlasifikasi TblKlasifikasi { get; set; }
+        public string SUsername { get; set; }
+        public int SRole { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -26,12 +29,24 @@ namespace LegalLib
                 return NotFound();
             }
 
-            tblKlasifikasi = await _context.tblKlasifikasi.FirstOrDefaultAsync(m => m.KlasifikasiID == id);
+            TblKlasifikasi = await _context.TblKlasifikasi.FirstOrDefaultAsync(m => m.KlasifikasiID == id);
 
-            if (tblKlasifikasi == null)
+            if (TblKlasifikasi == null)
             {
                 return NotFound();
             }
+            SUsername = HttpContext.Session.GetString("SUsername");
+            SRole = HttpContext.Session.GetInt32("SRole").GetValueOrDefault();
+
+            if (SUsername == null)
+            {
+                Response.Redirect("/Login/Index");
+            }
+            else if (SRole < 2)
+            {
+                Response.Redirect("/Denied");
+            }
+
             return Page();
         }
 
@@ -43,8 +58,9 @@ namespace LegalLib
             {
                 return Page();
             }
-
-            _context.Attach(tblKlasifikasi).State = EntityState.Modified;
+            TblKlasifikasi.ModifiedDate = System.DateTime.Now;
+            TblKlasifikasi.ModifiedBy = HttpContext.Session.GetString("SUsername");
+            _context.Attach(TblKlasifikasi).State = EntityState.Modified;
 
             try
             {
@@ -52,7 +68,7 @@ namespace LegalLib
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!tblKlasifikasiExists(tblKlasifikasi.KlasifikasiID))
+                if (!tblKlasifikasiExists(TblKlasifikasi.KlasifikasiID))
                 {
                     return NotFound();
                 }
@@ -67,7 +83,7 @@ namespace LegalLib
 
         private bool tblKlasifikasiExists(int id)
         {
-            return _context.tblKlasifikasi.Any(e => e.KlasifikasiID == id);
+            return _context.TblKlasifikasi.Any(e => e.KlasifikasiID == id);
         }
     }
 }

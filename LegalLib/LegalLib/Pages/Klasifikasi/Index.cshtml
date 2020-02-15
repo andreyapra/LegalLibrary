@@ -5,34 +5,41 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index Klasifikasi</h1>
+<h1>Daftar Index Klasifikasi</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create">Create New Klasifikasi</a>
 </p>
+<form>
+    <p>
+        Search: <input type="text" asp-for="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.tblKlasifikasi[0].Klasifikasi)
+                @Html.DisplayNameFor(model => model.TblKlasifikasi[0].Klasifikasi)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.tblKlasifikasi[0].IsActive)
+                @Html.DisplayNameFor(model => model.TblKlasifikasi[0].Description)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.tblKlasifikasi) {
+@foreach (var item in Model.TblKlasifikasi) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Klasifikasi)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
+                @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.KlasifikasiID">Edit</a>
+                <a asp-page="./Delete" asp-route-id="@item.KlasifikasiID">Delete</a>
             </td>
         </tr>
 }

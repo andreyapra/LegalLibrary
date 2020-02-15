@@ -9,13 +9,13 @@ namespace LegalLib.Data
         {
         }
 
-        public DbSet<LegalLib.Models.tblCategory> tblCategory { get; set; }
-        public DbSet<LegalLib.Models.tblCriteria> tblCriteria { get; set; }
-        public DbSet<LegalLib.Models.tblKlasifikasi> tblKlasifikasi { get; set; }
-        public DbSet<LegalLib.Models.tblLegalDocument> tblLegalDocument { get; set; }
-        public DbSet<LegalLib.Models.tblDK> tblDK { get; set; }
-        public DbSet<LegalLib.Models.tblFileAttach> tblFileAttach { get; set; }
-        public DbSet<LegalLib.Models.tblComments> tblComments { get; set; }
+        public DbSet<LegalLib.Models.TblCategory> TblCategory { get; set; }
+        public DbSet<LegalLib.Models.TblCriteria> TblCriteria { get; set; }
+        public DbSet<LegalLib.Models.TblKlasifikasi> TblKlasifikasi { get; set; }
+        public DbSet<LegalLib.Models.TblLegalDocument> TblLegalDocument { get; set; }
+        public DbSet<LegalLib.Models.TblDK> TblDK { get; set; }
+        public DbSet<LegalLib.Models.TblFileAttach> TblFileAttach { get; set; }
+        public DbSet<LegalLib.Models.TblComment> TblComment { get; set; }
 
 
     }

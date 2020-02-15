@@ -1,9 +1,12 @@
 ﻿using LegalLib.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Linq;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using System.Net.Mail;
 
 namespace LegalLib
 {
@@ -16,27 +19,66 @@ namespace LegalLib
             _context = context;
         }
 
-        public tblLegalDocument tblLegalDocument { get; set; }
+        public TblLegalDocument TblLegalDocument { get; set; }
+        public string SUsername { get; set; }
+        public int SRole { get; set; }
 
-        public async Task<IActionResult> OnGet(int? id)
+
+        public async void SendMailReject()
+        {
+            var body = $@"<p>Dokumen Nomor " + TblLegalDocument.Nomor + " di Reject</p>";
+
+            string Kepada = TblLegalDocument.UploaderEmail;
+
+            using (var smtp = new SmtpClient())
+            {
+                smtp.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
+                smtp.PickupDirectoryLocation = @"D:\BACKUP";
+                var message = new MailMessage();
+                message.To.Add(Kepada);
+                message.Subject = "Dokumen Nomor " + TblLegalDocument.Nomor + "sudah di Reject";
+                message.Body = body;
+                message.IsBodyHtml = true;
+                message.From = new MailAddress("library@pertamina.com");
+                await smtp.SendMailAsync(message);
+            }
+        }
+
+            public async Task<IActionResult> OnGet(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            tblLegalDocument = await _context.tblLegalDocument.FirstOrDefaultAsync(m => m.DocumentID == id);
+            TblLegalDocument = await _context.TblLegalDocument.FirstOrDefaultAsync(m => m.DocumentID == id);
 
-            if (tblLegalDocument == null)
+            if (TblLegalDocument == null)
             {
                 return NotFound();
             }
+            SUsername = HttpContext.Session.GetString("SUsername");
+            SRole = HttpContext.Session.GetInt32("SRole").GetValueOrDefault();
 
-            tblLegalDocument.ApproveStatus = 2;
-            _context.Attach(tblLegalDocument).State = EntityState.Modified;
+            if (SUsername == null)
+            {
+                Response.Redirect("Login");
+            }
+            if (SRole < 3)
+            {
+                Response.Redirect("Denied");
+            }
+            else
+            {
+                TblLegalDocument.ApproveStatus = "REJECT";
+                _context.Attach(TblLegalDocument).State = EntityState.Modified;
 
-            await _context.SaveChangesAsync();
-            return Redirect("Index");
+                await _context.SaveChangesAsync();
+                SendMailReject();
+
+            }
+
+            return Redirect("./Index");
 
         }
     }
