@@ -36,6 +36,22 @@ namespace LegalLib
         public string SUsername { get; set; }
         public int SRole { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public TblLogActivity TblLogActivity { get; set; }
+        public int CriID { get; set; }
+
+        public async Task LogActivity()
+        {
+            TblLogActivity.UserID = HttpContext.Session.GetString("SUsername");
+            TblLogActivity.LogTime = System.DateTime.Now;
+            TblLogActivity.Modul = "CRITERA";
+            TblLogActivity.Action = "CREATE";
+            TblLogActivity.Description = "CRITERIAID=" + CriID;
+            _context.TblLogActivity.Add(TblLogActivity);
+            await _context.SaveChangesAsync();
+        }
+
+
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
@@ -53,6 +69,9 @@ namespace LegalLib
 
             _context.TblCriteria.Add(TblCriteria);
             await _context.SaveChangesAsync();
+
+            CriID = TblCriteria.CriteriaID;
+            await LogActivity();
 
             return RedirectToPage("./Index");
         }

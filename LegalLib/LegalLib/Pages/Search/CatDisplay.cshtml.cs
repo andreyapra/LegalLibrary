@@ -98,6 +98,7 @@ namespace LegalLib
         public void PopulateDK()
         {
             var KQuery = from d in _context.TblDK
+                         where d.IsActive == true
                          select d;
 
             TblDocK = new List<TblDK>(KQuery);
@@ -118,14 +119,6 @@ namespace LegalLib
             Criteria = _context.TblCriteria.Where(m => m.CriteriaID == id).FirstOrDefault().Criteria;
 
             return Criteria;
-        }
-
-        public int FindCriteria(string id)
-        {
-            int CriteriaID;
-            CriteriaID = _context.TblCriteria.Where(m => m.Criteria.Contains(id)).FirstOrDefault().CriteriaID;
-
-            return CriteriaID;
         }
 
         public string GetCategory(int id)

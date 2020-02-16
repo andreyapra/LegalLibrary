@@ -17,6 +17,20 @@ namespace LegalLib
         [BindProperty]
         public string SUsername { get; set; }
         public int SRole { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public TblLogActivity TblLogActivity { get; set; }
+        public int CatID { get; set; }
+
+        public async Task LogActivity()
+        {
+            TblLogActivity.UserID = HttpContext.Session.GetString("SUsername");
+            TblLogActivity.LogTime = System.DateTime.Now;
+            TblLogActivity.Modul = "CATEGORY";
+            TblLogActivity.Action = "CREATE";
+            TblLogActivity.Description = "CATEGORYID=" + CatID;
+            _context.TblLogActivity.Add(TblLogActivity);
+            await _context.SaveChangesAsync();
+        }
 
 
         public IActionResult OnGet()
@@ -55,6 +69,9 @@ namespace LegalLib
             _context.TblCategory.Add(TblCategory);
             await _context.SaveChangesAsync();
 
+            CatID = TblCategory.CategoryID;
+            await LogActivity();
+            
             return RedirectToPage("Index");
         }
     }

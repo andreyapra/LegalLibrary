@@ -32,6 +32,8 @@ namespace LegalLib
         [BindProperty]
         public TblDK TblAddDK { get; set; }
         public TblDK TblDK { get; set; }
+        public List<TblFileAttach> TblListFileAttach { get; set; }
+        public List<TblDK> TblListDK { get; set; }
 
         [BindProperty]
         public TblLegalDocument TblLegalDocument { get; set; }
@@ -42,6 +44,30 @@ namespace LegalLib
 
         public string SUsername { get; set; }
         public int SRole { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public TblLogActivity TblLogActivity { get; set; }
+        public int DocID { get; set; }
+
+        public async Task LogActivity(string action)
+        {
+            TblLogActivity.UserID = HttpContext.Session.GetString("SUsername");
+            TblLogActivity.LogTime = System.DateTime.Now;
+            TblLogActivity.Modul = "DOCUMENT";
+            TblLogActivity.Action = action;
+            TblLogActivity.Description = "DOCUMENTID=" + DocID;
+            _context.TblLogActivity.Add(TblLogActivity);
+            await _context.SaveChangesAsync();
+        }
+
+
+        public string GetKlasifikasi(int id)
+        {
+            string Klasifikasi;
+            Klasifikasi = _context.TblKlasifikasi.Where(m => m.KlasifikasiID == id).FirstOrDefault().Klasifikasi;
+
+            return Klasifikasi;
+        }
 
         public void PopulateRevDocument()
         {
@@ -90,6 +116,8 @@ namespace LegalLib
             }
 
             TblLegalDocument = await _context.TblLegalDocument.FirstOrDefaultAsync(m => m.DocumentID == id);
+            TblListFileAttach = await _context.TblFileAttach.Where(m => m.DocumentID == id).Where(m => m.IsActive == true).ToListAsync();
+            TblListDK = await _context.TblDK.Where(m => m.DocumentID == id).Where(m => m.IsActive == true).ToListAsync();
 
             if (TblLegalDocument == null)
             {
@@ -148,6 +176,9 @@ namespace LegalLib
                 }
             }
 
+            DocID = HttpContext.Session.GetInt32("SID").GetValueOrDefault();
+            await LogActivity("EDIT");
+
             return RedirectToPage();
         }
 
@@ -167,6 +198,9 @@ namespace LegalLib
 
             _context.TblDK.Add(TblAddDK);
             await _context.SaveChangesAsync();
+
+            DocID = HttpContext.Session.GetInt32("SID").GetValueOrDefault();
+            await LogActivity("ADDKLASIFIKASI");
 
             return RedirectToPage();
         }
@@ -199,6 +233,9 @@ namespace LegalLib
             _context.TblFileAttach.Add(TblFileAttach);
             await _context.SaveChangesAsync();
 
+            DocID = HttpContext.Session.GetInt32("SID").GetValueOrDefault();
+            await LogActivity("UPLOADFILE");
+
             return RedirectToPage();
 
         }
@@ -206,5 +243,55 @@ namespace LegalLib
         {
             return _context.TblLegalDocument.Any(e => e.DocumentID == id);
         }
+
+        public async Task<IActionResult> OnGetDeleteDK(int? dkid)
+        {
+            if (dkid == null)
+            {
+                return NotFound();
+            }
+            TblAddDK = await _context.TblDK.FirstOrDefaultAsync(m => m.DKID == dkid);
+            if (TblAddDK == null)
+            {
+                return NotFound();
+            }
+
+            TblAddDK.IsActive = false;
+            TblAddDK.ModifiedBy = HttpContext.Session.GetString("SUsername");
+            TblAddDK.ModifiedDate = System.DateTime.Now;
+            _context.Attach(TblAddDK).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            DocID = HttpContext.Session.GetInt32("SID").GetValueOrDefault();
+            await LogActivity("DELETEKLASIFIKASI");
+
+            return RedirectToPage();
+        }
+
+        public async Task<IActionResult> OnGetDeleteFile(int? fileid)
+        {
+            if (fileid == null)
+            {
+                return NotFound();
+            }
+            TblFileAttach = await _context.TblFileAttach.FirstOrDefaultAsync(m => m.FileID == fileid);
+            if (TblFileAttach == null)
+            {
+                return NotFound();
+            }
+
+            TblFileAttach.IsActive = false;
+            TblFileAttach.ModifiedBy = HttpContext.Session.GetString("SUsername");
+            TblFileAttach.ModifiedDate = System.DateTime.Now;
+            _context.Attach(TblFileAttach).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            DocID = HttpContext.Session.GetInt32("SID").GetValueOrDefault();
+            await LogActivity("DELETEFILE");
+
+            return RedirectToPage();
+        }
+
+
     }
 }

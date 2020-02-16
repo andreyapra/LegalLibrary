@@ -21,6 +21,21 @@ namespace LegalLib
         public TblKlasifikasi TblKlasifikasi { get; set; }
         public string SUsername { get; set; }
         public int SRole { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public TblLogActivity TblLogActivity { get; set; }
+        public int KlaID { get; set; }
+
+        public async Task LogActivity()
+        {
+            TblLogActivity.UserID = HttpContext.Session.GetString("SUsername");
+            TblLogActivity.LogTime = System.DateTime.Now;
+            TblLogActivity.Modul = "KLASIFIKASI";
+            TblLogActivity.Action = "EDIT";
+            TblLogActivity.Description = "KLASIFIKASIID=" + KlaID;
+            _context.TblLogActivity.Add(TblLogActivity);
+            await _context.SaveChangesAsync();
+        }
+
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -77,6 +92,9 @@ namespace LegalLib
                     throw;
                 }
             }
+
+            KlaID = TblKlasifikasi.KlasifikasiID;
+            await LogActivity();
 
             return RedirectToPage("./Index");
         }

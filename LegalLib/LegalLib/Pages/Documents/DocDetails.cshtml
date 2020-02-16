@@ -184,12 +184,14 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.TblLegalDocument.CategoryID)
+            @Model.GetCategory(Model.TblLegalDocument.CategoryID)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.TblLegalDocument.CriteriaID)            
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.TblLegalDocument.CriteriaID)
+            @Model.GetCriteria(Model.TblLegalDocument.CriteriaID)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.TblLegalDocument.IsActive)

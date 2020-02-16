@@ -15,6 +15,21 @@ namespace LegalLib
             _context = context;
         }
 
+        [BindProperty(SupportsGet = true)]
+        public TblLogActivity TblLogActivity { get; set; }
+        public int KlaID { get; set; }
+
+        public async Task LogActivity()
+        {
+            TblLogActivity.UserID = HttpContext.Session.GetString("SUsername");
+            TblLogActivity.LogTime = System.DateTime.Now;
+            TblLogActivity.Modul = "KLASIFIKASI";
+            TblLogActivity.Action = "CREATE";
+            TblLogActivity.Description = "KLASIFIKASIID=" + KlaID;
+            _context.TblLogActivity.Add(TblLogActivity);
+            await _context.SaveChangesAsync();
+        }
+
         public IActionResult OnGet()
         {
             SUsername = HttpContext.Session.GetString("SUsername");
@@ -54,6 +69,10 @@ namespace LegalLib
 
             _context.TblKlasifikasi.Add(TblKlasifikasi);
             await _context.SaveChangesAsync();
+
+            KlaID = TblKlasifikasi.KlasifikasiID;
+            await LogActivity();
+
 
             return RedirectToPage("./Index");
         }

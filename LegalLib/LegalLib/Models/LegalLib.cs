@@ -157,11 +157,12 @@ namespace LegalLib.Models
     {
         [Key]
         public int LogID { get; set; }
-        public int UserID { get; set; }
-        public int TglLog { get; set; }
-        public int Modul { get; set; }
-        public int Action { get; set; }
-        public int AppName { get; set; }
+        public string UserID { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime LogTime { get; set; }
+        public string Modul { get; set; }
+        public string Action { get; set; }
+        public string Description { get; set; }
 
     }
 

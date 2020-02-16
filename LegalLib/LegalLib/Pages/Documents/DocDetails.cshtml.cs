@@ -28,8 +28,22 @@ namespace LegalLib
 
             return Klasifikasi;
         }
+        public string GetCriteria(int id)
+        {
+            string Criteria;
+            Criteria = _context.TblCriteria.Where(m => m.CriteriaID == id).FirstOrDefault().Criteria;
 
-            public async Task<IActionResult> OnGetAsync(int? id)
+            return Criteria;
+        }
+        public string GetCategory(int id)
+        {
+            string Category;
+            Category = _context.TblCategory.Where(m => m.CategoryID == id).FirstOrDefault().Category;
+
+            return Category;
+        }
+
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
             {
@@ -37,8 +51,8 @@ namespace LegalLib
             }
 
             TblLegalDocument = await _context.TblLegalDocument.FirstOrDefaultAsync(m => m.DocumentID == id);
-            TblDK = await _context.TblDK.Where(m => m.DocumentID == id).ToListAsync();
-            TblFileAttach = await _context.TblFileAttach.Where(m => m.DocumentID == id).ToListAsync();
+            TblDK = await _context.TblDK.Where(m => m.DocumentID == id).Where(m => m.IsActive == true).ToListAsync();
+            TblFileAttach = await _context.TblFileAttach.Where(m => m.DocumentID == id).Where(m => m.IsActive == true).ToListAsync();
 
             if (TblLegalDocument == null)
             {

@@ -22,6 +22,9 @@ namespace LegalLib
         public TblLegalDocument TblLegalDocument { get; set; }
         public string SUsername { get; set; }
         public int SRole { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public TblLogActivity TblLogActivity { get; set; }
+        public int DocID { get; set; }
 
 
         public async void SendMailReject()
@@ -30,21 +33,32 @@ namespace LegalLib
 
             string Kepada = TblLegalDocument.UploaderEmail;
 
-            using (var smtp = new SmtpClient())
+            using var smtp = new SmtpClient
             {
-                smtp.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
-                smtp.PickupDirectoryLocation = @"D:\BACKUP";
-                var message = new MailMessage();
-                message.To.Add(Kepada);
-                message.Subject = "Dokumen Nomor " + TblLegalDocument.Nomor + "sudah di Reject";
-                message.Body = body;
-                message.IsBodyHtml = true;
-                message.From = new MailAddress("library@pertamina.com");
-                await smtp.SendMailAsync(message);
-            }
+                DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory,
+                PickupDirectoryLocation = @"D:\BACKUP"
+            };
+            var message = new MailMessage();
+            message.To.Add(Kepada);
+            message.Subject = "Dokumen Nomor " + TblLegalDocument.Nomor + " di Reject";
+            message.Body = body;
+            message.IsBodyHtml = true;
+            message.From = new MailAddress("library@pertamina.com");
+            await smtp.SendMailAsync(message);
+
+        }
+        public async Task LogActivity()
+        {
+            TblLogActivity.UserID = HttpContext.Session.GetString("SUsername");
+            TblLogActivity.LogTime = System.DateTime.Now;
+            TblLogActivity.Modul = "APPROVAL";
+            TblLogActivity.Action = "REJECT";
+            TblLogActivity.Description = "DOCUMENTID=" + DocID;
+            _context.TblLogActivity.Add(TblLogActivity);
+            await _context.SaveChangesAsync();
         }
 
-            public async Task<IActionResult> OnGet(int? id)
+        public async Task<IActionResult> OnGet(int? id)
         {
             if (id == null)
             {
@@ -76,9 +90,12 @@ namespace LegalLib
                 await _context.SaveChangesAsync();
                 SendMailReject();
 
+                DocID = id.Value;
+                await LogActivity();
+
             }
 
-            return Redirect("./Index");
+            return Redirect("/");
 
         }
     }

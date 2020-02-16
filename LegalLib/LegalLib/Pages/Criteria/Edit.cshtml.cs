@@ -21,6 +21,20 @@ namespace LegalLib
         public TblCriteria TblCriteria { get; set; }
         public string SUsername { get; set; }
         public int SRole { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public TblLogActivity TblLogActivity { get; set; }
+        public int CriID { get; set; }
+
+        public async Task LogActivity()
+        {
+            TblLogActivity.UserID = HttpContext.Session.GetString("SUsername");
+            TblLogActivity.LogTime = System.DateTime.Now;
+            TblLogActivity.Modul = "CRITERA";
+            TblLogActivity.Action = "EDIT";
+            TblLogActivity.Description = "CRITERIAID=" + CriID;
+            _context.TblLogActivity.Add(TblLogActivity);
+            await _context.SaveChangesAsync();
+        }
 
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -79,6 +93,9 @@ namespace LegalLib
                 }
             }
 
+            CriID = TblCriteria.CriteriaID;
+            await LogActivity();
+            
             return RedirectToPage("./Index");
         }
 

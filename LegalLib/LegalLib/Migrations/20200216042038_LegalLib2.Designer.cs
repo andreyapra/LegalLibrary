@@ -4,14 +4,16 @@ using LegalLib.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LegalLib.Migrations
 {
     [DbContext(typeof(LegalLibContext))]
-    partial class LegalLibContextModelSnapshot : ModelSnapshot
+    [Migration("20200216042038_LegalLib2")]
+    partial class LegalLib2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -345,33 +347,6 @@ namespace LegalLib.Migrations
                     b.HasIndex("TblCriteriaCriteriaID");
 
                     b.ToTable("TblLegalDocument");
-                });
-
-            modelBuilder.Entity("LegalLib.Models.TblLogActivity", b =>
-                {
-                    b.Property<int>("LogID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Action")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("LogTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Modul")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserID")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("LogID");
-
-                    b.ToTable("TblLogActivity");
                 });
 
             modelBuilder.Entity("LegalLib.Models.TblComment", b =>

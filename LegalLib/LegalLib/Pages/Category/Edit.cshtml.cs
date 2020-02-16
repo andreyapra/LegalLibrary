@@ -23,6 +23,21 @@ namespace LegalLib
         public string SUsername { get; set; }
         public int SRole { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public TblLogActivity TblLogActivity { get; set; }
+        public int CatID { get; set; }
+
+        public async Task LogActivity()
+        {
+            TblLogActivity.UserID = HttpContext.Session.GetString("SUsername");
+            TblLogActivity.LogTime = System.DateTime.Now;
+            TblLogActivity.Modul = "CATEGORY";
+            TblLogActivity.Action = "EDIT";
+            TblLogActivity.Description = "CATEGORYID=" + CatID;
+            _context.TblLogActivity.Add(TblLogActivity);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -79,6 +94,9 @@ namespace LegalLib
                     throw;
                 }
             }
+
+            CatID = TblCategory.CategoryID;
+            await LogActivity();
 
             return RedirectToPage("./Index");
         }

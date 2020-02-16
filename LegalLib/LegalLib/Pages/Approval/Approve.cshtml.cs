@@ -22,11 +22,14 @@ namespace LegalLib
         public TblLegalDocument TblLegalDocument { get; set; }
         public string SUsername { get; set; }
         public int SRole { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public TblLogActivity TblLogActivity { get; set; }
+        public int DocID { get; set; }
 
 
         public async void SendMailApprove()
         {
-            var body = $@"<p>Dokumen Nomor "+ TblLegalDocument.Nomor +" sudah di Approve</p>";
+            var body = $@"<p>Dokumen Nomor " + TblLegalDocument.Nomor + " di Approve</p>";
 
             string Kepada = TblLegalDocument.UploaderEmail;
 
@@ -44,6 +47,16 @@ namespace LegalLib
             await smtp.SendMailAsync(message);
 
 
+        }
+        public async Task LogActivity()
+        {
+            TblLogActivity.UserID = HttpContext.Session.GetString("SUsername");
+            TblLogActivity.LogTime = System.DateTime.Now;
+            TblLogActivity.Modul = "APPROVAL";
+            TblLogActivity.Action = "APPROVE";
+            TblLogActivity.Description = "DOCUMENTID=" + DocID ;
+            _context.TblLogActivity.Add(TblLogActivity);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IActionResult> OnGet(int? id)
@@ -77,6 +90,9 @@ namespace LegalLib
 
                 await _context.SaveChangesAsync();
                 SendMailApprove();
+
+                DocID = id.Value;
+                await LogActivity();
 
             }
 

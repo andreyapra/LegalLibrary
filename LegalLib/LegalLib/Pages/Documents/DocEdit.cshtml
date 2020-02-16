@@ -170,9 +170,34 @@
         </div>
     </form>
 
+    <br />
     <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Klasifikasi
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.TblListDK)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.KlasifikasiID)
+                        @Model.GetKlasifikasi(item.KlasifikasiID)
+                    </td>
+                    <td>
+                        <a asp-route-dkid="@item.DKID" asp-page-handler="DeleteDK">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
     </table>
-
+    <br />
 </div>
 
 <h4>File Attach</h4>
@@ -187,8 +212,37 @@
             <input type="submit" value="Upload" class="btn btn-primary" asp-page-handler="FileUpload" />
         </div>
     </form>
+    @Model.Info
+
+    <br />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    File Attach
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.TblListFileAttach)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Filename)
+                    </td>
+                    <td>
+                        <a asp-route-fileid="@item.FileID" asp-page-handler="DeleteFile">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
 </div>
-@Model.Info
 
 
 Kembali ke <a href="/">Menu Utama</a>

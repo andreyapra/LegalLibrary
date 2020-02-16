@@ -80,9 +80,12 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.CriteriaID)
+                        @Model.GetCriteria(item.CriteriaID)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.CategoryID)
+                        @Model.GetCategory(item.CategoryID)
+
                     </td>
                     <td>
                         <a asp-page="./DocEdit" asp-route-id="@item.DocumentID">Edit</a> |

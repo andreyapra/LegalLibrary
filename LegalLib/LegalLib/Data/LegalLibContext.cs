@@ -16,6 +16,7 @@ namespace LegalLib.Data
         public DbSet<LegalLib.Models.TblDK> TblDK { get; set; }
         public DbSet<LegalLib.Models.TblFileAttach> TblFileAttach { get; set; }
         public DbSet<LegalLib.Models.TblComment> TblComment { get; set; }
+        public DbSet<LegalLib.Models.TblLogActivity> TblLogActivity { get; set; }
 
 
     }

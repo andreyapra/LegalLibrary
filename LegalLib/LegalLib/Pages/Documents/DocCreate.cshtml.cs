@@ -18,6 +18,21 @@ namespace LegalLib
             _context = context;
         }
 
+        [BindProperty(SupportsGet = true)]
+        public TblLogActivity TblLogActivity { get; set; }
+        public int DocID { get; set; }
+
+        public async Task LogActivity()
+        {
+            TblLogActivity.UserID = HttpContext.Session.GetString("SUsername");
+            TblLogActivity.LogTime = System.DateTime.Now;
+            TblLogActivity.Modul = "DOCUMENT";
+            TblLogActivity.Action = "CREATE";
+            TblLogActivity.Description = "DOCUMENTID=" + DocID;
+            _context.TblLogActivity.Add(TblLogActivity);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<ActionResult> OnGet()
         {
             SUsername = HttpContext.Session.GetString("SUsername");
@@ -60,6 +75,10 @@ namespace LegalLib
             {
                 _context.TblLegalDocument.Add(TblLegalDocument);
                 await _context.SaveChangesAsync();
+
+                DocID = TblLegalDocument.DocumentID;
+                await LogActivity();
+
                 return Redirect("DocEdit/" + DocumentID);
             }
 
