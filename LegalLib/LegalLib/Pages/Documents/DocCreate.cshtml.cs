@@ -51,6 +51,7 @@ namespace LegalLib
             DocumentID = n + 1;
 
             TblLegalDocument.DocumentID = n + 1;
+            TblLegalDocument.Nomor = DocumentID.ToString();
 
             TblLegalDocument.UploaderID = HttpContext.Session.GetString("SUsername");
             TblLegalDocument.UploaderName = HttpContext.Session.GetString("SNama");
@@ -64,8 +65,8 @@ namespace LegalLib
             TblLegalDocument.RevDocument = 0;
             TblLegalDocument.PermitDueDate = System.DateTime.Today;
             TblLegalDocument.ReportDueDate = System.DateTime.Today;
-            TblLegalDocument.CategoryID = 0;
-            TblLegalDocument.CriteriaID = 0;
+            TblLegalDocument.CategoryID = 1;
+            TblLegalDocument.CriteriaID = 1;
 
             TblLegalDocument.ApproveStatus = "0";
             TblLegalDocument.Status = "BARU";

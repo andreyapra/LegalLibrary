@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-
+using System.Collections.Generic;
 
 namespace LegalLib
 {
@@ -20,6 +20,8 @@ namespace LegalLib
 
         [BindProperty]
         public TblCategory TblCategory { get; set; }
+        public List<TblCategory> TblListCategory { get; set; }
+
         public string SUsername { get; set; }
         public int SRole { get; set; }
 
@@ -44,6 +46,8 @@ namespace LegalLib
             {
                 return NotFound();
             }
+
+            TblListCategory = await _context.TblCategory.Where(m => m.IsActive == true).ToListAsync();
 
             TblCategory = await _context.TblCategory.FirstOrDefaultAsync(m => m.CategoryID == id);
 

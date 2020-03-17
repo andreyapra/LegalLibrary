@@ -23,6 +23,8 @@ namespace LegalLib
             _context = context;
         }
 
+        public List<TblCategory> TblCategory { get; set; }
+
         [BindProperty]
         public IFormFile Upload { get; set; }
         [BindProperty]
@@ -72,7 +74,11 @@ namespace LegalLib
         public void PopulateRevDocument()
         {
             var DocQuery = from d in _context.TblLegalDocument
-                           orderby d.DocumentID
+                           where d.ApproveStatus == "APPROVE"
+                           where d.Status != "CABUT"
+                           where d.TglAkhir > System.DateTime.Today
+                           where d.IsActive == true
+                           orderby d.NamaDocument
                            select d;
 
             RevDocumentSL = new SelectList(DocQuery, "DocumentID", "NamaDocument");
@@ -114,6 +120,8 @@ namespace LegalLib
             {
                 return NotFound();
             }
+
+            TblCategory = await _context.TblCategory.Where(m => m.IsActive == true).ToListAsync();
 
             TblLegalDocument = await _context.TblLegalDocument.FirstOrDefaultAsync(m => m.DocumentID == id);
             TblListFileAttach = await _context.TblFileAttach.Where(m => m.DocumentID == id).Where(m => m.IsActive == true).ToListAsync();

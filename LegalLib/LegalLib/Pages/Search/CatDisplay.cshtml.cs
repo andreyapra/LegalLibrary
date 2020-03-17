@@ -26,6 +26,8 @@ namespace LegalLib
 
         public List<TblLegalDocument> TblLegalDocument { get;set; }
         public List<TblDK> TblDocK { get; set; }
+        public string SUsername { get; set; }
+        public List<TblCategory> TblCategory { get; set; }
 
         public int CategoryID { get; set; }
         public void PopulateDocument(int id)
@@ -129,7 +131,7 @@ namespace LegalLib
             return Category;
         }
 
-        public IActionResult OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
             {
@@ -139,6 +141,7 @@ namespace LegalLib
             CategoryID = id.Value;
             PopulateDocument(CategoryID);
             PopulateDK();
+            TblCategory = await _context.TblCategory.Where(m => m.IsActive == true).ToListAsync();
 
             return Page();
         }

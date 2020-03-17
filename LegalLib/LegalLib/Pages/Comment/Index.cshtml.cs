@@ -23,6 +23,11 @@ namespace LegalLib
         public List<TblComment> TblComment { get;set; }
         [BindProperty]
         public TblComment TblNewComment { get; set; }
+        public List<TblCategory> TblCategory { get; set; }
+
+        public string SUsername { get; set; }
+        public int SRole { get; set; }
+
 
         public int DocumentID { get; set; }
         public async Task<IActionResult> OnPostAsync()
@@ -50,6 +55,21 @@ namespace LegalLib
             {
                 return NotFound();
             }
+
+            TblCategory = await _context.TblCategory.Where(m => m.IsActive == true).ToListAsync();
+
+            SUsername = HttpContext.Session.GetString("SUsername");
+            SRole = HttpContext.Session.GetInt32("SRole").GetValueOrDefault();
+
+            if (SUsername == null)
+            {
+                Response.Redirect("/Login/Index");
+            }
+            else if (SRole < 1)
+            {
+                Response.Redirect("/Denied");
+            }
+
             DocumentID = id.Value;
             HttpContext.Session.SetInt32("SID", id.Value);
 

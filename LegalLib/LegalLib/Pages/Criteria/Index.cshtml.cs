@@ -20,6 +20,8 @@ namespace LegalLib
         [BindProperty(SupportsGet = true)]
         public string SearchString { get; set; }
 
+        public List<TblCategory> TblCategory { get; set; }
+
         public IList<TblCriteria> TblCriteria { get; set; }
         public string SUsername { get; set; }
         public int SRole { get; set; }
@@ -33,6 +35,8 @@ namespace LegalLib
             {
                 Criteria = Criteria.Where(s => s.Criteria.Contains(SearchString));
             }
+
+            TblCategory = await _context.TblCategory.Where(m => m.IsActive == true).ToListAsync();
 
             TblCriteria = await Criteria.Where(t => t.IsActive == true).ToListAsync();
 

@@ -22,6 +22,8 @@ namespace LegalLib
         public string SearchString { get; set; }
 
         public IList<TblKlasifikasi> TblKlasifikasi { get; set; }
+        public List<TblCategory> TblCategory { get; set; }
+
         public string SUsername { get; set; }
         public int SRole { get; set; }
 
@@ -34,6 +36,8 @@ namespace LegalLib
             {
                 Klasifikasi = Klasifikasi.Where(s => s.Klasifikasi.Contains(SearchString));
             }
+
+            TblCategory = await _context.TblCategory.Where(m => m.IsActive == true).ToListAsync();
 
             TblKlasifikasi = await Klasifikasi.Where(t => t.IsActive == true).ToListAsync();
 

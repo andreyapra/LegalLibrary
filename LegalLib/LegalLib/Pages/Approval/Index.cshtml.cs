@@ -25,9 +25,13 @@ namespace LegalLib
         
         public List<TblDK> TblDKs { get; set; }
 
+        public List<TblCategory> TblCategory { get; set; }
+
 
         public async Task<IActionResult> OnGetAsync()
         {
+            TblCategory = await _context.TblCategory.Where(m => m.IsActive == true).ToListAsync();
+
             TblLegalDocument = await _context.TblLegalDocument.Where(m => m.ApproveStatus == "0").ToListAsync();
 
             if (TblLegalDocument == null)

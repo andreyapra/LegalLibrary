@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 
 namespace LegalLib
 {
@@ -17,9 +18,12 @@ namespace LegalLib
             _context = context;
         }
 
+        public List<TblCategory> TblCategory { get; set; }
+
         public TblLegalDocument TblLegalDocument { get; set; }
         public List<TblDK> TblDK { get; set; }
         public List<TblFileAttach> TblFileAttach { get; set; }
+        public string SUsername { get; set; }
 
         public string GetKlasifikasi(int id)
         {
@@ -49,6 +53,9 @@ namespace LegalLib
             {
                 return NotFound();
             }
+            SUsername = HttpContext.Session.GetString("SUsername");
+
+            TblCategory = await _context.TblCategory.Where(m => m.IsActive == true).ToListAsync();
 
             TblLegalDocument = await _context.TblLegalDocument.FirstOrDefaultAsync(m => m.DocumentID == id);
             TblDK = await _context.TblDK.Where(m => m.DocumentID == id).Where(m => m.IsActive == true).ToListAsync();

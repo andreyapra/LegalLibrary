@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace LegalLib
 {
@@ -16,6 +17,8 @@ namespace LegalLib
         {
             _context = context;
         }
+
+        public List<TblCategory> TblCategory { get; set; }
 
         [BindProperty]
         public TblKlasifikasi TblKlasifikasi { get; set; }
@@ -43,6 +46,8 @@ namespace LegalLib
             {
                 return NotFound();
             }
+
+            TblCategory = await _context.TblCategory.Where(m => m.IsActive == true).ToListAsync();
 
             TblKlasifikasi = await _context.TblKlasifikasi.FirstOrDefaultAsync(m => m.KlasifikasiID == id);
 

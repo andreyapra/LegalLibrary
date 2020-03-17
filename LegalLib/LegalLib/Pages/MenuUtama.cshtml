@@ -2,61 +2,171 @@
 @model LegalLib.MenuModel
 
 @{
-    ViewData["Title"] = "Menu";
+    ViewData["Title"] = "Menu Utama";
 }
 
-
-@Model.SUsername
-<br />
-@{
-    if (Model.SUsername == null)
-    {
-        <strong><a asp-page="/Login/Index">LOGIN</a></strong>
-    }
-    else
-    {
-        <strong><a asp-page="/Login/Logout">LOGOUT</a></strong>
-    }
-}
-
-<br />
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-4">
-            Column 1
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-light-primary elevation-4">
+    <!-- Brand Logo -->
+    <a asp-page="/Index" class="brand-link">
+        <span class="brand-text font-weight-light" style="text-align:center">
+            <img src="~/images/logopertamina.png" alt="Digital Library" class="brand-image"
+                 style="opacity: .8">
             <br />
-            <strong>PERATURAN EXTERNAL</strong>
-            <ul>
-                @foreach (var item in Model.TblCategory)
-                {
-                    <li>
-                        <a asp-page="/Search/CatDisplay" asp-route-id="@item.CategoryID">
-                            @Html.DisplayFor(modelItem => item.Category)
-                        </a>
-                    </li>
+        </span>
+    </a>
 
-                }
-            </ul>
-            <strong>PERATURAN INTERNAL</strong>
-            <ul>
-                <li><a href="https://www.google.com">Portal STK</a></li>
-            </ul>
-            <strong>MASTER DOCUMENTS</strong>
-            <ul>
-                <li><a asp-page="/Documents/DocCreate">CREATE DOCUMENT</a></li>
-                <li><a asp-page="/Documents/DocList">LIST DOCUMENT</a></li>
-                <li><a asp-page="/Approval/Index">APPROVE DOCUMENT</a></li>
-            </ul>
-            <strong>MASTER DATA</strong>
-            <ul>
-                <li><a asp-page="/Category/Index">MASTER CATEGORY</a></li>
-                <li><a asp-page="/Criteria/Index">MASTER CRITERIA</a></li>
-                <li><a asp-page="/Klasifikasi/Index">MASTER KLASIFIKASI</a></li>
-            </ul>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="~/AdminLTE-3.0.2/dist/img/avatar.png" class="img-circle elevation-2" alt="User Image">
+            </div>
+            <div class="info">
+                <h3>@Model.SUsername</h3>
+                <p>
+                    @{
+                        if (Model.SUsername == null)
+                        {
+                            <strong><a asp-page="/Login/Index">LOGIN</a></strong>
+                        }
+                        else
+                        {
+                            <strong><a asp-page="/Login/Logout">LOGOUT</a></strong>
+                        }
+                    }
+                </p>
+            </div>
         </div>
 
-        <div class="col-8">
-            Column 2
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class
+                     with font-awesome or any other icon font library -->
+                <li class="nav-item has-treeview menu-open">
+                    <a href="#" class="nav-link active">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            PERATURAN EXTERNAL
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @foreach (var item in Model.TblCategory)
+                        {
+                            <li class="nav-item">
+                                <a asp-page="/Search/CatDisplay" asp-route-id="@item.CategoryID" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.Category)
+                                    </p>
+                                </a>
+                            </li>
+
+                        }
+
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            PERATURAN INTERNAL
+                        </p>
+                    </a>
+                    <a href="https://www.google.com" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>
+                            Portal STK
+                        </p>
+                    </a>
+
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-copy"></i>
+                        <p>
+                            MASTER DOCUMENTS
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-page="/Documents/DocCreate" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>CREATE DOCUMENT</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-page="/Documents/DocList" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>LIST DOCUMENT</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-page="/Approval/Index" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>APPROVE DOCUMENT</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-chart-pie"></i>
+                        <p>
+                            MASTER DATA
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-page="/Category/Index" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>MASTER CATEGORY</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-page="/Criteria/Index" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>MASTER CRITERIA</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-page="/Klasifikasi/Index" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>MASTER KLASIFIKASI</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>
+
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Peraturan Terbaru
+        </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content container-fluid">
+
+        <!--------------------------
+        | Your Page Content Here |
+        -------------------------->
+
+        <div class="container-fluid">
 
             <table class="table">
                 <thead>
@@ -85,7 +195,6 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.CategoryID)
                                 @Model.GetCategory(item.CategoryID)
-
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Nomor)
@@ -110,11 +219,10 @@
                     }
                 </tbody>
             </table>
-
         </div>
 
-    </div>
 
+    </section>
+    <!-- /.content -->
 </div>
-
-
+<!-- /.content-wrapper -->

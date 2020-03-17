@@ -29,6 +29,8 @@ namespace LegalLib
         [BindProperty]
         public TblLogActivity TblLogActivity { get; set; }
 
+        public string SUsername { get; set; }
+        public List<TblCategory> TblCategory { get; set; }
 
         public string Message { get; set; }
 
@@ -45,6 +47,11 @@ namespace LegalLib
             await _context.SaveChangesAsync();
         }
 
+        public async Task<IActionResult> OnGet()
+        {
+            TblCategory = await _context.TblCategory.Where(m => m.IsActive == true).ToListAsync();
+            return Page();
+        }
 
 
         public async Task<IActionResult> OnPost()

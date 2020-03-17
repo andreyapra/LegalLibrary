@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace LegalLib
 {
@@ -20,6 +23,8 @@ namespace LegalLib
         [BindProperty(SupportsGet = true)]
         public TblLogActivity TblLogActivity { get; set; }
         public int CatID { get; set; }
+        public List<TblCategory> TblListCategory { get; set; }
+
 
         public async Task LogActivity()
         {
@@ -33,8 +38,10 @@ namespace LegalLib
         }
 
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGet()
         {
+            TblListCategory = await _context.TblCategory.Where(m => m.IsActive == true).ToListAsync();
+
             SUsername = HttpContext.Session.GetString("SUsername");
             SRole = HttpContext.Session.GetInt32("SRole").GetValueOrDefault();
 
