@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -55,8 +56,26 @@ namespace LegalLib
 
                     case "TANGGAL":
                         DateTime SDate;
+                        int SDateY = 0;
+                        int SDateM = 0; int SDateD = 0;
                         SDate = DateTime.Parse(SearchString);
-                        DocQuery = DocQuery.Where(s => s.TglMulai == SDate);
+                        SDateY = SDate.Year;
+                        SDateM = SDate.Month;
+                        SDateD = SDate.Day;
+                        
+                        if (SDateY != 0)
+                        {
+                            DocQuery = DocQuery.Where(s => s.TglMulai.Year == SDate.Year);
+                        }
+                        if (SDateM != 0)
+                        {
+                            DocQuery = DocQuery.Where(s => s.TglMulai.Month == SDate.Month);
+                        }
+                        if (SDateD != 0)
+                        {
+                            DocQuery = DocQuery.Where(s => s.TglMulai.Day == SDate.Day);
+                        }
+
                         break;
 
                     case "CRITERIA":
@@ -138,10 +157,14 @@ namespace LegalLib
                 return NotFound();
             }
 
+            //Ambil user session
+            SUsername = HttpContext.Session.GetString("SUsername");
+            //Generate daftar Category
+            TblCategory = await _context.TblCategory.Where(m => m.IsActive == true).ToListAsync();
+
             CategoryID = id.Value;
             PopulateDocument(CategoryID);
             PopulateDK();
-            TblCategory = await _context.TblCategory.Where(m => m.IsActive == true).ToListAsync();
 
             return Page();
         }

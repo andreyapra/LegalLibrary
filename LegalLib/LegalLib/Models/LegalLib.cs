@@ -57,6 +57,7 @@ namespace LegalLib.Models
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int DocumentID { get; set; }
+        [Display(Name = "Nomor Document")]
         public string Nomor { get; set; }
         [Display(Name ="Nama Document")]
         public string NamaDocument { get; set; }
@@ -75,6 +76,7 @@ namespace LegalLib.Models
         [Display(Name ="Tanggal Berlaku")]
         public DateTime TglMulai { get; set; }
         [DataType(DataType.Date)]
+        [Display(Name = "Tanggal Berakhir")]
         public DateTime TglAkhir { get; set; }
         public int Revisi { get; set; }
         public int RevDocument { get; set; }
