@@ -189,3 +189,5 @@ C:\Users\ANDREYAPRADINATA\source\repos\LegalLib\LegalLib\obj\Debug\netcoreapp3.1
 C:\Users\ANDREYAPRADINATA\source\repos\LegalLib\LegalLib\obj\Debug\netcoreapp3.1\LegalLib.pdb
 C:\Users\ANDREYAPRADINATA\source\repos\LegalLib\LegalLib\obj\Debug\netcoreapp3.1\LegalLib.csprojAssemblyReference.cache
 C:\Users\ANDREYAPRADINATA\source\repos\LegalLib\LegalLib\bin\Debug\netcoreapp3.1\System.Text.Json.dll
+C:\Users\ANDREYAPRADINATA\source\repos\LegalLib\LegalLib\obj\Debug\netcoreapp3.1\LegalLib.csproj.CoreCompileInputs.cache
+C:\Users\ANDREYAPRADINATA\source\repos\LegalLib\LegalLib\obj\Debug\netcoreapp3.1\LegalLib.genruntimeconfig.cache

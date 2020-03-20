@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using LegalLib.Data;
 using LegalLib.Models;
+using System.Globalization;
 
 namespace LegalLib
 {
@@ -31,8 +32,47 @@ namespace LegalLib
         public List<TblCategory> TblCategory { get; set; }
 
         public int CategoryID { get; set; }
+
+        public string DetectTanggal(string SearchString)
+        {
+            CultureInfo provider = CultureInfo.InvariantCulture;
+            string tglformat, outtglformat = null;
+            DateTime Hasil_yyyy, Hasil_yyyyMM, Hasil_yyyyMMdd, Hasil_MMdd;
+
+            tglformat = "yyyy";
+            //Detect format yyyy
+            if (DateTime.TryParseExact(SearchString, tglformat, provider, DateTimeStyles.None, out Hasil_yyyy))
+            {
+                outtglformat = tglformat;
+            }
+            tglformat = "yyyy-MM";
+            //Detect format yyyy-MM
+            if (DateTime.TryParseExact(SearchString, tglformat, provider, DateTimeStyles.None, out Hasil_yyyyMM))
+            {
+                outtglformat = tglformat;
+            }
+            tglformat = "yyyy-MM-dd";
+            //Detect format yyyy-MM
+            if (DateTime.TryParseExact(SearchString, tglformat, provider, DateTimeStyles.None, out Hasil_yyyyMMdd))
+            {
+                outtglformat = tglformat;
+            }
+            tglformat = "MM-dd";
+            //Detect format MM-dd
+            if (DateTime.TryParseExact(SearchString, tglformat, provider, DateTimeStyles.None, out Hasil_MMdd))
+            {
+                outtglformat = tglformat;
+            }
+
+            return (outtglformat);
+        }
+
         public void PopulateDocument(int id)
         {
+            CultureInfo provider = CultureInfo.InvariantCulture;
+            DateTime SDate;
+            string DateFmt;
+
             var DocQuery = from d in _context.TblLegalDocument
                             where d.ApproveStatus == "APPROVE"
                             where d.Status != "CABUT"
@@ -55,27 +95,53 @@ namespace LegalLib
                         break;
 
                     case "TANGGAL":
-                        DateTime SDate;
-                        int SDateY = 0;
-                        int SDateM = 0; int SDateD = 0;
-                        SDate = DateTime.Parse(SearchString);
-                        SDateY = SDate.Year;
-                        SDateM = SDate.Month;
-                        SDateD = SDate.Day;
-                        
-                        if (SDateY != 0)
-                        {
-                            DocQuery = DocQuery.Where(s => s.TglMulai.Year == SDate.Year);
-                        }
-                        if (SDateM != 0)
-                        {
-                            DocQuery = DocQuery.Where(s => s.TglMulai.Month == SDate.Month);
-                        }
-                        if (SDateD != 0)
-                        {
-                            DocQuery = DocQuery.Where(s => s.TglMulai.Day == SDate.Day);
-                        }
+                        DateFmt = DetectTanggal(SearchString);
+                        SDate = DateTime.ParseExact(SearchString, DateFmt, provider, DateTimeStyles.None);
 
+                        switch (DateFmt)
+                        {
+                            case "yyyy":
+                                DocQuery = DocQuery.Where(s => s.TglMulai.Year == SDate.Year);
+                                break;
+
+                            case "yyyy-MM":
+                                DocQuery = DocQuery.Where(s => s.TglMulai.Year == SDate.Year).Where(s => s.TglMulai.Month == SDate.Month);
+                                break;
+
+                            case "yyyy-MM-dd":
+                                DocQuery = DocQuery.Where(s => s.TglMulai.Year == SDate.Year).Where(s => s.TglMulai.Month == SDate.Month).Where(s => s.TglMulai.Day == SDate.Day);
+                                break;
+
+                            case "MM-dd":
+                                DocQuery = DocQuery.Where(s => s.TglMulai.Year == SDate.Year).Where(s => s.TglMulai.Month == SDate.Month).Where(s => s.TglMulai.Day == SDate.Day);
+                                break;
+
+                        }
+                        break;
+
+                    case "TAKHIR":
+                        DateFmt = DetectTanggal(SearchString);
+                        SDate = DateTime.ParseExact(SearchString, DateFmt, provider, DateTimeStyles.None);
+
+                        switch (DateFmt)
+                        {
+                            case "yyyy":
+                                DocQuery = DocQuery.Where(s => s.TglAkhir.Year == SDate.Year);
+                                break;
+
+                            case "yyyy-MM":
+                                DocQuery = DocQuery.Where(s => s.TglAkhir.Year == SDate.Year).Where(s => s.TglAkhir.Month == SDate.Month);
+                                break;
+
+                            case "yyyy-MM-dd":
+                                DocQuery = DocQuery.Where(s => s.TglAkhir.Year == SDate.Year).Where(s => s.TglAkhir.Month == SDate.Month).Where(s => s.TglAkhir.Day == SDate.Day);
+                                break;
+
+                            case "MM-dd":
+                                DocQuery = DocQuery.Where(s => s.TglAkhir.Year == SDate.Year).Where(s => s.TglAkhir.Month == SDate.Month).Where(s => s.TglAkhir.Day == SDate.Day);
+                                break;
+
+                        }
                         break;
 
                     case "CRITERIA":

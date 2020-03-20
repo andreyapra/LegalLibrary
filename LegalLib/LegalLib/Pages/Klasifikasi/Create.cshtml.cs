@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Net.Http;
+using System.Text;
+
 
 namespace LegalLib
 {
@@ -25,13 +30,29 @@ namespace LegalLib
 
         public async Task LogActivity()
         {
-            TblLogActivity.UserID = HttpContext.Session.GetString("SUsername");
+            string Username = HttpContext.Session.GetString("SUsername");
+            //Logging Local
+            TblLogActivity.UserID = Username;
             TblLogActivity.LogTime = System.DateTime.Now;
             TblLogActivity.Modul = "KLASIFIKASI";
             TblLogActivity.Action = "CREATE";
             TblLogActivity.Description = "KLASIFIKASIID=" + KlaID;
             _context.TblLogActivity.Add(TblLogActivity);
             await _context.SaveChangesAsync();
+
+            //Logging API
+            string Baseurl = "https://apps.pertamina.com/api/login/LogUsman/InsertLog";
+            string sContentType = "application/json";
+            JObject oJsonObject = new JObject();
+            oJsonObject.Add("username", Username);
+            oJsonObject.Add("modul", "KLASIFIKASI");
+            oJsonObject.Add("action", "CREATE " + "KLASIFIKASIID=" + KlaID);
+            oJsonObject.Add("appname", "Digital Library");
+
+            var _Client = new HttpClient();
+            var _response = await _Client.PostAsync(Baseurl, new StringContent(oJsonObject.ToString(), Encoding.UTF8, sContentType));
+            var _content = await _response.Content.ReadAsStringAsync();
+
         }
 
         public async Task<IActionResult> OnGet()

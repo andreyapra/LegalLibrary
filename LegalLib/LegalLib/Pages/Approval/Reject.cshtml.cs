@@ -7,6 +7,10 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mail;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Net.Http;
+using System.Text;
 
 namespace LegalLib
 {
@@ -29,33 +33,64 @@ namespace LegalLib
 
         public async void SendMailReject()
         {
-            var body = $@"<p>Dokumen Nomor " + TblLegalDocument.Nomor + " di Reject</p>";
-
-            string Kepada = TblLegalDocument.UploaderEmail;
+            //Fungsi Send Email
+            var StrBody = $@"<p>Dokumen Nomor " + TblLegalDocument.Nomor + " di Reject</p>";
+            var StrSubject = "Dokumen Nomor " + TblLegalDocument.Nomor + " di Reject";
+            string StrMailto = TblLegalDocument.UploaderEmail;
 
             using var smtp = new SmtpClient
             {
                 DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory,
-                PickupDirectoryLocation = @"D:\BACKUP"
+                PickupDirectoryLocation = @"D:\BACKUP\EMAIL"
             };
             var message = new MailMessage();
-            message.To.Add(Kepada);
-            message.Subject = "Dokumen Nomor " + TblLegalDocument.Nomor + " di Reject";
-            message.Body = body;
+            message.To.Add(StrMailto);
+            message.Subject = StrSubject;
+            message.Body = StrBody;
             message.IsBodyHtml = true;
-            message.From = new MailAddress("library@pertamina.com");
+            message.From = new MailAddress("digitallibrary@pertamina.com");
             await smtp.SendMailAsync(message);
+
+            //Fungsi Send Email API
+            string Baseurl = "http://localhost:8081/CodeIgniter/index.php/email";
+            string sContentType = "application/json";
+            JObject oJsonObject = new JObject();
+            oJsonObject.Add("subject", StrSubject);
+            oJsonObject.Add("body", StrBody);
+            oJsonObject.Add("mailto", StrMailto);
+            oJsonObject.Add("cc", "");
+            oJsonObject.Add("bcc", "");
+
+            var _Client = new HttpClient();
+            var _response = await _Client.PostAsync(Baseurl, new StringContent(oJsonObject.ToString(), Encoding.UTF8, sContentType));
+            var _content = await _response.Content.ReadAsStringAsync();
 
         }
         public async Task LogActivity()
         {
-            TblLogActivity.UserID = HttpContext.Session.GetString("SUsername");
+            string Username = HttpContext.Session.GetString("SUsername");
+            //Logging Local
+            TblLogActivity.UserID = Username;
             TblLogActivity.LogTime = System.DateTime.Now;
             TblLogActivity.Modul = "APPROVAL";
             TblLogActivity.Action = "REJECT";
             TblLogActivity.Description = "DOCUMENTID=" + DocID;
             _context.TblLogActivity.Add(TblLogActivity);
             await _context.SaveChangesAsync();
+
+            //Logging API
+            string Baseurl = "https://apps.pertamina.com/api/login/LogUsman/InsertLog";
+            string sContentType = "application/json";
+            JObject oJsonObject = new JObject();
+            oJsonObject.Add("username", Username);
+            oJsonObject.Add("modul", "APPROVAL");
+            oJsonObject.Add("action", "REJECT " + "DOCUMENTID=" + DocID);
+            oJsonObject.Add("appname", "Digital Library");
+
+            var _Client = new HttpClient();
+            var _response = await _Client.PostAsync(Baseurl, new StringContent(oJsonObject.ToString(), Encoding.UTF8, sContentType));
+            var _content = await _response.Content.ReadAsStringAsync();
+
         }
 
         public async Task<IActionResult> OnGet(int? id)
