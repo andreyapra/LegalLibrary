@@ -27,9 +27,9 @@ namespace LegalLib
         }
 
         [BindProperty]
-        public string Username { get; set; }
+        public string InputUsername { get; set; }
         [BindProperty]
-        public string Password { get; set; }
+        public string InputPassword { get; set; }
         [BindProperty]
         public TblLogActivity TblLogActivity { get; set; }
 
@@ -139,6 +139,12 @@ namespace LegalLib
         }
 
         //Akhir Class USMAN
+        
+        //User Parameter
+        public string UserID { get; set; }
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public int Role { get; set; }
 
 
 
@@ -164,8 +170,8 @@ namespace LegalLib
             oJsonObject.Add("appname", "Digital Library");
 
             var _Client = new HttpClient();
-            var _response = await _Client.PostAsync(Baseurl, new StringContent(oJsonObject.ToString(), Encoding.UTF8, sContentType));
-            var _content = await _response.Content.ReadAsStringAsync();
+//            var _response = await _Client.PostAsync(Baseurl, new StringContent(oJsonObject.ToString(), Encoding.UTF8, sContentType));
+//            var _content = await _response.Content.ReadAsStringAsync();
 
         }
 
@@ -175,6 +181,92 @@ namespace LegalLib
             return Page();
         }
 
+        public async Task PanggilUsman()
+        {
+            //Panggil USMAN
+            string Baseurl = "https://apps.pertamina.com/api/login/Users/Loginldap";
+            string sContentType = "application/json"; // or application/xml
+
+            JObject oJsonObject = new JObject();
+            oJsonObject.Add("username", "trainee04");
+            oJsonObject.Add("password", "123@ptm");
+
+            var _Client = new HttpClient();
+            var _response = await _Client.PostAsync(Baseurl, new StringContent(oJsonObject.ToString(), Encoding.UTF8, sContentType));
+
+            var _content = await _response.Content.ReadAsStringAsync();
+            JObject _item = JObject.Parse(_content);
+            var _result = _item.Descendants()
+                .OfType<JProperty>()
+                .Where(p => p.Name.ToString() == "Status")
+                .First();
+
+            if (_result.Value != null)
+            {
+                if (_result.Value.ToString() == "00")
+                {
+                    _login = new RootObject();
+                    _login = JsonConvert.DeserializeObject<RootObject>(_content);
+
+                    Email = _login.dataLDAP.Data.Email;
+                    UserID = _login.dataLDAP.Data.UserName;
+                    Username = _login.dataLDAP.Data.NamaLengkap;
+                    Role = 3; //masih hard code
+
+                    HttpContext.Session.SetInt32("SRole", Role);
+                    HttpContext.Session.SetString("SNama", Username);
+                    HttpContext.Session.SetString("SEmail", Email);
+                    HttpContext.Session.SetString("SUsername", UserID);
+                    Message = HttpContext.Session.GetString("SUsername");
+                    await LogActivity();
+
+                }
+            }
+            else
+            {
+                Message = "Invalid username and password";
+            }
+        }
+
+        public async Task LoginHC()
+        {
+            //Hardcode User
+            switch (InputUsername)
+            {
+                case "manager":
+                    HttpContext.Session.SetInt32("SRole", 3);
+                    HttpContext.Session.SetString("SNama", "Nama Manager");
+                    HttpContext.Session.SetString("SEmail", "manager@email.com");
+                    HttpContext.Session.SetString("SUsername", InputUsername);
+                    Message = HttpContext.Session.GetString("SUsername");
+                    await LogActivity();
+                    break;
+
+                case "legal":
+                    HttpContext.Session.SetInt32("SRole", 2);
+                    HttpContext.Session.SetString("SNama", "Nama Legal");
+                    HttpContext.Session.SetString("SEmail", "legal@email.com");
+                    HttpContext.Session.SetString("SUsername", InputUsername);
+                    Message = HttpContext.Session.GetString("SUsername");
+                    await LogActivity();
+                    break;
+
+                case "user":
+                    HttpContext.Session.SetInt32("SRole", 1);
+                    HttpContext.Session.SetString("SNama", "Nama User");
+                    HttpContext.Session.SetString("SEmail", "user@email.com");
+                    HttpContext.Session.SetString("SUsername", InputUsername);
+                    Message = HttpContext.Session.GetString("SUsername");
+                    await LogActivity();
+                    break;
+
+                default:
+                    Message = "Invalid username and password";
+                    break;
+            }
+
+        }
+
 
         public async Task<IActionResult> OnPost()
         {
@@ -182,43 +274,14 @@ namespace LegalLib
             {
                 return Page();
             }
+            TblCategory = await _context.TblCategory.Where(m => m.IsActive == true).ToListAsync();
 
-            //Panggil USMAN
-
-
-            switch (Username) 
+            await LoginHC();
+            if (HttpContext.Session.GetString("SUsername") != null)
             {
-                case "manager":
-                    HttpContext.Session.SetInt32("SRole", 3);
-                    HttpContext.Session.SetString("SNama", "Nama Manager");
-                    HttpContext.Session.SetString("SEmail", "manager@email.com");
-                    HttpContext.Session.SetString("SUsername", Username);
-                    Message = HttpContext.Session.GetString("SUsername");
-                    await LogActivity();
-                    return RedirectToPage("/Index");
-
-                case "legal":
-                    HttpContext.Session.SetInt32("SRole", 2);
-                    HttpContext.Session.SetString("SNama", "Nama Legal");
-                    HttpContext.Session.SetString("SEmail", "legal@email.com");
-                    HttpContext.Session.SetString("SUsername", Username);
-                    Message = HttpContext.Session.GetString("SUsername");
-                    await LogActivity();
-                    return RedirectToPage("/Index");
-
-                case "user":
-                    HttpContext.Session.SetInt32("SRole", 1);
-                    HttpContext.Session.SetString("SNama", "Nama User");
-                    HttpContext.Session.SetString("SEmail", "user@email.com");
-                    HttpContext.Session.SetString("SUsername", Username);
-                    Message = HttpContext.Session.GetString("SUsername");
-                    await LogActivity();
-                    return RedirectToPage("/Index");
-
-                default:
-                    Message = "Invalid username and password";
-                    return Page();
+                return RedirectToPage("/Index");
             }
+            return Page();
         }
     }
 }

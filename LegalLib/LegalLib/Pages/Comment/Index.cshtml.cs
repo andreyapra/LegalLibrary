@@ -30,6 +30,15 @@ namespace LegalLib
 
 
         public int DocumentID { get; set; }
+
+        public string GetDocument(int id)
+        {
+            string Document;
+            Document = _context.TblLegalDocument.Where(m => m.DocumentID == id).FirstOrDefault().NamaDocument;
+
+            return Document;
+        }
+
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)

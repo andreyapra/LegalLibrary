@@ -297,12 +297,12 @@
 
                         </td>
                         <td>
-                            <a asp-page="/Documents/DocDetails" asp-route-id="@item.DocumentID">Details |</a>
+                            <a asp-page="/Documents/DocDetails" asp-route-id="@item.DocumentID">Details</a>
                             @{
                                 if (Model.SUsername != null)
                                 {
-                                    <a asp-page="/Documents/DocEdit" asp-route-id="@item.DocumentID">Edit |</a> 
-                                    <a asp-page="/Comment/Index" asp-route-id="@item.DocumentID">Comment |</a> 
+                                    <a asp-page="/Documents/DocEdit" asp-route-id="@item.DocumentID">Edit</a> 
+                                    <a asp-page="/Comment/Index" asp-route-id="@item.DocumentID">Comment</a> 
                                 }
                             }
                         </td>

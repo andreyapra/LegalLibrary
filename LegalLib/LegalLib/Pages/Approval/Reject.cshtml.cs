@@ -62,8 +62,8 @@ namespace LegalLib
             oJsonObject.Add("bcc", "");
 
             var _Client = new HttpClient();
-            var _response = await _Client.PostAsync(Baseurl, new StringContent(oJsonObject.ToString(), Encoding.UTF8, sContentType));
-            var _content = await _response.Content.ReadAsStringAsync();
+//            var _response = await _Client.PostAsync(Baseurl, new StringContent(oJsonObject.ToString(), Encoding.UTF8, sContentType));
+//            var _content = await _response.Content.ReadAsStringAsync();
 
         }
         public async Task LogActivity()
