@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 
 
 namespace LegalLib
@@ -17,9 +18,11 @@ namespace LegalLib
     {
         private readonly LegalLib.Data.LegalLibContext _context;
 
-        public KlasifikasiDeleteModel(LegalLib.Data.LegalLibContext context)
+        public IConfiguration Configuration { get; }
+        public KlasifikasiDeleteModel(LegalLib.Data.LegalLibContext context, IConfiguration configuration)
         {
             _context = context;
+            Configuration = configuration;
         }
 
         [BindProperty]
@@ -43,7 +46,7 @@ namespace LegalLib
             await _context.SaveChangesAsync();
 
             //Logging API
-            string Baseurl = "https://apps.pertamina.com/api/login/LogUsman/InsertLog";
+            string Baseurl = Configuration["Setting:InsertLogURL"];
             string sContentType = "application/json";
             JObject oJsonObject = new JObject();
             oJsonObject.Add("username", Username);
@@ -76,11 +79,11 @@ namespace LegalLib
 
             if (SUsername == null)
             {
-                Response.Redirect("/Login/Index");
+                return RedirectToPage("/Login/Index");
             }
             else if (SRole < 2)
             {
-                Response.Redirect("/Denied");
+                return RedirectToPage("/Denied");
             }
             TblKlasifikasi.IsActive = false;
             TblKlasifikasi.ModifiedDate = System.DateTime.Now;

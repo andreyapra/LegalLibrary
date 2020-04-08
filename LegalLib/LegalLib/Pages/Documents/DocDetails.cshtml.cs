@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace LegalLib
 {
@@ -13,11 +14,13 @@ namespace LegalLib
     {
         private readonly LegalLib.Data.LegalLibContext _context;
 
-        public DocDetailsModel(LegalLib.Data.LegalLibContext context)
+        public IConfiguration Configuration { get; }
+        public DocDetailsModel(LegalLib.Data.LegalLibContext context, IConfiguration configuration)
         {
             _context = context;
-        }
+            Configuration = configuration;
 
+        }
         public List<TblCategory> TblCategory { get; set; }
 
         public TblLegalDocument TblLegalDocument { get; set; }

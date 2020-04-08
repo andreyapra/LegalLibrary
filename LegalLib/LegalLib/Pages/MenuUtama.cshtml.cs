@@ -7,16 +7,20 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 
 namespace LegalLib
 {
     public class MenuModel : PageModel
     {
         private readonly LegalLib.Data.LegalLibContext _context;
+        public IConfiguration Configuration { get; }
 
-        public MenuModel(LegalLib.Data.LegalLibContext context)
+        public MenuModel(LegalLib.Data.LegalLibContext context, ILogger<MenuModel> logger, IConfiguration configuration)
         {
             _context = context;
+            Configuration = configuration;
         }
         [BindProperty]
         public List<TblCategory> TblCategory { get; set; }
@@ -65,7 +69,7 @@ namespace LegalLib
 
         public async Task OnGetAsync()
         {
-
+            ViewData["URL"] = Configuration["Setting:ExternalURL"];
             TblCategory = await _context.TblCategory.Where(m => m.IsActive == true).ToListAsync();
 
             PopulateDocument();

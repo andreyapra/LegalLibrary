@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
 
 namespace LegalLib
 {
@@ -13,9 +14,12 @@ namespace LegalLib
     {
         private readonly LegalLib.Data.LegalLibContext _context;
 
-        public CriteriaIndexModel(LegalLib.Data.LegalLibContext context)
+        public IConfiguration Configuration { get; }
+        public CriteriaIndexModel(LegalLib.Data.LegalLibContext context, IConfiguration configuration)
         {
             _context = context;
+            Configuration = configuration;
+
         }
         [BindProperty(SupportsGet = true)]
         public string SearchString { get; set; }
@@ -26,7 +30,7 @@ namespace LegalLib
         public string SUsername { get; set; }
         public int SRole { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             var Criteria = from m in _context.TblCriteria
                            select m;
@@ -45,12 +49,13 @@ namespace LegalLib
 
             if (SUsername == null)
             {
-                Response.Redirect("Login");
+                return RedirectToPage("/Login");
             }
             else if (SRole < 2)
             {
-                Response.Redirect("Denied");
+                return RedirectToPage("/Denied");
             }
+            return Page();
         }
     }
 }

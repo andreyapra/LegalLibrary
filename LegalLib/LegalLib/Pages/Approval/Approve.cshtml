@@ -2,7 +2,9 @@
 @model LegalLib.ApproveModel
 @{
     ViewData["Title"] = "Approve";
+    ViewData["URL"] = Model.Configuration["Setting:ExternalURL"];
 }
 
 <h1>Approve</h1>
+@ViewData["URL"]
 

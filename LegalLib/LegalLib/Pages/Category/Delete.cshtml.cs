@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 
 
 namespace LegalLib
@@ -16,10 +17,11 @@ namespace LegalLib
     public class CategoryDeleteModel : PageModel
     {
         private readonly LegalLib.Data.LegalLibContext _context;
-
-        public CategoryDeleteModel(LegalLib.Data.LegalLibContext context)
+        public IConfiguration Configuration { get; }
+        public CategoryDeleteModel(LegalLib.Data.LegalLibContext context, IConfiguration configuration)
         {
             _context = context;
+            Configuration = configuration;
         }
 
         [BindProperty]
@@ -44,7 +46,7 @@ namespace LegalLib
             await _context.SaveChangesAsync();
 
             //Logging API
-            string Baseurl = "https://apps.pertamina.com/api/login/LogUsman/InsertLog";
+            string Baseurl = Configuration["Setting:InsertLogURL"];
             string sContentType = "application/json";
             JObject oJsonObject = new JObject();
             oJsonObject.Add("username", Username);
@@ -64,7 +66,6 @@ namespace LegalLib
             {
                 return NotFound();
             }
-
             TblCategory = await _context.TblCategory.FirstOrDefaultAsync(m => m.CategoryID == id);
 
             if (TblCategory == null)
@@ -76,11 +77,11 @@ namespace LegalLib
 
             if (SUsername == null)
             {
-                Response.Redirect("/Login/Index");
+                return RedirectToPage("/Login/Index");
             }
             else if (SRole < 2)
             {
-                Response.Redirect("/Denied");
+                return RedirectToPage("/Denied");
             }
 
             TblCategory.IsActive = false;

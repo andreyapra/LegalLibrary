@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "Edit Criteria";
+    ViewData["URL"] = Model.Configuration["Setting:ExternalURL"];
 }
 
 <!-- Navbar -->
@@ -94,7 +95,7 @@
                             PERATURAN INTERNAL
                         </p>
                     </a>
-                    <a href="https://www.google.com" class="nav-link">
+                    <a href="@ViewData["URL"]" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>
                             Portal STK

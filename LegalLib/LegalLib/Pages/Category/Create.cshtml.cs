@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 
 
 namespace LegalLib
@@ -17,10 +18,12 @@ namespace LegalLib
     public class CategoryCreateModel : PageModel
     {
         private readonly LegalLib.Data.LegalLibContext _context;
+        public IConfiguration Configuration { get; }
 
-        public CategoryCreateModel(LegalLib.Data.LegalLibContext context)
+        public CategoryCreateModel(LegalLib.Data.LegalLibContext context, IConfiguration configuration)
         {
             _context = context;
+            Configuration = configuration;
         }
         [BindProperty]
         public string SUsername { get; set; }
@@ -44,7 +47,7 @@ namespace LegalLib
             await _context.SaveChangesAsync();
 
             //Logging API
-            string Baseurl = "https://apps.pertamina.com/api/login/LogUsman/InsertLog";
+            string Baseurl = Configuration["Setting:InsertLogURL"];
             string sContentType = "application/json";
             JObject oJsonObject = new JObject();
             oJsonObject.Add("username", Username);
@@ -54,7 +57,7 @@ namespace LegalLib
 
             var _Client = new HttpClient();
             var _response = await _Client.PostAsync(Baseurl, new StringContent(oJsonObject.ToString(), Encoding.UTF8, sContentType));
-            var _content = await _response.Content.ReadAsStringAsync();
+            _ = await _response.Content.ReadAsStringAsync();
 
         }
 
@@ -68,11 +71,11 @@ namespace LegalLib
 
             if (SUsername == null)
             {
-                Response.Redirect("/Login/Index");
+                return RedirectToPage("/Login/Index");
             }
             else if (SRole < 2)
             {
-                Response.Redirect("/Denied");
+                return RedirectToPage("/Denied");
             }
             return Page();
         }
@@ -88,6 +91,7 @@ namespace LegalLib
             {
                 return Page();
             }
+
             TblCategory.IsActive = true;
             TblCategory.CreatedBy = HttpContext.Session.GetString("SUsername");
             TblCategory.CreatedDate = System.DateTime.Now;

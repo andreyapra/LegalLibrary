@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 
 namespace LegalLib
 {
@@ -21,9 +22,12 @@ namespace LegalLib
     {
         private readonly LegalLib.Data.LegalLibContext _context;
 
-        public LogoutIndexModel(LegalLib.Data.LegalLibContext context)
+        public IConfiguration Configuration { get; }
+
+        public LogoutIndexModel(LegalLib.Data.LegalLibContext context, IConfiguration configuration)
         {
             _context = context;
+            Configuration = configuration;
         }
 
         [BindProperty(SupportsGet =true)]
@@ -43,17 +47,19 @@ namespace LegalLib
             await _context.SaveChangesAsync();
 
             //Logging API
-            string Baseurl = "https://apps.pertamina.com/api/login/LogUsman/InsertLog";
+            string Baseurl = Configuration["Setting:InsertLogURL"];
             string sContentType = "application/json";
-            JObject oJsonObject = new JObject();
-            oJsonObject.Add("username", Username);
-            oJsonObject.Add("modul", "LOGIN");
-            oJsonObject.Add("action", "LOGOUT " + "USER=" + Username);
-            oJsonObject.Add("appname", "Digital Library");
+            JObject oJsonObject = new JObject
+            {
+                { "username", Username },
+                { "modul", "LOGIN" },
+                { "action", "LOGOUT " + "USER=" + Username },
+                { "appname", "Digital Library" }
+            };
 
             var _Client = new HttpClient();
             var _response = await _Client.PostAsync(Baseurl, new StringContent(oJsonObject.ToString(), Encoding.UTF8, sContentType));
-            var _content = await _response.Content.ReadAsStringAsync();
+            _ = await _response.Content.ReadAsStringAsync();
 
         }
 

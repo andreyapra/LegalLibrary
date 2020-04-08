@@ -170,3 +170,6 @@ C:\Users\ANDREYAPRADINATA\source\repos\LegalLib\LegalLib\bin\Release\netcoreapp3
 C:\Users\ANDREYAPRADINATA\source\repos\LegalLib\LegalLib\bin\Release\netcoreapp3.1\win-x64\Microsoft.Extensions.Options.dll
 C:\Users\ANDREYAPRADINATA\source\repos\LegalLib\LegalLib\bin\Release\netcoreapp3.1\win-x64\Microsoft.Extensions.Primitives.dll
 C:\Users\ANDREYAPRADINATA\source\repos\LegalLib\LegalLib\obj\Release\netcoreapp3.1\win-x64\Razor\Pages\Comment\Index.cshtml.g.cs
+C:\Users\ANDREYAPRADINATA\source\repos\LegalLib\LegalLib\bin\Release\netcoreapp3.1\win-x64\System.Text.Json.dll
+C:\Users\ANDREYAPRADINATA\source\repos\LegalLib\LegalLib\obj\Release\netcoreapp3.1\win-x64\LegalLib.csproj.CoreCompileInputs.cache
+C:\Users\ANDREYAPRADINATA\source\repos\LegalLib\LegalLib\obj\Release\netcoreapp3.1\win-x64\LegalLib.genruntimeconfig.cache

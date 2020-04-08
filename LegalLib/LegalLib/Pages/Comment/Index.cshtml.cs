@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using LegalLib.Data;
 using LegalLib.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace LegalLib
 {
@@ -15,9 +16,12 @@ namespace LegalLib
     {
         private readonly LegalLib.Data.LegalLibContext _context;
 
-        public CommentIndexModel(LegalLib.Data.LegalLibContext context)
+        public IConfiguration Configuration { get; }
+
+        public CommentIndexModel(LegalLib.Data.LegalLibContext context, IConfiguration configuration)
         {
             _context = context;
+            Configuration = configuration;
         }
         [BindProperty]
         public List<TblComment> TblComment { get;set; }
@@ -64,7 +68,6 @@ namespace LegalLib
             {
                 return NotFound();
             }
-
             TblCategory = await _context.TblCategory.Where(m => m.IsActive == true).ToListAsync();
 
             SUsername = HttpContext.Session.GetString("SUsername");
@@ -72,11 +75,11 @@ namespace LegalLib
 
             if (SUsername == null)
             {
-                Response.Redirect("/Login/Index");
+                return RedirectToPage("/Login/Index");
             }
             else if (SRole < 1)
             {
-                Response.Redirect("/Denied");
+                return RedirectToPage("/Denied");
             }
 
             DocumentID = id.Value;

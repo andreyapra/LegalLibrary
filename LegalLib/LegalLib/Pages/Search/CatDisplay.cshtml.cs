@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using LegalLib.Data;
 using LegalLib.Models;
 using System.Globalization;
+using Microsoft.Extensions.Configuration;
 
 namespace LegalLib
 {
@@ -16,11 +17,13 @@ namespace LegalLib
     {
         private readonly LegalLib.Data.LegalLibContext _context;
 
-        public CatDisplayModel(LegalLib.Data.LegalLibContext context)
+        public IConfiguration Configuration { get; }
+        public CatDisplayModel(LegalLib.Data.LegalLibContext context, IConfiguration configuration)
         {
             _context = context;
-        }
+            Configuration = configuration;
 
+        }
         [BindProperty(SupportsGet = true)]
         public string SearchString { get; set; }
         [BindProperty(SupportsGet = true)]
@@ -37,29 +40,29 @@ namespace LegalLib
         {
             CultureInfo provider = CultureInfo.InvariantCulture;
             string tglformat, outtglformat = null;
-            DateTime Hasil_yyyy, Hasil_yyyyMM, Hasil_yyyyMMdd, Hasil_MMdd;
+            
 
             tglformat = "yyyy";
             //Detect format yyyy
-            if (DateTime.TryParseExact(SearchString, tglformat, provider, DateTimeStyles.None, out Hasil_yyyy))
+            if (DateTime.TryParseExact(SearchString, tglformat, provider, DateTimeStyles.None, out _))
             {
                 outtglformat = tglformat;
             }
             tglformat = "yyyy-MM";
             //Detect format yyyy-MM
-            if (DateTime.TryParseExact(SearchString, tglformat, provider, DateTimeStyles.None, out Hasil_yyyyMM))
+            if (DateTime.TryParseExact(SearchString, tglformat, provider, DateTimeStyles.None, out _))
             {
                 outtglformat = tglformat;
             }
             tglformat = "yyyy-MM-dd";
             //Detect format yyyy-MM
-            if (DateTime.TryParseExact(SearchString, tglformat, provider, DateTimeStyles.None, out Hasil_yyyyMMdd))
+            if (DateTime.TryParseExact(SearchString, tglformat, provider, DateTimeStyles.None, out _))
             {
                 outtglformat = tglformat;
             }
             tglformat = "MM-dd";
             //Detect format MM-dd
-            if (DateTime.TryParseExact(SearchString, tglformat, provider, DateTimeStyles.None, out Hasil_MMdd))
+            if (DateTime.TryParseExact(SearchString, tglformat, provider, DateTimeStyles.None, out _))
             {
                 outtglformat = tglformat;
             }

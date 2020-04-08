@@ -11,17 +11,20 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Text;
-
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 
 namespace LegalLib
 {
     public class ApproveModel : PageModel
     {
         private readonly LegalLib.Data.LegalLibContext _context;
+        public IConfiguration Configuration { get; }
 
-        public ApproveModel(LegalLib.Data.LegalLibContext context)
+        public ApproveModel(LegalLib.Data.LegalLibContext context, IConfiguration configuration)
         {
             _context = context;
+            Configuration = configuration;
         }
 
         public TblLegalDocument TblLegalDocument { get; set; }
@@ -63,8 +66,8 @@ namespace LegalLib
             oJsonObject.Add("bcc", "");
 
             var _Client = new HttpClient();
-//            var _response = await _Client.PostAsync(Baseurl, new StringContent(oJsonObject.ToString(), Encoding.UTF8, sContentType));
-//            var _content = await _response.Content.ReadAsStringAsync();
+            var _response = await _Client.PostAsync(Baseurl, new StringContent(oJsonObject.ToString(), Encoding.UTF8, sContentType));
+            var _content = await _response.Content.ReadAsStringAsync();
 
         }
         public async Task LogActivity()
@@ -80,7 +83,7 @@ namespace LegalLib
             await _context.SaveChangesAsync();
 
             //Logging API
-            string Baseurl = "https://apps.pertamina.com/api/login/LogUsman/InsertLog";
+            string Baseurl = Configuration["Setting:InsertLogURL"];
             string sContentType = "application/json";
             JObject oJsonObject = new JObject();
             oJsonObject.Add("username", Username);

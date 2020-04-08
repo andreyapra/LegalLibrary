@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +35,8 @@ namespace LegalLib
             
             services.AddDbContext<LegalLibContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("LegalLibContext")));
+
+            services.AddHttpClient();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,7 +53,6 @@ namespace LegalLib
                 app.UseHsts();
             }
 
-            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSession();

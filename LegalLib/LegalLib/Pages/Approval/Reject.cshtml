@@ -2,7 +2,9 @@
 @model LegalLib.RejectModel
 @{
     ViewData["Title"] = "Reject";
+    ViewData["URL"] = Model.Configuration["Setting:ExternalURL"];
 }
 
 <h1>Reject</h1>
+@ViewData["URL"]
 

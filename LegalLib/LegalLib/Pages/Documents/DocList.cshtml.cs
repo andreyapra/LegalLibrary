@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using LegalLib.Data;
 using LegalLib.Models;
 using System.Globalization;
+using Microsoft.Extensions.Configuration;
 
 namespace LegalLib
 {
@@ -16,9 +17,12 @@ namespace LegalLib
     {
         private readonly LegalLib.Data.LegalLibContext _context;
 
-        public DocListModel(LegalLib.Data.LegalLibContext context)
+        public IConfiguration Configuration { get; }
+
+        public DocListModel(LegalLib.Data.LegalLibContext context, IConfiguration configuration)
         {
             _context = context;
+            Configuration = configuration;
         }
 
         [BindProperty(SupportsGet = true)]

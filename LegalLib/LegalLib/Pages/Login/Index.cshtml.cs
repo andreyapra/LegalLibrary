@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 
 namespace LegalLib
 {
@@ -21,16 +22,18 @@ namespace LegalLib
     {
         private readonly LegalLib.Data.LegalLibContext _context;
 
-        public LoginIndexModel(LegalLib.Data.LegalLibContext context)
+        public IConfiguration Configuration { get; }
+        public LoginIndexModel(LegalLib.Data.LegalLibContext context, IConfiguration configuration)
         {
             _context = context;
+            Configuration = configuration;
         }
 
         [BindProperty]
         public string InputUsername { get; set; }
         [BindProperty]
         public string InputPassword { get; set; }
-        [BindProperty]
+        [BindProperty(SupportsGet = true)]
         public TblLogActivity TblLogActivity { get; set; }
 
         public string SUsername { get; set; }
@@ -150,28 +153,30 @@ namespace LegalLib
 
         public async Task LogActivity()
         {
+            string Usr = HttpContext.Session.GetString("SUsername");
             //Logging Local
-            TblLogActivity.UserID = Username;
+            TblLogActivity.UserID = Usr;
             TblLogActivity.LogTime = System.DateTime.Now;
             TblLogActivity.Modul = "LOGIN";
             TblLogActivity.Action = "LOGIN";
-            TblLogActivity.Description = "USER=" + Username;
+            TblLogActivity.Description = "USER=" + Usr;
 
             _context.TblLogActivity.Add(TblLogActivity);
             await _context.SaveChangesAsync();
 
             //Logging API
-            string Baseurl = "https://apps.pertamina.com/api/login/LogUsman/InsertLog";
-            string sContentType = "application/json"; 
-            JObject oJsonObject = new JObject();
-            oJsonObject.Add("username", Username);
-            oJsonObject.Add("modul", "LOGIN");
-            oJsonObject.Add("action", "LOGIN " + "USER=" + Username);
-            oJsonObject.Add("appname", "Digital Library");
+            string Baseurl = Configuration["Setting:InsertLogURL"];
+            string sContentType = "application/json";
+            JObject oJsonObject = new JObject
+            {
+                { "username", Usr },
+                { "modul", "LOGIN" },
+                { "action", "LOGIN " + "USER=" + Usr },
+                { "appname", "Digital Library" }
+            };
 
             var _Client = new HttpClient();
-//            var _response = await _Client.PostAsync(Baseurl, new StringContent(oJsonObject.ToString(), Encoding.UTF8, sContentType));
-//            var _content = await _response.Content.ReadAsStringAsync();
+            _ = await _Client.PostAsync(Baseurl, new StringContent(oJsonObject.ToString(), Encoding.UTF8, sContentType));
 
         }
 
@@ -187,9 +192,11 @@ namespace LegalLib
             string Baseurl = "https://apps.pertamina.com/api/login/Users/Loginldap";
             string sContentType = "application/json"; // or application/xml
 
-            JObject oJsonObject = new JObject();
-            oJsonObject.Add("username", "trainee04");
-            oJsonObject.Add("password", "123@ptm");
+            JObject oJsonObject = new JObject
+            {
+                { "username", InputUsername },
+                { "password", InputPassword }
+            };
 
             var _Client = new HttpClient();
             var _response = await _Client.PostAsync(Baseurl, new StringContent(oJsonObject.ToString(), Encoding.UTF8, sContentType));
@@ -211,7 +218,20 @@ namespace LegalLib
                     Email = _login.dataLDAP.Data.Email;
                     UserID = _login.dataLDAP.Data.UserName;
                     Username = _login.dataLDAP.Data.NamaLengkap;
-                    Role = 3; //masih hard code
+
+                    switch (UserID)
+                    {
+                        case "trainee04":
+                            Role = 2;
+                            break;
+                        case "trainee06":
+                            Role = 3;
+                            break;
+                        default:
+                            Role = 1;
+                            break;
+                    }
+                    //masih hard code
 
                     HttpContext.Session.SetInt32("SRole", Role);
                     HttpContext.Session.SetString("SNama", Username);
@@ -276,7 +296,8 @@ namespace LegalLib
             }
             TblCategory = await _context.TblCategory.Where(m => m.IsActive == true).ToListAsync();
 
-            await LoginHC();
+            ///await LoginHC();
+            await PanggilUsman();
             if (HttpContext.Session.GetString("SUsername") != null)
             {
                 return RedirectToPage("/Index");

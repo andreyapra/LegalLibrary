@@ -6,16 +6,19 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace LegalLib
 {
     public class CategoryIndexModel : PageModel
     {
         private readonly LegalLib.Data.LegalLibContext _context;
+        public IConfiguration Configuration { get; }
 
-        public CategoryIndexModel(LegalLib.Data.LegalLibContext context)
+        public CategoryIndexModel(LegalLib.Data.LegalLibContext context, IConfiguration configuration)
         {
             _context = context;
+            Configuration = configuration;
         }
         [BindProperty(SupportsGet =true)]
         public string SearchString { get; set; }
@@ -24,7 +27,7 @@ namespace LegalLib
         public int SRole { get; set; }
         
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             var Category = from m in _context.TblCategory
                            select m;
@@ -41,13 +44,14 @@ namespace LegalLib
 
             if (SUsername == null)
             {
-                Response.Redirect("Login");
+                return RedirectToPage("/Login");
             }
             else if (SRole < 2)
             {
-                Response.Redirect("Denied");
+                return RedirectToPage("/Denied");
             }
 
+            return Page();
         }
     }
 }

@@ -6,16 +6,19 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace LegalLib
 {
     public class ApproveIndexModel : PageModel
     {
         private readonly LegalLib.Data.LegalLibContext _context;
+        public IConfiguration Configuration { get; }
 
-        public ApproveIndexModel(LegalLib.Data.LegalLibContext context)
+        public ApproveIndexModel(LegalLib.Data.LegalLibContext context, IConfiguration configuration)
         {
             _context = context;
+            Configuration = configuration;
         }
 
         public string SUsername { get; set; }
@@ -43,11 +46,11 @@ namespace LegalLib
 
             if (SUsername == null)
             {
-                Response.Redirect("Login");
+                return RedirectToPage("/Login");
             }
             else if (SRole < 3)
             {
-                Response.Redirect("Denied");
+                return RedirectToPage("/Denied");
             }
 
             return Page();
