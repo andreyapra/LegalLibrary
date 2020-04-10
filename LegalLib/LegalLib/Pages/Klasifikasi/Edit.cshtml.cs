@@ -55,7 +55,7 @@ namespace LegalLib
             oJsonObject.Add("username", Username);
             oJsonObject.Add("modul", "KLASIFIKASI");
             oJsonObject.Add("action", "EDIT " + "KLASIFIKASIID=" + KlaID);
-            oJsonObject.Add("appname", "Digital Library");
+            oJsonObject.Add("appname", "Online Library");
 
             var _Client = new HttpClient();
             var _response = await _Client.PostAsync(Baseurl, new StringContent(oJsonObject.ToString(), Encoding.UTF8, sContentType));

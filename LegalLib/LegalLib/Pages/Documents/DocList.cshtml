@@ -57,7 +57,7 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="info">
-                <a href="#" class="d-block"><h2>Digital Library</h2></a>
+                <a href="#" class="d-block"><h2>Online Library</h2></a>
             </div>
         </div>
 
@@ -67,27 +67,13 @@
                 <!-- Add icons to the links using the .nav-icon class
                 with font-awesome or any other icon font library -->
                 <li class="nav-item has-treeview menu-open">
-                    <a href="#" class="nav-link active">
+                    <a asp-page="/Search/CatDisplay" class="nav-link active">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             PERATURAN EXTERNAL
-                            <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
 
-                    <ul class="nav nav-treeview">
-                        @foreach (var item in Model.TblCategory)
-                        {
-                            <li class="nav-item">
-                                <a asp-page="/Search/CatDisplay" asp-route-id="@item.CategoryID" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>
-                                        @Html.DisplayFor(modelItem => item.Category)
-                                    </p>
-                                </a>
-                            </li>
-                        }
-                    </ul>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link active">
@@ -199,20 +185,26 @@
         -------------------------->
 
         <div class="container-fluid">
-            <div>
-                <form>
-                    <select asp-for="SCriteria">
-                        <option value="NOMOR">Nomor</option>
-                        <option value="CRITERIA">Criteria</option>
-                        <option value="PERIHAL">Perihal</option>
-                        <option value="KLASIFIKASI">Klasifikasi</option>
-                        <option value="TANGGAL">Tanggal Berlaku</option>
-                        <option value="TAKHIR">Tanggal Berakhir</option>
-                    </select>
-                    <input type="text" asp-for="SearchString" />
-                    <input type="submit" value="Search" />
-                </form>
-            </div>
+            <form>
+                <div class="row">
+                    <div class="col-3 form-group">
+                        <select asp-for="SCriteria" class="form-control">
+                            <option value="NOMOR">Nomor</option>
+                            <option value="CRITERIA">Criteria</option>
+                            <option value="PERIHAL">Perihal</option>
+                            <option value="KLASIFIKASI">Klasifikasi</option>
+                            <option value="TANGGAL">Tanggal Berlaku</option>
+                            <option value="TAKHIR">Tanggal Berakhir</option>
+                        </select>
+                    </div>
+                    <div class="col-5 form-group">
+                        <input type="text" asp-for="SearchString" class="form-control" />
+                    </div>
+                    <div class="col-2 form-group">
+                        <input type="submit" value="Search" class="btn btn-primary" />
+                    </div>
+                </div>
+            </form>
 
             <br />
             <div>
@@ -254,47 +246,47 @@
                     <tbody>
                         @foreach (var item in Model.TblLegalDocument)
                         {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Nomor)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.NamaDocument)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Perihal)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TglMulai)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TglAkhir)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Revisi)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Catatan)
-                            </td>
-                            <td>
-                                <!--@Html.DisplayFor(modelItem => item.CriteriaID)-->
-                                @Model.GetCriteria(item.CriteriaID)
-                            </td>
-                            <td>
-                                <!--@Html.DisplayFor(modelItem => item.CategoryID)-->
-                                @Model.GetCategory(item.CategoryID)
-                            </td>
-                            <td>
-                                <a asp-page="/Documents/DocDetails" asp-route-id="@item.DocumentID">Details</a>
-                                @{
-                                    if (Model.SUsername != null)
-                                    {
-                                        <a asp-page="/Documents/DocEdit" asp-route-id="@item.DocumentID">Edit</a>
-                                        <a asp-page="/Comment/Index" asp-route-id="@item.DocumentID">Comment</a>
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Nomor)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NamaDocument)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Perihal)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TglMulai)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TglAkhir)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Revisi)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Catatan)
+                                </td>
+                                <td>
+                                    <!--@Html.DisplayFor(modelItem => item.CriteriaID)-->
+                                    @Model.GetCriteria(item.CriteriaID)
+                                </td>
+                                <td>
+                                    <!--@Html.DisplayFor(modelItem => item.CategoryID)-->
+                                    @Model.GetCategory(item.CategoryID)
+                                </td>
+                                <td>
+                                    <a asp-page="/Documents/DocDetails" asp-route-id="@item.DocumentID">Details</a>
+                                    @{
+                                        if (Model.SUsername != null)
+                                        {
+                                            <a asp-page="/Documents/DocEdit" asp-route-id="@item.DocumentID">Edit</a>
+                                            <a asp-page="/Comment/Index" asp-route-id="@item.DocumentID">Comment</a>
+                                        }
                                     }
-                                }
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
                         }
                     </tbody>
                 </table>

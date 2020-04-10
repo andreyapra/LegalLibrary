@@ -54,7 +54,7 @@ namespace LegalLib
                 { "username", Username },
                 { "modul", "LOGIN" },
                 { "action", "LOGOUT " + "USER=" + Username },
-                { "appname", "Digital Library" }
+                { "appname", "Online Library" }
             };
 
             var _Client = new HttpClient();

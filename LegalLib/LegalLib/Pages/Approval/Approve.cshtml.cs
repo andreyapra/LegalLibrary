@@ -57,6 +57,8 @@ namespace LegalLib
 
             //Fungsi Send Email API
             string Baseurl = "http://localhost:8081/CodeIgniter/index.php/email";
+            //string Baseurl = "http://10.3.30.61/APILibrary/api/Email";
+            //string Baseurl = "http://pepcappprod.pertamina.com/APILibrary/api/email";
             string sContentType = "application/json";
             JObject oJsonObject = new JObject();
             oJsonObject.Add("subject", StrSubject);
@@ -89,7 +91,7 @@ namespace LegalLib
             oJsonObject.Add("username", Username);
             oJsonObject.Add("modul", "APPROVAL");
             oJsonObject.Add("action", "APPROVE " + "DOCUMENTID=" + DocID);
-            oJsonObject.Add("appname", "Digital Library");
+            oJsonObject.Add("appname", "Online Library");
 
             var _Client = new HttpClient();
             var _response = await _Client.PostAsync(Baseurl, new StringContent(oJsonObject.ToString(), Encoding.UTF8, sContentType));

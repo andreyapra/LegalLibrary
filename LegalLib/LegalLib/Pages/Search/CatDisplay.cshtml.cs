@@ -10,6 +10,7 @@ using LegalLib.Data;
 using LegalLib.Models;
 using System.Globalization;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace LegalLib
 {
@@ -28,12 +29,13 @@ namespace LegalLib
         public string SearchString { get; set; }
         [BindProperty(SupportsGet = true)]
         public string SCriteria { get; set; }
-
+        [BindProperty(SupportsGet = true)]
+        public int SCat { get; set; }
         public List<TblLegalDocument> TblLegalDocument { get;set; }
         public List<TblDK> TblDocK { get; set; }
         public string SUsername { get; set; }
         public List<TblCategory> TblCategory { get; set; }
-
+        public SelectList CategorySL { get; set; }
         public int CategoryID { get; set; }
 
         public string DetectTanggal(string SearchString)
@@ -81,9 +83,14 @@ namespace LegalLib
                             where d.Status != "CABUT"
                             where d.TglAkhir > System.DateTime.Today
                             where d.IsActive == true
-                            where d.CategoryID == id
+                            //where d.CategoryID == id
                             select d;
 
+            if (id != 0)
+            {
+                DocQuery = DocQuery.Where(d => d.CategoryID == id);
+            }
+            
             if (!string.IsNullOrEmpty(SearchString))
             {
 
@@ -221,9 +228,13 @@ namespace LegalLib
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null)
+            if (id == null || id == 0)
             {
-                return NotFound();
+                CategoryID = 0;
+                //return NotFound();
+            } else
+            {
+                CategoryID = id.Value;
             }
 
             //Ambil user session
@@ -231,11 +242,19 @@ namespace LegalLib
             //Generate daftar Category
             TblCategory = await _context.TblCategory.Where(m => m.IsActive == true).ToListAsync();
 
-            CategoryID = id.Value;
+            
             PopulateDocument(CategoryID);
             PopulateDK();
 
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostShowCat()
+        {
+            //Generate daftar Category
+            TblCategory = await _context.TblCategory.Where(m => m.IsActive == true).ToListAsync();
+            CategoryID = SCat;
+            return RedirectToPage(new { id = CategoryID });
         }
     }
 }

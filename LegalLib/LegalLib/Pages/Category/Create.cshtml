@@ -56,7 +56,7 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="info">
-                <a href="#" class="d-block"><h2>Digital Library</h2></a>
+                <a href="#" class="d-block"><h2>Online Library</h2></a>
             </div>
         </div>
 
@@ -66,27 +66,13 @@
                 <!-- Add icons to the links using the .nav-icon class
                 with font-awesome or any other icon font library -->
                 <li class="nav-item has-treeview menu-open">
-                    <a href="#" class="nav-link active">
+                    <a asp-page="/Search/CatDisplay"  class="nav-link active">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             PERATURAN EXTERNAL
-                            <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
 
-                    <ul class="nav nav-treeview">
-                        @foreach (var item in Model.TblListCategory)
-                        {
-                            <li class="nav-item">
-                                <a asp-page="/Search/CatDisplay" asp-route-id="@item.CategoryID" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>
-                                        @Html.DisplayFor(modelItem => item.Category)
-                                    </p>
-                                </a>
-                            </li>
-                        }
-                    </ul>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link active">

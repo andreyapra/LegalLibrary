@@ -172,7 +172,7 @@ namespace LegalLib
                 { "username", Usr },
                 { "modul", "LOGIN" },
                 { "action", "LOGIN " + "USER=" + Usr },
-                { "appname", "Digital Library" }
+                { "appname", "Online Library" }
             };
 
             var _Client = new HttpClient();
@@ -195,7 +195,8 @@ namespace LegalLib
             JObject oJsonObject = new JObject
             {
                 { "username", InputUsername },
-                { "password", InputPassword }
+                { "password", InputPassword },
+                { "appname", "Online Library"}
             };
 
             var _Client = new HttpClient();
@@ -237,6 +238,7 @@ namespace LegalLib
                     HttpContext.Session.SetString("SNama", Username);
                     HttpContext.Session.SetString("SEmail", Email);
                     HttpContext.Session.SetString("SUsername", UserID);
+                    HttpContext.Session.SetString("SPassword", InputPassword);
                     Message = HttpContext.Session.GetString("SUsername");
                     await LogActivity();
 
@@ -258,6 +260,7 @@ namespace LegalLib
                     HttpContext.Session.SetString("SNama", "Nama Manager");
                     HttpContext.Session.SetString("SEmail", "manager@email.com");
                     HttpContext.Session.SetString("SUsername", InputUsername);
+                    HttpContext.Session.SetString("SPassword", InputPassword);
                     Message = HttpContext.Session.GetString("SUsername");
                     await LogActivity();
                     break;
@@ -267,6 +270,7 @@ namespace LegalLib
                     HttpContext.Session.SetString("SNama", "Nama Legal");
                     HttpContext.Session.SetString("SEmail", "legal@email.com");
                     HttpContext.Session.SetString("SUsername", InputUsername);
+                    HttpContext.Session.SetString("SPassword", InputPassword);
                     Message = HttpContext.Session.GetString("SUsername");
                     await LogActivity();
                     break;
@@ -276,6 +280,7 @@ namespace LegalLib
                     HttpContext.Session.SetString("SNama", "Nama User");
                     HttpContext.Session.SetString("SEmail", "user@email.com");
                     HttpContext.Session.SetString("SUsername", InputUsername);
+                    HttpContext.Session.SetString("SPassword", InputPassword);
                     Message = HttpContext.Session.GetString("SUsername");
                     await LogActivity();
                     break;
@@ -296,8 +301,8 @@ namespace LegalLib
             }
             TblCategory = await _context.TblCategory.Where(m => m.IsActive == true).ToListAsync();
 
-            ///await LoginHC();
-            await PanggilUsman();
+            await LoginHC();
+            //await PanggilUsman();
             if (HttpContext.Session.GetString("SUsername") != null)
             {
                 return RedirectToPage("/Index");
