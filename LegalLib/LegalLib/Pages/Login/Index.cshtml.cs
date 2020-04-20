@@ -29,9 +29,9 @@ namespace LegalLib
             Configuration = configuration;
         }
 
-        [BindProperty]
+        [BindProperty][Required(ErrorMessage = "Tidak boleh kosong")]
         public string InputUsername { get; set; }
-        [BindProperty]
+        [BindProperty][Required(ErrorMessage = "Tidak boleh kosong")]
         public string InputPassword { get; set; }
         [BindProperty(SupportsGet = true)]
         public TblLogActivity TblLogActivity { get; set; }
@@ -148,6 +148,7 @@ namespace LegalLib
         public string Username { get; set; }
         public string Email { get; set; }
         public int Role { get; set; }
+        public string RoleGroupName { get; set; }
 
 
 
@@ -196,7 +197,7 @@ namespace LegalLib
             {
                 { "username", InputUsername },
                 { "password", InputPassword },
-                { "appname", "Online Library"}
+                { "appname", "Online_Library"}
             };
 
             var _Client = new HttpClient();
@@ -219,20 +220,21 @@ namespace LegalLib
                     Email = _login.dataLDAP.Data.Email;
                     UserID = _login.dataLDAP.Data.UserName;
                     Username = _login.dataLDAP.Data.NamaLengkap;
+                    RoleGroupName = _login.DataUsman.DataRoleGroup[0].RoleGroupName;
 
-                    switch (UserID)
+                    switch (RoleGroupName)
                     {
-                        case "trainee04":
+                        case "Legal_User":
                             Role = 2;
                             break;
-                        case "trainee06":
+                        case "Legal_Mgr":
                             Role = 3;
                             break;
                         default:
                             Role = 1;
                             break;
                     }
-                    //masih hard code
+                    //translate dari RoleGroupName
 
                     HttpContext.Session.SetInt32("SRole", Role);
                     HttpContext.Session.SetString("SNama", Username);
@@ -301,8 +303,8 @@ namespace LegalLib
             }
             TblCategory = await _context.TblCategory.Where(m => m.IsActive == true).ToListAsync();
 
-            await LoginHC();
-            //await PanggilUsman();
+            //await LoginHC();
+            await PanggilUsman();
             if (HttpContext.Session.GetString("SUsername") != null)
             {
                 return RedirectToPage("/Index");

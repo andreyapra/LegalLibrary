@@ -135,7 +135,7 @@ namespace LegalLib
 
             }
 
-            return Redirect("/");
+            return RedirectToPage("/");
 
         }
     }

@@ -117,11 +117,11 @@ namespace LegalLib
 
             if (SUsername == null)
             {
-                Response.Redirect("Login");
+                return RedirectToPage("/Login");
             }
             if (SRole < 3)
             {
-                Response.Redirect("Denied");
+                return RedirectToPage("/Denied");
             }
             else
             {
@@ -136,7 +136,7 @@ namespace LegalLib
 
             }
 
-            return Redirect("/");
+            return RedirectToPage("/");
 
         }
     }

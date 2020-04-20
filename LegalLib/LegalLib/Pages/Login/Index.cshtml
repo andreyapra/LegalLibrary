@@ -183,16 +183,22 @@
         | Your Page Content Here |
         -------------------------->
         <div class="container-fluid">
-            @Model.Message
+            <span class="text-danger">@Model.Message</span>
             <form method="post" asp-page="Login">
                 <table>
                     <tr>
                         <td>Username</td>
-                        <td><input type="text" asp-for="@Model.InputUsername" /></td>
+                        <td>
+                            <input type="text" asp-for="@Model.InputUsername" />
+                            <span asp-validation-for="@Model.InputUsername" class="text-danger"></span>
+                        </td>
                     </tr>
                     <tr>
                         <td>Password</td>
-                        <td><input type="password" asp-for="@Model.InputPassword" /></td>
+                        <td>
+                            <input type="password" asp-for="@Model.InputPassword" />
+                            <span asp-validation-for="@Model.InputPassword" class="text-danger"></span>
+                        </td>                    
                     </tr>
                     <tr>
                         <td>&nbsp;</td>
