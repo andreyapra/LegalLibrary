@@ -90,7 +90,7 @@
 
                 </li>
                 <li class="nav-item">
-                    <a asp-page="/Documents/DocList" class="nav-link">
+                    <a asp-page="/Search/Archive" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             ARCHIVE
@@ -225,8 +225,8 @@
                                 @Html.DisplayFor(modelItem => item.Description)
                             </td>
                             <td>
-                                <a asp-page="./Edit" asp-route-id="@item.CriteriaID">Edit</a>
-                                <a asp-page="./Delete" asp-route-id="@item.CriteriaID">Delete</a>
+                                <a asp-page="./Edit" asp-route-id="@item.CriteriaID"><i class="fas fa-edit"></i></a>
+                                <a asp-page="./Delete" asp-route-id="@item.CriteriaID"><i class="fas fa-eraser"></i></a>
                             </td>
                         </tr>
                     }

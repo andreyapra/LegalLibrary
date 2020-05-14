@@ -42,18 +42,18 @@ namespace LegalLib
             var StrSubject = "Dokumen Nomor " + TblLegalDocument.Nomor + " di Approve";
             string StrMailto = TblLegalDocument.UploaderEmail;
 
-            using var smtp = new SmtpClient
-            {
-                DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory,
-                PickupDirectoryLocation = @"D:\BACKUP\EMAIL"
-            };
-            var message = new MailMessage();
-            message.To.Add(StrMailto);
-            message.Subject = StrSubject;
-            message.Body = StrBody;
-            message.IsBodyHtml = true;
-            message.From = new MailAddress("digitallibrary@pertamina.com");
-            await smtp.SendMailAsync(message);
+            //using var smtp = new SmtpClient
+            //{
+            //    DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory,
+            //    PickupDirectoryLocation = @"D:\BACKUP\EMAIL"
+            //};
+            //var message = new MailMessage();
+            //message.To.Add(StrMailto);
+            //message.Subject = StrSubject;
+            //message.Body = StrBody;
+            //message.IsBodyHtml = true;
+            //message.From = new MailAddress("digitallibrary@pertamina.com");
+            //await smtp.SendMailAsync(message);
 
             //Fungsi Send Email API
             string Baseurl = "http://localhost:8081/CodeIgniter/index.php/email";
@@ -136,7 +136,7 @@ namespace LegalLib
 
             }
 
-            return RedirectToPage("/");
+            return RedirectToPage("/Index");
 
         }
     }

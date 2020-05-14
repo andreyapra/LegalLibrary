@@ -91,7 +91,7 @@
 
                 </li>
                 <li class="nav-item">
-                    <a asp-page="/Documents/DocList" class="nav-link">
+                    <a asp-page="/Search/Archive" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             ARCHIVE
@@ -286,12 +286,12 @@
                                     @Model.GetCategory(item.CategoryID)
                                 </td>
                                 <td>
-                                    <a asp-page="/Documents/DocDetails" asp-route-id="@item.DocumentID">Details</a>
+                                    <a asp-page="/Documents/DocDetails" asp-route-id="@item.DocumentID"><i class="fas fa-info-circle"></i></a>
                                     @{
                                         if (Model.SUsername != null)
                                         {
-                                            <a asp-page="/Documents/DocEdit" asp-route-id="@item.DocumentID">Edit</a>
-                                            <a asp-page="/Comment/Index" asp-route-id="@item.DocumentID">Comment</a>
+                                            <a asp-page="/Documents/DocEdit" asp-route-id="@item.DocumentID"><i class="fas fa-edit"></i></a>
+                                            <a asp-page="/Comment/Index" asp-route-id="@item.DocumentID"><i class="fas fa-comment"></i></a>
                                         }
                                     }
                                 </td>

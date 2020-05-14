@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ANDREYAPRADINATA\\source\\repos\\LegalLib\\LegalLib\\LegalLib.csproj": {}
+    "C:\\Users\\Andre\\source\\repos\\LegalLib\\LegalLib\\LegalLib.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ANDREYAPRADINATA\\source\\repos\\LegalLib\\LegalLib\\LegalLib.csproj": {
+    "C:\\Users\\Andre\\source\\repos\\LegalLib\\LegalLib\\LegalLib.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ANDREYAPRADINATA\\source\\repos\\LegalLib\\LegalLib\\LegalLib.csproj",
+        "projectUniqueName": "C:\\Users\\Andre\\source\\repos\\LegalLib\\LegalLib\\LegalLib.csproj",
         "projectName": "LegalLib",
-        "projectPath": "C:\\Users\\ANDREYAPRADINATA\\source\\repos\\LegalLib\\LegalLib\\LegalLib.csproj",
-        "packagesPath": "C:\\Users\\ANDREYAPRADINATA\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ANDREYAPRADINATA\\source\\repos\\LegalLib\\LegalLib\\obj\\",
+        "projectPath": "C:\\Users\\Andre\\source\\repos\\LegalLib\\LegalLib\\LegalLib.csproj",
+        "packagesPath": "C:\\Users\\Andre\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Andre\\source\\repos\\LegalLib\\LegalLib\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\ANDREYAPRADINATA\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Andre\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

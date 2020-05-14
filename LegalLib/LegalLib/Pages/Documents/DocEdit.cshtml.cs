@@ -145,9 +145,12 @@ namespace LegalLib
         public TblDK TblDK { get; set; }
         public List<TblFileAttach> TblListFileAttach { get; set; }
         public List<TblDK> TblListDK { get; set; }
+        public List<TblDK> TblOldListDK { get; set; }
 
         [BindProperty]
         public TblLegalDocument TblLegalDocument { get; set; }
+        [BindProperty]
+        public TblLegalDocument TblOldDocument { get; set; }
         public SelectList CategorySL { get; set; }
         public SelectList CriteriaSL { get; set; }
         public SelectList KlasifikasiSL { get; set; }
@@ -160,6 +163,8 @@ namespace LegalLib
         [BindProperty(SupportsGet = true)]
         public TblLogActivity TblLogActivity { get; set; }
         public int DocID { get; set; }
+        public int DocumentID { get; set; }
+
 
         public int CheckRoleName(string rolename)
         {
@@ -292,6 +297,7 @@ namespace LegalLib
             TblLegalDocument = await _context.TblLegalDocument.FirstOrDefaultAsync(m => m.DocumentID == id);
             TblListFileAttach = await _context.TblFileAttach.Where(m => m.DocumentID == id).Where(m => m.IsActive == true).ToListAsync();
             TblListDK = await _context.TblDK.Where(m => m.DocumentID == id).Where(m => m.IsActive == true).ToListAsync();
+            TblOldDocument = TblLegalDocument;
 
             if (TblLegalDocument == null)
             {
@@ -322,6 +328,8 @@ namespace LegalLib
             PopulateRevDocument();
 
             HttpContext.Session.SetInt32("SID", id.Value);
+            HttpContext.Session.SetInt32("Revisi", TblLegalDocument.Revisi);
+
             return Page();
         }
 
@@ -339,28 +347,65 @@ namespace LegalLib
             TblLegalDocument.ApproveStatus = "0";
             TblLegalDocument.IsActive = true;
 
-            _context.Attach(TblLegalDocument).State = EntityState.Modified;
+            int id = TblLegalDocument.DocumentID;
 
-            try
+            //cek nomor revisi
+            int oldRev = HttpContext.Session.GetInt32("Revisi").Value;
+            int newRev = TblLegalDocument.Revisi;
+
+            if ((TblLegalDocument.Status=="REVISI") && (newRev > oldRev))
             {
-                await _context.SaveChangesAsync();
+                    //Revisi dokumen
+                    int n = _context.TblLegalDocument.Count();
+                    DocumentID = n + 1;
+
+                    TblLegalDocument.DocumentID = n + 1;
+
+                    TblLegalDocument.UploaderID = HttpContext.Session.GetString("SUsername");
+                    TblLegalDocument.UploaderName = HttpContext.Session.GetString("SNama");
+                    TblLegalDocument.UploaderEmail = HttpContext.Session.GetString("SEmail");
+                    TblLegalDocument.TglUpload = System.DateTime.Now;
+
+                    _context.TblLegalDocument.Add(TblLegalDocument);
+
+                    //add klasifikasi DK
+                    //foreach (TblDK dk in TblOldListDK)
+                    //{
+                    //    dk.DocumentID = DocID;
+                    //    dk.KlasifikasiID = TblOldListDK[].KlasifikasiID
+                    //    _context.TblDK.Add(dk);
+                    //}
+                    await _context.SaveChangesAsync();
+                    HttpContext.Session.SetInt32("SID", DocumentID);
+
+
             }
-            catch (DbUpdateConcurrencyException)
+            else
             {
-                if (!tblLegalDocumentExists(TblLegalDocument.DocumentID))
+                //Save dokumen
+                _context.Attach(TblLegalDocument).State = EntityState.Modified;
+
+                try
                 {
-                    return NotFound();
+                    await _context.SaveChangesAsync();
                 }
-                else
+                catch (DbUpdateConcurrencyException)
                 {
-                    throw;
+                    if (!tblLegalDocumentExists(TblLegalDocument.DocumentID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
             }
 
             DocID = HttpContext.Session.GetInt32("SID").GetValueOrDefault();
             await LogActivity("EDIT");
 
-            return RedirectToPage();
+            return RedirectToPage(new { id = DocID});
         }
 
         public async Task<IActionResult> OnPostAddDK()
@@ -387,7 +432,7 @@ namespace LegalLib
         }
         public async Task<IActionResult> OnPostFileUpload()
         {
-            string rootdir = "D:/BACKUP/uploads/";
+            string rootdir = "C:/BACKUP/uploads/";
             string folder = HttpContext.Session.GetInt32("SID").GetValueOrDefault().ToString();
             var file = Path.Combine(rootdir, folder, Upload.FileName);
             string folderpath = rootdir + folder;
