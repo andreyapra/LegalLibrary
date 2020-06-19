@@ -349,3 +349,5 @@ C:\Users\Andre\source\repos\LegalLib\LegalLib\obj\Release\netcoreapp3.1\win-x64\
 C:\Users\Andre\source\repos\LegalLib\LegalLib\obj\Release\netcoreapp3.1\win-x64\LegalLib.pdb
 C:\Users\Andre\source\repos\LegalLib\LegalLib\obj\Release\netcoreapp3.1\win-x64\LegalLib.genruntimeconfig.cache
 C:\Users\Andre\source\repos\LegalLib\LegalLib\obj\Release\netcoreapp3.1\win-x64\Razor\Pages\Search\Archive.cshtml.g.cs
+C:\Users\andre\source\repos\LegalLib\LegalLib\bin\Release\netcoreapp3.1\win-x64\System.Collections.Immutable.dll
+C:\Users\andre\source\repos\LegalLib\LegalLib\bin\Release\netcoreapp3.1\win-x64\System.Diagnostics.DiagnosticSource.dll

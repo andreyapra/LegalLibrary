@@ -92,7 +92,7 @@ namespace LegalLib
             TblLegalDocument.CategoryID = 1;
             TblLegalDocument.CriteriaID = 1;
 
-            TblLegalDocument.ApproveStatus = "0";
+            TblLegalDocument.ApproveStatus = "PENDING";
             TblLegalDocument.Status = "BARU";
             TblLegalDocument.IsActive = true;
 

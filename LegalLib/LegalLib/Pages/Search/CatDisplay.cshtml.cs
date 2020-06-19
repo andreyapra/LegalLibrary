@@ -314,10 +314,16 @@ namespace LegalLib
                                    where t1.Status != "CABUT"
                                    where t1.TglAkhir > System.DateTime.Today
                                    where t1.IsActive == true
-                                   where t1.CategoryID == id
+                                   //                                   where t1.CategoryID == id
 
                                    select t1;
+
                         DocQuery = Doc1;
+                        if (id != 0)
+                        {
+                            DocQuery = DocQuery.Where(d => d.CategoryID == id);
+                        }
+
                         break;
 
                     case "KLASIFIKASI":
@@ -332,10 +338,16 @@ namespace LegalLib
                                     where t3.Status != "CABUT"
                                     where t3.TglAkhir > System.DateTime.Today
                                     where t3.IsActive == true
-                                    where t3.CategoryID == id
+                                    //                                    where t3.CategoryID == id
 
                                     select t3).Distinct();
+
                         DocQuery = Doc2;
+                        if (id != 0)
+                        {
+                            DocQuery = DocQuery.Where(d => d.CategoryID == id);
+                        }
+
                         break;
                 }
             }

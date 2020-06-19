@@ -138,6 +138,7 @@ namespace LegalLib
         public string SPassword { get; set; }
 
         public List<TblCategory> TblCategory { get; set; }
+        public List<TblDK> TblDocK { get; set; }
 
         public IList<TblLegalDocument> TblLegalDocument { get; set; }
 
@@ -195,6 +196,14 @@ namespace LegalLib
             Criteria = _context.TblCriteria.Where(m => m.CriteriaID == id).FirstOrDefault().Criteria;
             
             return Criteria;
+        }
+
+        public string GetKlasifikasi(int id)
+        {
+            string Klasifikasi;
+            Klasifikasi = _context.TblKlasifikasi.Where(m => m.KlasifikasiID == id).FirstOrDefault().Klasifikasi;
+
+            return Klasifikasi;
         }
 
         public string DetectTanggal(string SearchString)
@@ -347,11 +356,23 @@ namespace LegalLib
             TblLegalDocument = DocQuery.ToList();
         }
 
+        public void PopulateDK()
+        {
+            var KQuery = from d in _context.TblDK
+                         where d.IsActive == true
+                         select d;
+
+            TblDocK = new List<TblDK>(KQuery);
+
+        }
+
         public async Task<IActionResult> OnGetAsync()
         {
             TblCategory = await _context.TblCategory.Where(m => m.IsActive == true).ToListAsync();
             SUsername = HttpContext.Session.GetString("SUsername");
             PopulateDocument();
+            PopulateDK();
+
             if (HttpContext.Session.GetString("SUsername") != null)
             {
                 SUsername = HttpContext.Session.GetString("SUsername");

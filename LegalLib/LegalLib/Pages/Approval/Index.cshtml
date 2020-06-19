@@ -217,6 +217,9 @@
                         <th>
                             @Html.DisplayNameFor(model => model.TblLegalDocument[0].CriteriaID)
                         </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TblLegalDocument[0].CategoryID)
+                        </th>
                         <th>Klasifikasi</th>
                         <th>Action</th>
                     </tr>
@@ -224,36 +227,48 @@
                 <tbody>
                     @foreach (var item in Model.TblLegalDocument)
                     {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Nomor)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.NamaDocument)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Perihal)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Revisi)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Catatan)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.UploaderName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CriteriaID)
-                            </td>
-                            <td>
-                                Klasifikasi
-                            </td>
-                            <td>
-                                <a asp-page="./Approve" asp-route-id="@item.DocumentID">Approve</a> |
-                                <a asp-page="./Reject" asp-route-id="@item.DocumentID">Reject</a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nomor)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NamaDocument)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Perihal)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Revisi)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Catatan)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UploaderName)
+                        </td>
+                        <td>
+                            <!--@Html.DisplayFor(modelItem => item.CriteriaID)-->
+                            @Model.GetCriteria(item.CriteriaID)
+                        </td>
+                        <td>
+                            <!--@Html.DisplayFor(modelItem => item.CategoryID)-->
+                            @Model.GetCategory(item.CategoryID)
+                        </td>
+                        <td>
+                            @foreach (var kk in Model.TblDocK)
+                            {
+                                if (kk.DocumentID == item.DocumentID)
+                                {
+                                    <!--@Html.DisplayFor(modelItem => kk.KlasifikasiID)-->
+                                    @Model.GetKlasifikasi(kk.KlasifikasiID) <br />
+                                }
+                            }
+                        </td>
+                        <td>
+                            <a asp-page="./Approve" asp-route-id="@item.DocumentID">Approve</a> |
+                            <a asp-page="./Reject" asp-route-id="@item.DocumentID">Reject</a>
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>

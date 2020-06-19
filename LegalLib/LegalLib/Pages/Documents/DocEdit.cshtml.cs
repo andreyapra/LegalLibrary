@@ -143,9 +143,18 @@ namespace LegalLib
         [BindProperty]
         public TblDK TblAddDK { get; set; }
         public TblDK TblDK { get; set; }
-        public List<TblFileAttach> TblListFileAttach { get; set; }
-        public List<TblDK> TblListDK { get; set; }
-        public List<TblDK> TblOldListDK { get; set; }
+        [BindProperty]
+        public IList<TblFileAttach> TblListFileAttach { get; set; }
+        [BindProperty]
+        public IList<TblDK> TblListDK { get; set; }
+        [BindProperty]
+        public TblDK TblRevisiDK { get; set; }
+        [BindProperty]
+        public IList<TblDK> TblListRevisiDK { get; set; }
+        [BindProperty]
+        public TblFileAttach TblRevisiFA { get; set; }
+        [BindProperty]
+        public IList<TblFileAttach> TblListRevisiFA { get; set; }
 
         [BindProperty]
         public TblLegalDocument TblLegalDocument { get; set; }
@@ -344,10 +353,10 @@ namespace LegalLib
 
             TblLegalDocument.ModifiedBy = HttpContext.Session.GetString("SUsername");
             TblLegalDocument.ModifiedDate = System.DateTime.Now;
-            TblLegalDocument.ApproveStatus = "0";
+            TblLegalDocument.ApproveStatus = "PENDING";
             TblLegalDocument.IsActive = true;
 
-            int id = TblLegalDocument.DocumentID;
+            int oldid = HttpContext.Session.GetInt32("SID").Value;
 
             //cek nomor revisi
             int oldRev = HttpContext.Session.GetInt32("Revisi").Value;
@@ -367,16 +376,72 @@ namespace LegalLib
                     TblLegalDocument.TglUpload = System.DateTime.Now;
 
                     _context.TblLegalDocument.Add(TblLegalDocument);
+                    //await _context.SaveChangesAsync();
 
-                    //add klasifikasi DK
-                    //foreach (TblDK dk in TblOldListDK)
-                    //{
-                    //    dk.DocumentID = DocID;
-                    //    dk.KlasifikasiID = TblOldListDK[].KlasifikasiID
-                    //    _context.TblDK.Add(dk);
-                    //}
-                    await _context.SaveChangesAsync();
-                    HttpContext.Session.SetInt32("SID", DocumentID);
+
+                //add klasifikasi DK
+                TblListDK = await _context.TblDK.Where(m => m.DocumentID == oldid).Where(m => m.IsActive == true).ToListAsync();
+
+                foreach (TblDK dk in TblListDK)
+                {
+                    TblRevisiDK = new TblDK();
+                    TblRevisiDK.DocumentID = DocumentID;
+                    TblRevisiDK.KlasifikasiID = dk.KlasifikasiID;
+
+                    TblRevisiDK.IsActive = true;
+                    TblRevisiDK.ModifiedBy = HttpContext.Session.GetString("SUsername");
+                    TblRevisiDK.ModifiedDate = System.DateTime.Now;
+                    TblRevisiDK.CreatedBy = HttpContext.Session.GetString("SUsername");
+                    TblRevisiDK.CreatedDate = System.DateTime.Now;
+
+                    TblListRevisiDK.Add(TblRevisiDK);
+                }
+
+                _context.TblDK.AddRange(TblListRevisiDK);
+
+                //add fileattach
+                TblListFileAttach = await _context.TblFileAttach.Where(m => m.DocumentID == oldid).Where(m => m.IsActive == true).ToListAsync();
+
+                foreach (TblFileAttach fa in TblListFileAttach)
+                {
+                    TblRevisiFA = new TblFileAttach();
+                    TblRevisiFA.DocumentID = DocumentID;
+                    TblRevisiFA.Filename = fa.Filename;
+
+                    TblRevisiFA.IsActive = true;
+                    TblRevisiFA.ModifiedBy = HttpContext.Session.GetString("SUsername");
+                    TblRevisiFA.ModifiedDate = System.DateTime.Now;
+                    TblRevisiFA.CreatedBy = HttpContext.Session.GetString("SUsername");
+                    TblRevisiFA.CreatedDate = System.DateTime.Now;
+
+                    TblListRevisiFA.Add(TblRevisiFA);
+
+                    //copy file
+                    string rootdir = "C:/BACKUP/uploads/";
+                    string sourcefolder = oldid.ToString();
+                    string destfolder = DocumentID.ToString();
+                    var sourcefile = Path.Combine(rootdir, sourcefolder, fa.Filename);
+                    var destfile = Path.Combine(rootdir, destfolder, fa.Filename);
+                    
+                    string folderpath = rootdir + destfolder;
+
+                    if (Directory.Exists(folderpath) == false)
+                    {
+                        Directory.CreateDirectory(folderpath);
+                    }
+                    System.IO.File.Copy(sourcefile,destfile);
+
+
+                }
+
+                _context.TblFileAttach.AddRange(TblListRevisiFA);
+
+
+
+
+
+                await _context.SaveChangesAsync();
+                HttpContext.Session.SetInt32("SID", DocumentID);
 
 
             }
@@ -422,16 +487,25 @@ namespace LegalLib
             TblAddDK.CreatedBy = HttpContext.Session.GetString("SUsername");
             TblAddDK.CreatedDate = System.DateTime.Now;
 
-            _context.TblDK.Add(TblAddDK);
-            await _context.SaveChangesAsync();
+            if (TblAddDK.KlasifikasiID != 0)
+            {
+                _context.TblDK.Add(TblAddDK);
+                await _context.SaveChangesAsync();
 
-            DocID = HttpContext.Session.GetInt32("SID").GetValueOrDefault();
-            await LogActivity("ADDKLASIFIKASI");
+                DocID = HttpContext.Session.GetInt32("SID").GetValueOrDefault();
+                await LogActivity("ADDKLASIFIKASI");
+
+            }
 
             return RedirectToPage();
         }
         public async Task<IActionResult> OnPostFileUpload()
         {
+            if (Upload == null)
+            {
+                return RedirectToPage();
+            }
+
             string rootdir = "C:/BACKUP/uploads/";
             string folder = HttpContext.Session.GetInt32("SID").GetValueOrDefault().ToString();
             var file = Path.Combine(rootdir, folder, Upload.FileName);

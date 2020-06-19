@@ -248,6 +248,12 @@
                                 @Html.DisplayNameFor(model => model.TblLegalDocument[0].CategoryID)
                             </th>
                             <th>
+                                Klasifikasi
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.TblLegalDocument[0].ApproveStatus)
+                            </th>
+                            <th>
                                 Action
                             </th>
                         </tr>
@@ -255,47 +261,61 @@
                     <tbody>
                         @foreach (var item in Model.TblLegalDocument)
                         {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Nomor)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.NamaDocument)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Perihal)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.TglMulai)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.TglAkhir)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Revisi)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Catatan)
-                                </td>
-                                <td>
-                                    <!--@Html.DisplayFor(modelItem => item.CriteriaID)-->
-                                    @Model.GetCriteria(item.CriteriaID)
-                                </td>
-                                <td>
-                                    <!--@Html.DisplayFor(modelItem => item.CategoryID)-->
-                                    @Model.GetCategory(item.CategoryID)
-                                </td>
-                                <td>
-                                    <a asp-page="/Documents/DocDetails" asp-route-id="@item.DocumentID"><i class="fas fa-info-circle"></i></a>
-                                    @{
-                                        if (Model.SUsername != null)
-                                        {
-                                            <a asp-page="/Documents/DocEdit" asp-route-id="@item.DocumentID"><i class="fas fa-edit"></i></a>
-                                            <a asp-page="/Comment/Index" asp-route-id="@item.DocumentID"><i class="fas fa-comment"></i></a>
-                                        }
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Nomor)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NamaDocument)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Perihal)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TglMulai)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TglAkhir)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Revisi)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Catatan)
+                            </td>
+                            <td>
+                                <!--@Html.DisplayFor(modelItem => item.CriteriaID)-->
+                                @Model.GetCriteria(item.CriteriaID)
+                            </td>
+                            <td>
+                                <!--@Html.DisplayFor(modelItem => item.CategoryID)-->
+                                @Model.GetCategory(item.CategoryID)
+                            </td>
+                            <td>
+                                @foreach (var kk in Model.TblDocK)
+                                {
+                                    if (kk.DocumentID == item.DocumentID)
+                                    {
+                                        <!--@Html.DisplayFor(modelItem => kk.KlasifikasiID)-->
+                                        @Model.GetKlasifikasi(kk.KlasifikasiID) <br />
                                     }
-                                </td>
-                            </tr>
+                                }
+
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ApproveStatus)
+                            </td>
+                            <td>
+                                <a asp-page="/Documents/DocDetails" asp-route-id="@item.DocumentID"><i class="fas fa-info-circle"></i></a>
+                                @{
+                                    if (Model.SUsername != null)
+                                    {
+                                        <a asp-page="/Documents/DocEdit" asp-route-id="@item.DocumentID"><i class="fas fa-edit"></i></a>
+                                        <a asp-page="/Comment/Index" asp-route-id="@item.DocumentID"><i class="fas fa-comment"></i></a>
+                                    }
+                                }
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>

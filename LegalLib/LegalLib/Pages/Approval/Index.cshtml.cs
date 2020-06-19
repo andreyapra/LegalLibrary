@@ -176,13 +176,48 @@ namespace LegalLib
         public List<TblDK> TblDKs { get; set; }
 
         public List<TblCategory> TblCategory { get; set; }
+        public List<TblDK> TblDocK { get; set; }
 
+        public void PopulateDK()
+        {
+            var KQuery = from d in _context.TblDK
+                         where d.IsActive == true
+                         select d;
+
+            TblDocK = new List<TblDK>(KQuery);
+
+        }
+
+        public string GetKlasifikasi(int id)
+        {
+            string Klasifikasi;
+            Klasifikasi = _context.TblKlasifikasi.Where(m => m.KlasifikasiID == id).FirstOrDefault().Klasifikasi;
+
+            return Klasifikasi;
+        }
+
+        public string GetCriteria(int id)
+        {
+            string Criteria;
+            Criteria = _context.TblCriteria.Where(m => m.CriteriaID == id).FirstOrDefault().Criteria;
+
+            return Criteria;
+        }
+
+        public string GetCategory(int id)
+        {
+            string Category;
+            Category = _context.TblCategory.Where(m => m.CategoryID == id).FirstOrDefault().Category;
+
+            return Category;
+        }
 
         public async Task<IActionResult> OnGetAsync()
         {
             TblCategory = await _context.TblCategory.Where(m => m.IsActive == true).ToListAsync();
 
-            TblLegalDocument = await _context.TblLegalDocument.Where(m => m.ApproveStatus == "0").ToListAsync();
+            TblLegalDocument = await _context.TblLegalDocument.Where(m => m.ApproveStatus == "PENDING").ToListAsync();
+            PopulateDK();
 
             if (TblLegalDocument == null)
             {
