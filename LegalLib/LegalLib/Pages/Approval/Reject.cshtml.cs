@@ -55,7 +55,8 @@ namespace LegalLib
             //await smtp.SendMailAsync(message);
 
             //Fungsi Send Email API
-            string Baseurl = "http://localhost:8081/CodeIgniter/index.php/email";
+            string Baseurl = Configuration["Setting:EmailURL"];
+            //string Baseurl = "http://localhost:8081/CodeIgniter/index.php/email";
             //string Baseurl = "http://10.3.30.61/APILibrary/api/Email";
             //string Baseurl = "http://pepcappprod.pertamina.com/APILibrary/api/email";
             string sContentType = "application/json";

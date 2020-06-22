@@ -386,3 +386,4 @@ C:\Users\andre\source\repos\LegalLib\LegalLib\obj\Debug\netcoreapp3.1\staticweba
 C:\Users\andre\source\repos\LegalLib\LegalLib\obj\Debug\netcoreapp3.1\LegalLib.dll
 C:\Users\andre\source\repos\LegalLib\LegalLib\obj\Debug\netcoreapp3.1\LegalLib.pdb
 C:\Users\andre\source\repos\LegalLib\LegalLib\obj\Debug\netcoreapp3.1\LegalLib.genruntimeconfig.cache
+C:\Users\andre\source\repos\LegalLib\LegalLib\obj\Debug\netcoreapp3.1\LegalLib.csprojAssemblyReference.cache

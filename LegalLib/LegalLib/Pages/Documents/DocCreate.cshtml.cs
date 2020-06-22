@@ -11,6 +11,9 @@ using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using LegalLib.Data;
+using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace LegalLib
 {
@@ -26,9 +29,213 @@ namespace LegalLib
             Configuration = configuration;
         }
 
+        //Class Dari USMAN
+        public static RootObject _login;
+        public class RootObject
+        {
+            public DataLDAP dataLDAP { get; set; }
+            public List<DataSAP> dataSAP { get; set; }
+            public DataUsman DataUsman { get; set; }
+        }
+        public class DataLDAP
+        {
+            public string Status { get; set; }
+            public string Message { get; set; }
+            public Data Data { get; set; }
+        }
+        public class DataSAP
+        {
+            public string USERNAME { get; set; }
+            public string EMPLOYEE_NOPEK { get; set; }
+            public string EMPLOYEE_NAMA { get; set; }
+            public string EMPLOYEE_POSIDI { get; set; }
+            public string EMPLOYEE_POSTEXT { get; set; }
+            public string EMPLOYEE_CC { get; set; }
+            public string EMPLOYEE_LAYER { get; set; }
+            public string EMPLOYEESUBGROUP { get; set; }
+            public string EMPLOYEE_EMAIL { get; set; }
+            public string GENDER { get; set; }
+            public int ISCHIEF { get; set; }
+            public string ATASAN_USERNAME { get; set; }
+            public string ATASAN_NOPEK { get; set; }
+            public string ATASAN_POSIDI { get; set; }
+            public string ATASAN_EMAIL { get; set; }
+            public string ATASAN_LAYER { get; set; }
+            public string ATASAN_EMPLOYEESUBGROUP { get; set; }
+            public string COSTCENTERNAME { get; set; }
+        }
+        public class DataUsman
+        {
+            public string UserName { get; set; }
+            public object AppName { get; set; }
+            public List<DataMenu> DataMenu { get; set; }
+            public List<DataRoleGroup> DataRoleGroup { get; set; }
+            public List<DataRole> DataRole { get; set; }
+            public List<DataParameter> DataParameter { get; set; }
+        }
+        public class Data
+        {
+            public bool value { get; set; }
+            public string EmpNumber { get; set; }
+            public string NamaLengkap { get; set; }
+            public string Email { get; set; }
+            public string Company { get; set; }
+            public string Department { get; set; }
+            public string Description { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public string Country { get; set; }
+            public string OUmanager { get; set; }
+            public string OfficeName { get; set; }
+            public string UserName { get; set; }
+            public string StreetAddress { get; set; }
+            public string TelephoneNumber { get; set; }
+            public string Title { get; set; }
+            public string OUpekerja { get; set; }
+        }
+        public class DataMenu
+        {
+            public string idMenu { get; set; }
+            public string ParentID { get; set; }
+            public string NoOrder { get; set; }
+            public string Title { get; set; }
+            public string Description { get; set; }
+            public string Url { get; set; }
+            public string FontClass { get; set; }
+        }
+        public class DataRoleGroup
+        {
+            public string idRoleGroup { get; set; }
+            public string RoleGroupName { get; set; }
+            public string RoleGroupDesc { get; set; }
+            public string AppID { get; set; }
+            public string AppDesc { get; set; }
+        }
+        public class DataRole
+        {
+            public string idRoleGroup { get; set; }
+            public string idRole { get; set; }
+            public string RoleName { get; set; }
+            public string RoleDesc { get; set; }
+            public string AppID { get; set; }
+            public string AppDesc { get; set; }
+        }
+        public class DataParameter
+        {
+            public string IdParameter { get; set; }
+            public string ParameterName { get; set; }
+            public string ParameterDesc { get; set; }
+            public string IdValue { get; set; }
+            public string ValueName { get; set; }
+        }
+
+        //Akhir Class USMAN
+
+        public int CheckRoleName(string rolename)
+        {
+            return _login.DataUsman.DataRole.Where(m => m.RoleName == rolename).Count();
+        }
+        public async Task AmbilDataRole()
+        {
+            //Panggil USMAN
+            string Baseurl = Configuration["Setting:UsmanURL"];
+            //string Baseurl = "https://apps.pertamina.com/api/login/Users/Loginldap";
+            string sContentType = "application/json"; // or application/xml
+
+            JObject oJsonObject = new JObject
+            {
+                { "username", SUsername },
+                { "password", SPassword },
+                { "appname", "Online_Library"}
+            };
+
+            var _Client = new HttpClient();
+            var _response = await _Client.PostAsync(Baseurl, new StringContent(oJsonObject.ToString(), Encoding.UTF8, sContentType));
+
+            var _content = await _response.Content.ReadAsStringAsync();
+            JObject _item = JObject.Parse(_content);
+            var _result = _item.Descendants()
+                .OfType<JProperty>()
+                .Where(p => p.Name.ToString() == "Status")
+                .First();
+
+            if (_result.Value != null)
+            {
+                if (_result.Value.ToString() == "00")
+                {
+                    _login = new RootObject();
+                    _login = JsonConvert.DeserializeObject<RootObject>(_content);
+                }
+            }
+            else
+            {
+                ViewData["Message"] = "Invalid username and password";
+            }
+        }
+
+        public void PopulateCategory()
+        {
+            var CatQuery = from d in _context.TblCategory
+                           where d.IsActive == true
+                           orderby d.CategoryID
+                           select d;
+
+            CategorySL = new SelectList(CatQuery, "CategoryID", "Category");
+        }
+
+        public void PopulateCriteria()
+        {
+            var CriQuery = from d in _context.TblCriteria
+                           where d.IsActive == true
+                           orderby d.CriteriaID
+                           select d;
+
+            CriteriaSL = new SelectList(CriQuery, "CriteriaID", "Criteria");
+        }
+
+
+        public List<TblCategory> TblCategory { get; set; }
+
+        [BindProperty]
+        public IFormFile Upload { get; set; }
+        [BindProperty]
+        public TblFileAttach TblFileAttach { get; set; }
+        [BindProperty]
+        public string Info { get; set; }
+        [BindProperty]
+        public TblDK TblAddDK { get; set; }
+        public TblDK TblDK { get; set; }
+        [BindProperty]
+        public IList<TblFileAttach> TblListFileAttach { get; set; }
+        [BindProperty]
+        public IList<TblDK> TblListDK { get; set; }
+        [BindProperty]
+        public TblDK TblRevisiDK { get; set; }
+        [BindProperty]
+        public IList<TblDK> TblListRevisiDK { get; set; }
+        [BindProperty]
+        public TblFileAttach TblRevisiFA { get; set; }
+        [BindProperty]
+        public IList<TblFileAttach> TblListRevisiFA { get; set; }
+
+        [BindProperty]
+        public TblLegalDocument TblLegalDocument { get; set; }
+        [BindProperty]
+        public TblLegalDocument TblOldDocument { get; set; }
+        public SelectList CategorySL { get; set; }
+        public SelectList CriteriaSL { get; set; }
+        public SelectList KlasifikasiSL { get; set; }
+        public SelectList RevDocumentSL { get; set; }
+
+        public string SUsername { get; set; }
+        public string SPassword { get; set; }
+        public int SRole { get; set; }
+
         [BindProperty(SupportsGet = true)]
         public TblLogActivity TblLogActivity { get; set; }
         public int DocID { get; set; }
+        public int DocumentID { get; set; }
+
 
         public async Task LogActivity()
         {
@@ -57,8 +264,15 @@ namespace LegalLib
 
         }
 
-        public async Task<ActionResult> OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
+            if (HttpContext.Session.GetString("SUsername") != null)
+            {
+                SUsername = HttpContext.Session.GetString("SUsername");
+                SPassword = HttpContext.Session.GetString("SPassword");
+                await AmbilDataRole();
+            }
+
             SUsername = HttpContext.Session.GetString("SUsername");
             SRole = HttpContext.Session.GetInt32("SRole").GetValueOrDefault();
 
@@ -66,31 +280,43 @@ namespace LegalLib
             {
                 return RedirectToPage("/Login");
             }
-            if (SRole < 2)
+            else if (SRole < 2)
             {
                 return RedirectToPage("/Denied");
             }
+
+            PopulateCategory();
+            PopulateCriteria();
+
+            return Page();
+        }
+
+        public async Task<ActionResult> OnPostCreateDocument()
+        {
+            SUsername = HttpContext.Session.GetString("SUsername");
+            SRole = HttpContext.Session.GetInt32("SRole").GetValueOrDefault();
 
             int n = _context.TblLegalDocument.Count();
             DocumentID = n + 1;
 
             TblLegalDocument.DocumentID = n + 1;
-            TblLegalDocument.Nomor = DocumentID.ToString();
+            //TblLegalDocument.Nomor = DocumentID.ToString();
 
             TblLegalDocument.UploaderID = HttpContext.Session.GetString("SUsername");
             TblLegalDocument.UploaderName = HttpContext.Session.GetString("SNama");
             TblLegalDocument.UploaderEmail = HttpContext.Session.GetString("SEmail");
             TblLegalDocument.TglUpload = System.DateTime.Now;
             TblLegalDocument.ModifiedDate = System.DateTime.Now;
+            TblLegalDocument.ModifiedBy = HttpContext.Session.GetString("SUsername");
 
-            TblLegalDocument.TglMulai = System.DateTime.Today;
-            TblLegalDocument.TglAkhir = System.DateTime.Today.AddMonths(1);
-            TblLegalDocument.Revisi = 0;
+            //TblLegalDocument.TglMulai = System.DateTime.Today;
+            //TblLegalDocument.TglAkhir = System.DateTime.Today.AddMonths(1);
+            //TblLegalDocument.Revisi = 0;
             TblLegalDocument.RevDocument = 0;
-            TblLegalDocument.PermitDueDate = System.DateTime.Today;
-            TblLegalDocument.ReportDueDate = System.DateTime.Today;
-            TblLegalDocument.CategoryID = 1;
-            TblLegalDocument.CriteriaID = 1;
+            //TblLegalDocument.PermitDueDate = System.DateTime.Today;
+            //TblLegalDocument.ReportDueDate = System.DateTime.Today;
+            //TblLegalDocument.CategoryID = 1;
+            //TblLegalDocument.CriteriaID = 1;
 
             TblLegalDocument.ApproveStatus = "PENDING";
             TblLegalDocument.Status = "BARU";
@@ -104,20 +330,12 @@ namespace LegalLib
                 DocID = TblLegalDocument.DocumentID;
                 await LogActivity();
 
-                return Redirect("DocEdit/" + DocumentID);
+//                return RedirectToPage("DocEdit/" + DocumentID);
             }
 
-            return Page();
+            return RedirectToPage("DocEdit", new { id = DocID });
 
         }
-
-        public string SUsername { get; set; }
-        public int SRole { get; set; }
-        public string SEmail { get; set; }
-        [BindProperty(SupportsGet = true)]
-        public TblLegalDocument TblLegalDocument { get; set; }
-
-        public int DocumentID { get; set; }
 
     }
 }

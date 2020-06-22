@@ -171,7 +171,8 @@ namespace LegalLib
         public async Task AmbilDataRole()
         {
             //Panggil USMAN
-            string Baseurl = "https://apps.pertamina.com/api/login/Users/Loginldap";
+            string Baseurl = Configuration["Setting:UsmanURL"];
+            //string Baseurl = "https://apps.pertamina.com/api/login/Users/Loginldap";
             string sContentType = "application/json"; // or application/xml
 
             JObject oJsonObject = new JObject
