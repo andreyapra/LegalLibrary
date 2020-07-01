@@ -213,19 +213,13 @@
                 <thead>
                     <tr>
                         <th>
-                            @Html.DisplayNameFor(model => model.TblComment[0].DocumentID)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.TblComment[0].UserID)
+                            @Html.DisplayNameFor(model => model.TblComment[0].Comment)
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.TblComment[0].Username)
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.TblComment[0].CommentDate)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.TblComment[0].Comment)
                         </th>
                         <th></th>
                     </tr>
@@ -235,19 +229,13 @@
                     {
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => item.DocumentID)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.UserID)
+                                @Html.DisplayFor(modelItem => item.Comment)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Username)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.CommentDate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Comment)
                             </td>
                             <td>
                             </td>

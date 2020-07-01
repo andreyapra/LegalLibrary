@@ -332,6 +332,12 @@
                         @Html.DisplayFor(model => model.TblLegalDocument.ApproveStatus)
                     </dd>
                     <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.TblLegalDocument.TglApprove)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.TblLegalDocument.TglApprove)
+                    </dd>
+                    <dt class="col-sm-2">
                         @Html.DisplayNameFor(model => model.TblLegalDocument.UploaderID)
                     </dt>
                     <dd class="col-sm-10">
@@ -413,7 +419,8 @@
                     @foreach (var item in Model.TblFileAttach)
                     {
 
-                        var url = "http://localhost:8001/uploads";
+                        //var url = "http://localhost:8001/uploads";
+                        var url = Model.Configuration["Setting:UploadURL"];
                         url = url + "/" + item.DocumentID + "/" + item.Filename;
 
                         <li>

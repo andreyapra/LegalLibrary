@@ -77,13 +77,9 @@ namespace LegalLib
                 await LogActivity();
                 HttpContext.Session.Clear();
 
-                return RedirectToPage("/Index");
-            }
-            else
-            {
-                return Page();
             }
 
+            return RedirectToPage("/Index");
         }
     }
 }

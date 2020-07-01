@@ -193,6 +193,20 @@ namespace LegalLib
             CriteriaSL = new SelectList(CriQuery, "CriteriaID", "Criteria");
         }
 
+        public void PopulateRevDocument()
+        {
+            var DocQuery = from d in _context.TblLegalDocument
+                           where d.ApproveStatus == "APPROVE"
+                           where d.Status != "CABUT"
+                           where d.TglAkhir > System.DateTime.Today
+                           where d.IsActive == true
+                           orderby d.NamaDocument
+                           select d;
+
+            RevDocumentSL = new SelectList(DocQuery, "DocumentID", "NamaDocument");
+
+        }
+
 
         public List<TblCategory> TblCategory { get; set; }
 
@@ -287,6 +301,8 @@ namespace LegalLib
 
             PopulateCategory();
             PopulateCriteria();
+            PopulateRevDocument();
+
 
             return Page();
         }
@@ -312,14 +328,14 @@ namespace LegalLib
             //TblLegalDocument.TglMulai = System.DateTime.Today;
             //TblLegalDocument.TglAkhir = System.DateTime.Today.AddMonths(1);
             //TblLegalDocument.Revisi = 0;
-            TblLegalDocument.RevDocument = 0;
+            //TblLegalDocument.RevDocument = 0;
             //TblLegalDocument.PermitDueDate = System.DateTime.Today;
             //TblLegalDocument.ReportDueDate = System.DateTime.Today;
             //TblLegalDocument.CategoryID = 1;
             //TblLegalDocument.CriteriaID = 1;
 
             TblLegalDocument.ApproveStatus = "PENDING";
-            TblLegalDocument.Status = "BARU";
+            //TblLegalDocument.Status = "BARU";
             TblLegalDocument.IsActive = true;
 
             if (SUsername != null && SRole > 1)

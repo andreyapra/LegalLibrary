@@ -187,7 +187,8 @@ namespace LegalLib
                             where d.Status != "CABUT"
                             where d.TglAkhir > System.DateTime.Today
                             where d.IsActive == true
-                           orderby d.TglMulai descending
+                           //orderby d.TglMulai descending
+                           orderby d.TglApprove descending
                            select d).Take(10);
 
             TblLegalDocument = DocQuery.ToList();

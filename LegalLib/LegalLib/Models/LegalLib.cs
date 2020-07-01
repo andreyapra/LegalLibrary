@@ -86,6 +86,8 @@ namespace LegalLib.Models
         [DataType(DataType.Date)]
         public DateTime ReportDueDate { get; set; }
         public string Catatan { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? TglApprove { get; set; }
         public string ApproveStatus { get; set; }
         public string UploaderID { get; set; }
         public string UploaderName { get; set; }

@@ -480,7 +480,7 @@ namespace LegalLib
             {
                 return Page();
             }
-
+                  
             TblAddDK.DocumentID = HttpContext.Session.GetInt32("SID").GetValueOrDefault();
             TblAddDK.IsActive = true;
             TblAddDK.ModifiedBy = HttpContext.Session.GetString("SUsername");
@@ -488,7 +488,10 @@ namespace LegalLib
             TblAddDK.CreatedBy = HttpContext.Session.GetString("SUsername");
             TblAddDK.CreatedDate = System.DateTime.Now;
 
-            if (TblAddDK.KlasifikasiID != 0)
+            //cek dk sudah ada
+            int SudahAda = _context.TblDK.Where(dk1 => dk1.KlasifikasiID == TblAddDK.KlasifikasiID).Where(dk2 => dk2.DocumentID == TblAddDK.DocumentID).Where(i => i.IsActive == true).Count();
+
+            if (TblAddDK.KlasifikasiID != 0 && SudahAda == 0)
             {
                 _context.TblDK.Add(TblAddDK);
                 await _context.SaveChangesAsync();

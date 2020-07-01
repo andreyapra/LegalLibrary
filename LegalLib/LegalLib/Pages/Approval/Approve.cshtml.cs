@@ -13,6 +13,7 @@ using System.Net.Http;
 using System.Text;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
+using System;
 
 namespace LegalLib
 {
@@ -127,6 +128,7 @@ namespace LegalLib
             else
             {
                 TblLegalDocument.ApproveStatus = "APPROVE";
+                TblLegalDocument.TglApprove = DateTime.Now;
                 _context.Attach(TblLegalDocument).State = EntityState.Modified;
 
                 await _context.SaveChangesAsync();
